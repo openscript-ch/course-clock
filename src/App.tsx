@@ -1,12 +1,9 @@
-import './App.css'
+import { MantineProvider, Text } from '@mantine/core';
 
-function App() {
-
+export default function App() {
   return (
-    <div className="App">
-      <p>course clock</p>
-    </div>
-  )
+    <MantineProvider withGlobalStyles withNormalizeCSS>
+      <Text>Welcome to Mantine!</Text>
+    </MantineProvider>
+  );
 }
-
-export default App
