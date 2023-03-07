@@ -1,0 +1,40 @@
+*{
+ padding: 0;
+ margin: 0;
+ font-family: 'Text Me One', sans-serif;
+ line-height: 10rem;
+ overflow-x: hidden;
+ overflow-y: hidden;
+}
+
+.teko{
+ font-family: 'Teko', sans-serif;
+}
+
+.project-Name{
+ font-size: 180px;
+}
+
+.home-Page{
+ margin-top: 13%;
+ display: grid;
+ grid-template-columns: 45% 55%;
+ text-align: center;
+ align-items: center;
+ gap: 20%;
+ margin-inline: 10rem;
+ background-image: url(./images/bg.png);
+}
+
+.options-Settings{
+ border-radius: 2rem;
+ display: flex;
+ align-items: center;
+ width: 28rem;
+ margin-bottom: 2rem;
+ height: 5rem;
+ font-size: 1.5rem;
+ text-align: center;
+ justify-content: space-between;
+ padding-inline: 3rem;
+}
