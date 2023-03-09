@@ -2,7 +2,6 @@
  padding: 0;
  margin: 0;
  font-family: 'Text Me One', sans-serif;
- line-height: 10rem;
 }
 
 .teko{
@@ -10,7 +9,8 @@
 }
 
 .project-Name{
- font-size: 180px;
+ font-size: 180px; 
+ line-height: 10rem;
 }
 
 .home-Page{
@@ -36,4 +36,32 @@
  justify-content: space-between;
  padding-inline: 3rem;
  color: white;
+}
+
+/* ---------------Page Layout-------------- */
+
+.header {
+ background-color: #b1b2b5;
+}
+
+.navbar {
+ background-color: #a4a4a5;
+}
+
+h2 {
+ margin-left: .5rem;
+ margin-top: 1rem;
+ font-size: 2rem;
+}
+
+.nav-Bar {
+ text-align: center;
+}
+
+.main-Option {
+ margin-bottom: 1.5rem;
+}
+
+.setting-Icon {
+ margin-top: 24rem;
 }
