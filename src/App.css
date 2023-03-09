@@ -3,8 +3,6 @@
  margin: 0;
  font-family: 'Text Me One', sans-serif;
  line-height: 10rem;
- overflow-x: hidden;
- overflow-y: hidden;
 }
 
 .teko{
@@ -22,7 +20,7 @@
  text-align: center;
  align-items: center;
  gap: 20%;
- margin-inline: 10rem;
+ margin-inline: 15rem;
  background-image: url(./images/bg.png);
 }
 
@@ -37,4 +35,5 @@
  text-align: center;
  justify-content: space-between;
  padding-inline: 3rem;
+ color: white;
 }
