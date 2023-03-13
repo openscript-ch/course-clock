@@ -65,3 +65,43 @@ h2 {
 .setting-Icon {
  margin-top: 24rem;
 }
+
+.titel-Section {
+ margin: 1.5rem 2rem 0;
+ display: flex;
+ justify-content: space-between;
+}
+
+.description {
+ margin-top: 1rem;
+}
+
+.tabs {
+ margin-inline: auto;
+ margin-top: 3rem;
+ max-width: 90%;
+}
+
+.allgemein-Form {
+ margin-top: 2rem;
+ background-color: #b1b2b5;
+ padding: 1rem 0 2rem 2rem;
+ max-width: 32rem;
+ border-radius: .5rem;
+}
+
+.segment-Form {
+ margin-top: 2rem;
+ background-color: #b1b2b5;
+ padding: 1rem 0 1rem 2rem;
+ max-width: 32rem;
+ border-radius: .5rem;
+}
+
+.input-allgemein {
+ max-width: 30rem;
+}
+
+.dates {
+ margin-left: 0;
+}

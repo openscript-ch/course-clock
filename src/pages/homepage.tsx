@@ -9,7 +9,7 @@
 
   
 
-  export function Homepage() {
+  export default function Homepage() {
     const [showHomepageContent, setShowHomepageContent] = useState(true);
     return (
       <Router>

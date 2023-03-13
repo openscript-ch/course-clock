@@ -1,110 +1,170 @@
-import { Tabs,Input, Textarea, Button, Group  } from '@mantine/core';
-import { IconClock } from '@tabler/icons-react';
-import { Dropzone } from '@mantine/dropzone';
-import { useState, useRef } from 'react';
-import { DatePicker, TimeInput } from '@mantine/dates';
+import { Tabs, Button,Group, Box, TextInput,Textarea } from '@mantine/core';
+import { useForm } from '@mantine/form';;
+import { TimeInput, DateInput } from '@mantine/dates';
 import '../App.css'
+import { AddMaterial } from './AddMaterial';
+import { updateCourseInformation } from '../data/CourseInformation';
 
 
 export function CreateComponents(){
-  const [value, setValue] = useState<Date | null>(null);
-  const [value2, setValue2] = useState<Date | null>(null);
-  const openRef = useRef<() => void>(null)
+
+  const form = useForm({
+    initialValues: {
+      Titel: '',
+      Autor: '',
+      dateStart: '',
+      dateEnd: '', 
+      TitelSegment: '',
+      startTime: '', 
+      endTime: '',
+      target: '',
+      procedure: '',
+      materials: '',
+    },
+
+    validate: {
+      Titel: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
+      Autor: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
+      dateStart: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
+      dateEnd: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
+    
+      TitelSegment: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
+      startTime: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
+      endTime: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
+      procedure: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
+    }
+  });
+
+
+  const onSubmit = (values: any) => {
+    const newListInfo = updateCourseInformation(values)
+    console.log(newListInfo)
+  };
+
+  const formReset = () => {
+    form.reset();
+  };
 
  return(
   <>
-        <div className='titel-Section'>
-          <h1 className='titel-Erstellen'>KURS erstellen</h1>
-          <p className='description'>hier <b>ALLGEMEINE</b> Information bearbeiten</p>
-        </div>
-        <hr />
-        <Tabs defaultValue="gallery" className='tabs'>
-          <Tabs.List>
-            <Tabs.Tab value="allgemein">Allgemein</Tabs.Tab>
-            <Tabs.Tab value="segmente">Segmente</Tabs.Tab>
-            <Tabs.Tab value="unterlagen">Materialen/Unterlagen</Tabs.Tab>
-          </Tabs.List>
+    <div className='titel-Section'>
+      <h1 className='titel-Erstellen'> <span className='teko'>KURS</span> erstellen</h1>
+      <p className='description'>hier <span className='teko'>ALLGEMEINE</span> Information bearbeiten</p>
+    </div>
+    <hr />
+    <form onSubmit={form.onSubmit(onSubmit)}>
+      <Tabs variant="outline" defaultValue="gallery" className='tabs' >
+        <Tabs.List>
+         <Tabs.Tab value="allgemein">Allgemein</Tabs.Tab>
+          <Tabs.Tab value="segmente">Segmente</Tabs.Tab>
+          <Tabs.Tab value="unterlagen">Materialen/Unterlagen</Tabs.Tab>
+          <Button type='submit' color={'green'} ml="auto">erstellen</Button>
+        </Tabs.List>
+      <br />
+      <Tabs.Panel value="allgemein" pt="xs" >
+        <Box maw={300}>
+          <TextInput
+            withAsterisk
+            name='Titel'
+            label="Titel"
+            placeholder="Kurs Name"
+            {...form.getInputProps('Titel')}
+          />
 
-          <Tabs.Panel value="allgemein" pt="xs">
-            <form action="submit" className='allgemein-Form'>
-              <label htmlFor="titel">Titel:</label>
-              <Input className='input-allgemein'></Input>
-              <br />
-              <label htmlFor="titel">Autor:</label>
-              <Input className='input-allgemein'></Input>
-              <br />
-              <div>
-                <label htmlFor="titel">Von-</label>
-                <DatePicker className='dates' value={value} onChange={setValue} placeholder="Datum auswählen" maw={200} mx="auto"/>
-              </div>
-              <br />
-              <div>
-                <label htmlFor="titel">-Bis</label>
-                <DatePicker className='dates' value={value2} onChange={setValue2} placeholder="Datum auswählen" maw={200} mx="auto"/>
-              </div>
-              <br /><br />
-              <Button type='submit' color={'orange'}>Erstellen</Button>
-            </form>
-          </Tabs.Panel>
-          <Tabs.Panel value="segmente" pt="xs">
-            <form action="submit" className='segment-Form'>
-            <label htmlFor="titel">Titel:</label>
-            <Input className='input-allgemein'></Input>
-            <br />
-            <div>
-              <label htmlFor="titel">Startzeitpunkt:</label>
-              <TimeInput icon={<IconClock size="1rem" stroke={1.5} />} maw={200} />
-            </div>
-            <br />
-            <div>
-              <label htmlFor="titel">Endzeitpunkt:</label>
-              <TimeInput icon={<IconClock size="1rem" stroke={1.5} />} maw={200} />
-            </div>
-            <br />
-            <label htmlFor="titel">Ziele:</label>
-            <Textarea className='input-allgemein'></Textarea>
-            <br />
-            <label htmlFor="titel">Ablauf:</label>
-            <Textarea className='input-allgemein'></Textarea>
-            <br />
-            <label htmlFor="titel">Materialen/Unterlagen:</label>
-            <Textarea className='input-allgemein'></Textarea>
-            <br />
-            <Button type='submit' color={'orange'}>Erstellen</Button>
-            </form>
-          </Tabs.Panel>
+          <TextInput
+            withAsterisk
+            name='Autor'
+            label="Autor"
+            placeholder="Autor Name"
+            {...form.getInputProps('Autor')}
+          />
 
-          <Tabs.Panel value="unterlagen" pt="xs">
+          <DateInput
+            withAsterisk
+            name='dateStart'   
+            label="Von-"
+            placeholder="Datum"
+            {...form.getInputProps('dateStart')}
+          />
 
-            <Dropzone
-              openRef={openRef}
-              onDrop={() => {}}
-              activateOnClick={false}
-              styles={{ inner: { pointerEvents: 'all' } }}
-            >
-              <div style={{textAlign: 'center', color: 'grey'}}>
-                <h3>
-                  Drag files here or click to select files
-                </h3>
-                <p>
-                  Attach as many files as you like, each file should not exceed 5mb
-                </p>
-              </div>
+          <DateInput
+            withAsterisk
+            label="-Bis"
+            placeholder="Datum"
+            {...form.getInputProps('dateEnd')}
+          />
 
-           </Dropzone>
-           <br />
-           <Group position="center">
-                <Button color={'orange'} onClick={() => openRef?.current?.()}>Select files</Button>
-            </Group>
-            <p>
-              Deine Materiale/Unterlagen:
-              <br /><br />
-              <ul>
-                <li></li>
-              </ul>
-            </p>
-          </Tabs.Panel>
-        </Tabs>
-        </>
+          <br />
+          <Group position="right" mt="md">
+            <Button color={'red'} onClick={formReset}>Reset</Button>
+          </Group>
+        </Box>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="segmente" pt="xs">
+        <Box maw={300}>
+
+          <TextInput
+            withAsterisk
+            name='TitelSegment'
+            label="Titel"
+            placeholder="Segment Name"
+            {...form.getInputProps('TitelSegment')}
+          />
+
+          <TimeInput
+            withAsterisk
+            label="Startzeizpunkt"
+            placeholder="Zeit"
+            {...form.getInputProps('startTime')}
+          />
+
+          <TimeInput
+            withAsterisk
+            label="Endzeitpunkt"
+            placeholder="Zeit"
+            {...form.getInputProps('endTime')}
+          />
+
+          <Textarea
+            name='target'
+            label="Ziele"
+            placeholder="Segment Ziele"
+            {...form.getInputProps('target')}
+          />
+
+          <Textarea
+            withAsterisk
+            name='procedure'
+            label="Ablauf"
+            placeholder="Segment Ablauf"
+            {...form.getInputProps('procedure')}
+          />
+
+          <Textarea
+            name='materials'
+            label="Materialen/Unterlagen"
+            placeholder="Materialen"
+            {...form.getInputProps('materials')}
+          />
+          <br />
+
+          <Group position="right" mt="md">
+            <Button color={'red'} onClick={formReset}>Reset</Button>
+          </Group>
+        </Box>
+      </Tabs.Panel>
+
+      <Tabs.Panel value="unterlagen" pt="xs">
+        <AddMaterial></AddMaterial>
+        <br />
+
+        <Group position="right" mt="md">
+            <Button color={'red'} onClick={formReset}>Reset</Button>
+        </Group>
+      </Tabs.Panel>
+      </Tabs>
+    </form>
+  </>
  );
 }

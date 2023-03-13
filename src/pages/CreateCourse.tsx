@@ -1,6 +1,7 @@
 import { AppShell, Navbar, Header, Title,ThemeIcon, Tabs,Input, Textarea, Button, Group  } from '@mantine/core';
 import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react';
 import '../App.css'
+import { CreateComponents } from '../components/CreateComponents';
 
 interface CreateCourseProps {
   setShowHomepageContent: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,10 +13,10 @@ export function CreateCourse({ setShowHomepageContent }: CreateCourseProps){
       padding="md"
       header={
       <Header height={100} p="xs" className='header'>
-      {<h2>courseCL 
+      {<h2>course<span className='teko'>CL 
           <ThemeIcon radius={360} size={'lg'} color={"orange"}>
             <IconClock></IconClock>
-          </ThemeIcon>CK
+          </ThemeIcon>CK</span>
         </h2>}
       </Header>
       }
@@ -53,7 +54,7 @@ export function CreateCourse({ setShowHomepageContent }: CreateCourseProps){
         main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
   })}>
 
-    {}
+    {<CreateComponents></CreateComponents>}
 
   </AppShell>
 
