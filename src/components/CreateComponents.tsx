@@ -37,7 +37,8 @@ export function CreateComponents(){
 
 
   const onSubmit = (values: any) => {
-    const newListInfo = updateCourseInformation(values)
+    const newListInfo = values
+    updateCourseInformation(values)
     console.log(newListInfo)
   };
 
@@ -96,7 +97,7 @@ export function CreateComponents(){
 
           <br />
           <Group position="right" mt="md">
-            <Button color={'red'} onClick={formReset}>Reset</Button>
+            <Button color={'red'} onClick={formReset}>zurücksetzen</Button>
           </Group>
         </Box>
       </Tabs.Panel>
@@ -150,7 +151,7 @@ export function CreateComponents(){
           <br />
 
           <Group position="right" mt="md">
-            <Button color={'red'} onClick={formReset}>Reset</Button>
+            <Button color={'red'} onClick={formReset}>zurücksetzen</Button>
           </Group>
         </Box>
       </Tabs.Panel>
