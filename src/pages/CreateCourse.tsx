@@ -1,5 +1,6 @@
-import { AppShell, Navbar, Header, Title,ThemeIcon, Tabs,Input, Textarea, Button, Group  } from '@mantine/core';
+import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core';
 import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react';
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import '../App.css'
 import { CreateComponents } from '../components/CreateComponents';
 
@@ -31,9 +32,11 @@ export function CreateCourse({ setShowHomepageContent }: CreateCourseProps){
             </ThemeIcon>
             <br />
 
+            <Link to='/edit-course'>
             <ThemeIcon className='main-Option' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
               <IconFile/>
             </ThemeIcon>
+            </Link>
             <br />
 
             <ThemeIcon className='main-Option' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
