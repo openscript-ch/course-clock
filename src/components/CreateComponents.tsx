@@ -5,6 +5,7 @@ import '../App.css'
 import { AddMaterial } from './AddMaterial';
 import { updateCourseInformation } from '../data/CourseInformation';
 
+export var newListInfo = { }
 
 export function CreateComponents(){
 
@@ -23,21 +24,21 @@ export function CreateComponents(){
     },
 
     validate: {
-      Titel: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
-      Autor: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
-      dateStart: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
-      dateEnd: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
+      Titel: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+      Autor: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+      dateStart: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+      dateEnd: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
     
-      TitelSegment: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
-      startTime: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
-      endTime: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
-      procedure: (value) => (value.length < 1 ? 'Bitte alle Pflichtfelder ausfüllen' : null),
+      TitelSegment: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+      startTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+      endTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+      procedure: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
     }
   });
 
 
   const onSubmit = (values: any) => {
-    const newListInfo = values
+    newListInfo =  values
     updateCourseInformation(values)
     console.log(newListInfo)
   };
@@ -50,7 +51,7 @@ export function CreateComponents(){
   <>
     <div className='titel-Section'>
       <h1 className='titel-Erstellen'> <span className='teko'>KURS</span> erstellen</h1>
-      <p className='description'>hier <span className='teko'>ALLGEMEINE</span> Information bearbeiten</p>
+      <p className='description'>hier <span className='teko'>KURS</span> Information bearbeiten</p>
     </div>
     <hr />
     <form onSubmit={form.onSubmit(onSubmit)}>
@@ -161,7 +162,7 @@ export function CreateComponents(){
         <br />
 
         <Group position="right" mt="md">
-            <Button color={'red'} onClick={formReset}>Reset</Button>
+            <Button color={'red'} onClick={formReset}>zurücksetzen</Button>
         </Group>
       </Tabs.Panel>
       </Tabs>
