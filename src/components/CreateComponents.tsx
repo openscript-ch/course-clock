@@ -1,13 +1,17 @@
-import { Tabs, Button,Group, Box, TextInput,Textarea } from '@mantine/core';
+import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon} from '@mantine/core';
+import { useState } from 'react';
 import { useForm } from '@mantine/form';;
 import { TimeInput, DateInput } from '@mantine/dates';
 import '../App.css'
 import { AddMaterial } from './AddMaterial';
 import { updateCourseInformation } from '../data/CourseInformation';
+import { IconPlus } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
 
 export var newListInfo = { }
 
 export function CreateComponents(){
+
 
   const form = useForm({
     initialValues: {
@@ -47,6 +51,8 @@ export function CreateComponents(){
     form.reset();
   };
 
+  const [activeTab, setActiveTab] = useState<string | null>('allgemein');
+
  return(
   <>
     <div className='titel-Section'>
@@ -55,7 +61,7 @@ export function CreateComponents(){
     </div>
     <hr />
     <form onSubmit={form.onSubmit(onSubmit)}>
-      <Tabs variant="outline" defaultValue="gallery" className='tabs' >
+      <Tabs variant="outline" defaultValue="gallery" className='tabs' value={activeTab} onTabChange={setActiveTab} >
         <Tabs.List>
          <Tabs.Tab value="allgemein">Allgemein</Tabs.Tab>
           <Tabs.Tab value="segmente">Segmente</Tabs.Tab>
@@ -149,21 +155,20 @@ export function CreateComponents(){
             placeholder="Materialen"
             {...form.getInputProps('materials')}
           />
-          <br />
 
           <Group position="right" mt="md">
-            <Button color={'red'} onClick={formReset}>zurücksetzen</Button>
+            <Button color={'orange'} radius='xl'>
+              <ThemeIcon color={'orange'} size={'md'}>
+                <IconPlus />
+              </ThemeIcon>
+            </Button>
           </Group>
+          <br />
         </Box>
       </Tabs.Panel>
 
       <Tabs.Panel value="unterlagen" pt="xs">
         <AddMaterial></AddMaterial>
-        <br />
-
-        <Group position="right" mt="md">
-            <Button color={'red'} onClick={formReset}>zurücksetzen</Button>
-        </Group>
       </Tabs.Panel>
       </Tabs>
     </form>
