@@ -4,8 +4,9 @@ import { TimeInput, DateInput } from '@mantine/dates';
 import '../App.css'
 import { AddMaterial } from './AddMaterial';
 import { updateCourseInformation } from '../data/CourseInformation';
+import { useState } from 'react';
 
-export var newListInfo = { }
+export var listInfo:Record<string, string> = { }
 
 export function CreateComponents(){
 
@@ -38,14 +39,16 @@ export function CreateComponents(){
 
 
   const onSubmit = (values: any) => {
-    newListInfo =  values
+    listInfo =  values
     updateCourseInformation(values)
-    console.log(newListInfo)
+    console.log(listInfo)
   };
 
   const formReset = () => {
     form.reset();
   };
+
+  const [activeTab, setActiveTab] = useState<string | null>('allgemein');
 
  return(
   <>
@@ -55,7 +58,7 @@ export function CreateComponents(){
     </div>
     <hr />
     <form onSubmit={form.onSubmit(onSubmit)}>
-      <Tabs variant="outline" defaultValue="gallery" className='tabs' >
+      <Tabs variant="outline" defaultValue="gallery" className='tabs'value={activeTab} onTabChange={setActiveTab} >
         <Tabs.List>
          <Tabs.Tab value="allgemein">Allgemein</Tabs.Tab>
           <Tabs.Tab value="segmente">Segmente</Tabs.Tab>
