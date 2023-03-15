@@ -60,12 +60,101 @@ const [activeTab, setActiveTab] = useState<string | null>('allgemein');
         </Tabs.List>
       <br />
       <Tabs.Panel value="allgemein" pt="xs" >
+	<Box maw={300}>
+          <TextInput
+            withAsterisk
+            name='Titel'
+            label="Titel"
+            placeholder='Kurs Titel'
+            {...form.getInputProps('Titel')}
+            icon={<IconEdit size={'1rem'}/>}
+          />
+
+          <TextInput
+            withAsterisk
+            name='Autor'
+            label="Autor"
+            placeholder="Autor Name"
+            {...form.getInputProps('Autor')}
+            icon={<IconEdit size={'1rem'}/>}
+          />
+
+          <DateInput
+            withAsterisk
+            name='dateStart'   
+            label="Von-"
+            placeholder="Datum"
+            {...form.getInputProps('dateStart')}
+            icon={<IconEdit size={'1rem'}/>}
+          />
+
+          <DateInput
+            withAsterisk
+            label="-Bis"
+            placeholder="Datum"
+            {...form.getInputProps('dateEnd')}
+            icon={<IconEdit size={'1rem'}/>}
+          />
+        </Box>
       </Tabs.Panel>
 
       <Tabs.Panel value="segmente" pt="xs">
+        <Box maw={300}>
+
+          <TextInput
+            withAsterisk
+            name='TitelSegment'
+            label="Titel"
+            placeholder="Segment Name"
+            {...form.getInputProps('TitelSegment')}
+          />
+
+          <TimeInput
+            icon={<IconEdit size={'1rem'}/>}
+            withAsterisk
+            label="Startzeizpunkt"
+            placeholder="Zeit"
+            {...form.getInputProps('startTime')}
+          />
+
+          <TimeInput
+            withAsterisk
+            label="Endzeitpunkt"
+            placeholder="Zeit"
+            icon={<IconEdit size={'1rem'}/>}
+            {...form.getInputProps('endTime')}
+          />
+
+          <Textarea
+            name='target'
+            label="Ziele"
+            placeholder="Segment Ziele"
+            {...form.getInputProps('target')}
+            icon={<IconEdit size={'1rem'}/>}
+          />
+
+          <Textarea
+            withAsterisk
+            name='procedure'
+            label="Ablauf"
+            placeholder="Segment Ablauf"
+            {...form.getInputProps('procedure')}
+            icon={<IconEdit size={'1rem'}/>}
+          />
+
+          <Textarea
+            name='materials'
+            label="Materialen/Unterlagen"
+            placeholder="Materialen"
+            {...form.getInputProps('materials')}
+            icon={<IconEdit size={'1rem'}/>}
+          />
+          <br />
+        </Box>
       </Tabs.Panel>
 
       <Tabs.Panel value="unterlagen" pt="xs">
+        <AddMaterial></AddMaterial>
       </Tabs.Panel>
 
       </Tabs>
