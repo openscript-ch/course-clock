@@ -105,3 +105,22 @@ h2 {
 .dates {
  margin-left: 0;
 }
+/* ---------------new segment-------------- */
+
+.box {
+ min-width: 250px
+}
+
+.segment {
+ gap: 4rem;
+ flex-wrap: wrap;
+}
+
+.newSegmente {
+ margin-top: 1.5rem;
+ background-color: #b1b2b5;
+ height: 430px;
+ width: 250px;
+ border-radius: .5rem;
+ padding: 2rem;
+}

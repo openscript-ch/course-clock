@@ -1,64 +1,84 @@
-import { Tabs, Button,Group, Box, TextInput,Textarea } from '@mantine/core';
+import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon} from '@mantine/core';
+import { useState } from 'react';
 import { useForm } from '@mantine/form';;
-import { TimeInput, DateInput } from '@mantine/dates';
+import { DateInput } from '@mantine/dates';
 import '../App.css'
 import { AddMaterial } from './AddMaterial';
-import { updateCourseInformation } from '../data/CourseInformation';
-import { useState } from 'react';
+import { CourseInformation, updateCourseInformation } from '../data/CourseInformation';
+import { Segment } from './Segment';
+import { TimeInput } from '@mantine/dates';
+import { IconPlus } from '@tabler/icons-react';
 
-export var listInfo:Record<string, string> = { }
+export var newListInfo:any[] = []
+ 
 
-export function CreateComponents(){
-
-  const form = useForm({
-    initialValues: {
-      Titel: '',
-      Autor: '',
-      dateStart: '',
-      dateEnd: '', 
-      TitelSegment: '',
-      startTime: '', 
-      endTime: '',
-      target: '',
-      procedure: '',
-      materials: '',
-    },
-
-    validate: {
-      Titel: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-      Autor: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-      dateStart: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-      dateEnd: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    
-      TitelSegment: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-      startTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-      endTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-      procedure: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    }
-  });
+export function CreateComponents(props: CourseInformation){
+const [segment, setSegment] = useState(newListInfo);
 
 
-  const onSubmit = (values: any) => {
-    listInfo =  values
+const handleAddSegment = () => {  
+  if (formSegment.isValid()) {
+    const newComponent = <Segment segmentData={formSegment.values} />;
+    setSegment([...segment, newComponent]);
+    newListInfo.push(formSegment.values);
+    formSegment.reset();
+    console.log(newListInfo);
+  }
+};
+
+const form = useForm({
+  initialValues: {
+    Titel: '',
+    Autor: '',
+    dateStart: '',
+    dateEnd: '', 
+  },
+
+  validate: {
+    Titel: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    Autor: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    dateStart: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    dateEnd: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+  }
+});
+
+const formSegment = useForm({
+  initialValues: {
+    TitelSegment: '',
+    startTime: '', 
+    endTime: '',
+    target: '',
+    procedure: '',
+    materials: '',
+  },
+  validate: {
+    TitelSegment: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    startTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    endTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    procedure: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+  }
+});
+
+
+const onSubmit = (values: object) => {
+  if(newListInfo.length > 0){
+    newListInfo.push(form.values)
     updateCourseInformation(values)
-    console.log(listInfo)
-  };
+    console.log(newListInfo)
+  }
+};
 
-  const formReset = () => {
-    form.reset();
-  };
+const [activeTab, setActiveTab] = useState<string | null>('allgemein');
 
-  const [activeTab, setActiveTab] = useState<string | null>('allgemein');
-
- return(
+return(
   <>
     <div className='titel-Section'>
       <h1 className='titel-Erstellen'> <span className='teko'>KURS</span> erstellen</h1>
       <p className='description'>hier <span className='teko'>KURS</span> Information bearbeiten</p>
     </div>
     <hr />
-    <form onSubmit={form.onSubmit(onSubmit)}>
-      <Tabs variant="outline" defaultValue="gallery" className='tabs'value={activeTab} onTabChange={setActiveTab} >
+    <form onSubmit={ form.onSubmit(onSubmit)}>
+      <Tabs variant="outline" defaultValue="gallery" className='tabs' value={activeTab} onTabChange={setActiveTab} >  
         <Tabs.List>
          <Tabs.Tab value="allgemein">Allgemein</Tabs.Tab>
           <Tabs.Tab value="segmente">Segmente</Tabs.Tab>
@@ -67,7 +87,7 @@ export function CreateComponents(){
         </Tabs.List>
       <br />
       <Tabs.Panel value="allgemein" pt="xs" >
-        <Box maw={300}>
+        <Box maw={250}>
           <TextInput
             withAsterisk
             name='Titel'
@@ -100,42 +120,39 @@ export function CreateComponents(){
           />
 
           <br />
-          <Group position="right" mt="md">
-            <Button color={'red'} onClick={formReset}>zurücksetzen</Button>
-          </Group>
         </Box>
       </Tabs.Panel>
 
       <Tabs.Panel value="segmente" pt="xs">
-        <Box maw={300}>
-
+      <div style={{display: 'flex'}} className={'segment'}>
+        <Box maw={250} className={'box'}>
           <TextInput
             withAsterisk
             name='TitelSegment'
             label="Titel"
             placeholder="Segment Name"
-            {...form.getInputProps('TitelSegment')}
+            {...formSegment.getInputProps('TitelSegment')}
           />
 
           <TimeInput
             withAsterisk
             label="Startzeizpunkt"
             placeholder="Zeit"
-            {...form.getInputProps('startTime')}
+            {...formSegment.getInputProps('startTime')}
           />
 
           <TimeInput
             withAsterisk
             label="Endzeitpunkt"
             placeholder="Zeit"
-            {...form.getInputProps('endTime')}
+            {...formSegment.getInputProps('endTime')}
           />
 
           <Textarea
             name='target'
             label="Ziele"
             placeholder="Segment Ziele"
-            {...form.getInputProps('target')}
+            {...formSegment.getInputProps('target')}
           />
 
           <Textarea
@@ -143,30 +160,30 @@ export function CreateComponents(){
             name='procedure'
             label="Ablauf"
             placeholder="Segment Ablauf"
-            {...form.getInputProps('procedure')}
+            {...formSegment.getInputProps('procedure')}
           />
 
           <Textarea
             name='materials'
             label="Materialen/Unterlagen"
             placeholder="Materialen"
-            {...form.getInputProps('materials')}
+            {...formSegment.getInputProps('materials')}
           />
-          <br />
-
           <Group position="right" mt="md">
-            <Button color={'red'} onClick={formReset}>zurücksetzen</Button>
+              <ThemeIcon color={'orange'} size={'xl'} radius={'xl'} onClick={handleAddSegment}>
+                <IconPlus />
+              </ThemeIcon>
           </Group>
         </Box>
+            {segment.map((segment, index) => (
+            <div key={index}>{segment}</div>
+            ))}
+        </div>
+      <br />
       </Tabs.Panel>
 
       <Tabs.Panel value="unterlagen" pt="xs">
         <AddMaterial></AddMaterial>
-        <br />
-
-        <Group position="right" mt="md">
-            <Button color={'red'} onClick={formReset}>zurücksetzen</Button>
-        </Group>
       </Tabs.Panel>
       </Tabs>
     </form>
