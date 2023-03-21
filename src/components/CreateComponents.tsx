@@ -1,13 +1,12 @@
-import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon} from '@mantine/core';
+import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon, FileInputProps, Center} from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from '@mantine/form';;
 import { DateInput } from '@mantine/dates';
 import '../App.css'
-import { AddMaterial } from './AddMaterial';
 import { CourseInformation, updateCourseInformation } from '../data/CourseInformation';
 import { Segment } from './Segment';
 import { TimeInput } from '@mantine/dates';
-import { IconPlus } from '@tabler/icons-react';
+import { IconPlus} from '@tabler/icons-react';
 
 export var newListInfo:any[] = []
  
@@ -20,7 +19,7 @@ const handleAddSegment = () => {
   if (formSegment.isValid()) {
     const newComponent = <Segment segmentData={formSegment.values} />;
     setSegment([...segment, newComponent]);
-    newListInfo.push(formSegment.values);
+    newListInfo.push({...formSegment.values, id:newListInfo.length});
     formSegment.reset();
     console.log(newListInfo);
   }
@@ -62,11 +61,17 @@ const formSegment = useForm({
 
 const onSubmit = (values: object) => {
   if(newListInfo.length > 0){
-    newListInfo.push(form.values)
+    newListInfo.push({...form.values, id:newListInfo.length})
     updateCourseInformation(values)
     console.log(newListInfo)
   }
 };
+
+const handleFormsSubmit = (event:any) => {
+  event.preventDefault()
+  form.onSubmit(onSubmit)();
+  formSegment.onSubmit(onSubmit)()
+}
 
 const [activeTab, setActiveTab] = useState<string | null>('allgemein');
 
@@ -77,12 +82,11 @@ return(
       <p className='description'>hier <span className='teko'>KURS</span> Information bearbeiten</p>
     </div>
     <hr />
-    <form onSubmit={ form.onSubmit(onSubmit)}>
+    <form onSubmit={handleFormsSubmit}>
       <Tabs variant="outline" defaultValue="gallery" className='tabs' value={activeTab} onTabChange={setActiveTab} >  
         <Tabs.List>
          <Tabs.Tab value="allgemein">Allgemein</Tabs.Tab>
           <Tabs.Tab value="segmente">Segmente</Tabs.Tab>
-          <Tabs.Tab value="unterlagen">Materialen/Unterlagen</Tabs.Tab>
           <Button type='submit' color={'green'} ml="auto">erstellen</Button>
         </Tabs.List>
       <br />
@@ -180,10 +184,6 @@ return(
             ))}
         </div>
       <br />
-      </Tabs.Panel>
-
-      <Tabs.Panel value="unterlagen" pt="xs">
-        <AddMaterial></AddMaterial>
       </Tabs.Panel>
       </Tabs>
     </form>
