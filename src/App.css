@@ -124,3 +124,7 @@ h2 {
  border-radius: .5rem;
  padding: 2rem;
 }
+
+.newSegmente:hover{
+ background-color: #d5d5d6;
+}
