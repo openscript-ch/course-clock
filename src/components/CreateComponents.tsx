@@ -79,7 +79,7 @@ return(
   <>
     <div className='titel-Section'>
       <h1 className='titel-Erstellen'> <span className='teko'>KURS</span> erstellen</h1>
-      <p className='description'>hier <span className='teko'>KURS</span> Information bearbeiten</p>
+      <p className='description'>hier <span className='teko'>KURS</span> Information hinzufügen</p>
     </div>
     <hr />
     <form onSubmit={handleFormsSubmit}>
