@@ -1,4 +1,4 @@
-import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon} from '@mantine/core';
+import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon, FileInputProps, Center} from '@mantine/core';
 import { useState } from 'react';
 import { useForm } from '@mantine/form';;
 import { DateInput } from '@mantine/dates';
@@ -6,7 +6,7 @@ import '../App.css'
 import { CourseInformation, updateCourseInformation } from '../data/CourseInformation';
 import { Segment } from './Segment';
 import { TimeInput } from '@mantine/dates';
-import { IconPlus } from '@tabler/icons-react';
+import { IconPlus} from '@tabler/icons-react';
 
 export var newListInfo:any[] = []
  

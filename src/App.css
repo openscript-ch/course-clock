@@ -108,20 +108,24 @@ h2 {
 
 /* ---------------new segment-------------- */
 
-.box{
+.box {
  min-width: 250px
 }
 
-.segment{
+.segment {
  gap: 4rem;
  flex-wrap: wrap;
 }
 
-.newSegmente{
+.newSegmente {
  margin-top: 1.5rem;
  background-color: #b1b2b5;
  height: 430px;
  width: 250px;
  border-radius: .5rem;
  padding: 2rem;
+}
+
+.newSegmente:hover{
+ background-color: #d5d5d6;
 }
