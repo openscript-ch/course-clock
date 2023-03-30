@@ -1,36 +1,38 @@
-import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon, FileInputProps, Center} from '@mantine/core';
+import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon, MantineProvider} from '@mantine/core';
 import { useState } from 'react';
-import { useForm } from '@mantine/form';;
+import { useForm } from '@mantine/form';
 import { DateInput } from '@mantine/dates';
 import '../App.css'
-import { CourseInformation, updateCourseInformation } from '../data/CourseInformation';
 import { Segment } from './Segment';
 import { TimeInput } from '@mantine/dates';
 import { IconPlus} from '@tabler/icons-react';
+import useCourseStore from "../store/courseStore"
+import { courseValues } from '../store/courseStore';
 
-export var newListInfo:any[] = []
+export const idAllgemein:number = Math.floor(Math.random()*100000)
+
+const CreateComponents = () => {
+
+const [activeTab, setActiveTab] = useState<string | null>('allgemein');
+const addAllgemeinInformation = useCourseStore((state) => state.
+addAllgemeinInformation);
+ const addSegmentCourseInformation= useCourseStore((state) => state.
+addSegmentCourseInformation);
+
+const {newListInformation} = useCourseStore(
+  (state) => ({
+    newListInformation: state.newListInformation
+  })
+)
+const [segments, setSegments] = useState<courseValues[]>(newListInformation);
  
-
-export function CreateComponents(props: CourseInformation){
-const [segment, setSegment] = useState(newListInfo);
-
-
-const handleAddSegment = () => {  
-  if (formSegment.isValid()) {
-    const newComponent = <Segment segmentData={formSegment.values} />;
-    setSegment([...segment, newComponent]);
-    newListInfo.push({...formSegment.values, id:newListInfo.length});
-    formSegment.reset();
-    console.log(newListInfo);
-  }
-};
-
 const form = useForm({
-  initialValues: {
+  initialValues: { 
     Titel: '',
     Autor: '',
     dateStart: '',
-    dateEnd: '', 
+    dateEnd: '',
+    id: 0,
   },
 
   validate: {
@@ -49,46 +51,71 @@ const formSegment = useForm({
     target: '',
     procedure: '',
     materials: '',
+    id: 0
   },
   validate: {
     TitelSegment: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
     startTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    endTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    endTime: (value)=> (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
     procedure: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
   }
 });
 
-
-const onSubmit = (values: object) => {
-  if(newListInfo.length > 0){
-    newListInfo.push({...form.values, id:newListInfo.length})
-    updateCourseInformation(values)
-    console.log(newListInfo)
+const handleAddSegment = () => { 
+  if (formSegment.isValid()){
+    if(formSegment.values.startTime > formSegment.values.endTime){
+      formSegment.setFieldError("endTime", 'Ups! Der Endzeitpunkt muss nach dem Startzeitpunkt liegen.')
+    }
+    else{
+    formSegment.values.id = Math.floor(Math.random()*10000)
+    setSegments([...segments, formSegment.values]);
+    addSegmentCourseInformation(formSegment.values)
+    formSegment.reset();
+    }
+  }else{
+    formSegment.setFieldError('TitelSegment', 'Bitte alle Pflichtfelder ausfühlen');
+    formSegment.setFieldError('startTime', 'Bitte alle Pflichtfelder ausfühlen');
+    formSegment.setFieldError('entTime', 'Bitte alle Pflichtfelder ausfühlen');
+    formSegment.setFieldError('procedure', 'Bitte alle Pflichtfelder ausfühlen');
   }
 };
 
-const handleFormsSubmit = (event:any) => {
-  event.preventDefault()
-  form.onSubmit(onSubmit)();
-  formSegment.onSubmit(onSubmit)()
-}
+let buttonState = false
 
-const [activeTab, setActiveTab] = useState<string | null>('allgemein');
+const handleFormsSubmit = (event: any) => {
+  event.preventDefault();
+  if (form.isValid()) {
+    if (newListInformation.length > 0 && form.values.dateStart <= form.values.dateEnd) {
+      buttonState = true
+      form.values.id = idAllgemein;
+      addAllgemeinInformation(form.values);
+    } else if (form.values.dateStart > form.values.dateEnd) {
+      form.setFieldError('dateEnd', 'Ups! Das Enddatum muss nach dem Startdatum liegen.');
+    } else if (newListInformation.length <= 0) {
+      window.alert('Bitte zumindest 1 Segment erstellen');
+    }
+  }else{
+    form.setFieldError('Titel', 'Bitte alle Pflichtfelder ausfühlen');
+    form.setFieldError('Autor', 'Bitte alle Pflichtfelder ausfühlen');
+    form.setFieldError('dateStart', 'Bitte alle Pflichtfelder ausfühlen');
+    form.setFieldError('dateEnd', 'Bitte alle Pflichtfelder ausfühlen');
+  }
+};
 
 return(
   <>
     <div className='titel-Section'>
       <h1 className='titel-Erstellen'> <span className='teko'>KURS</span> erstellen</h1>
-      <p className='description'>hier <span className='teko'>KURS</span> Information bearbeiten</p>
+      <p className='description'>hier <span className='teko'>KURS</span> Information hinzufügen</p>
     </div>
     <hr />
-    <form onSubmit={handleFormsSubmit}>
+    <form>
       <Tabs variant="outline" defaultValue="gallery" className='tabs' value={activeTab} onTabChange={setActiveTab} >  
         <Tabs.List>
          <Tabs.Tab value="allgemein">Allgemein</Tabs.Tab>
           <Tabs.Tab value="segmente">Segmente</Tabs.Tab>
-          <Button type='submit' color={'green'} ml="auto">erstellen</Button>
-        </Tabs.List>
+          <Button onClick={handleFormsSubmit} disabled={buttonState} color={'green'} ml="auto">erstellen</Button>
+        </Tabs.List> 
       <br />
       <Tabs.Panel value="allgemein" pt="xs" >
         <Box maw={250}>
@@ -179,9 +206,16 @@ return(
               </ThemeIcon>
           </Group>
         </Box>
-            {segment.map((segment, index) => (
-            <div key={index}>{segment}</div>
-            ))}
+          {segments.map((segmentData, index) => (
+            <Segment
+              key={index}
+              TitelSegment={segmentData.TitelSegment}
+              startTime={segmentData.startTime}
+              endTime={segmentData.endTime}
+              target={segmentData.target}
+              procedure={segmentData.procedure}
+              materials={segmentData.materials}/>
+          ))}
         </div>
       <br />
       </Tabs.Panel>
@@ -190,3 +224,4 @@ return(
   </>
  );
 }
+export default CreateComponents

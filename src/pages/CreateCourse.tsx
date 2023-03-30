@@ -1,14 +1,12 @@
 import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core';
 import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react';
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useState } from 'react';
 import '../App.css'
-import { CreateComponents } from '../components/CreateComponents';
+import  CreateComponents  from '../components/CreateComponents';
 
-interface CreateCourseProps {
-  setShowHomepageContent: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export function CreateCourse({ setShowHomepageContent }: CreateCourseProps){
+export function CreateCourse(){
+const [showHomepageContent, setShowHomepageContent] = useState(true);
  return(
   <AppShell
       padding="md"

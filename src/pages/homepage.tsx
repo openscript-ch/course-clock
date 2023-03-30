@@ -1,16 +1,13 @@
-  import { useState } from 'react';
-  import '../App.css';
-  import { ThemeIcon } from '@mantine/core';
-  import { IconPlus, IconFile, IconPdf, IconClock } from '@tabler/icons-react';
-  import { CreateCourse } from './CreateCourse';
-  import { EditCourse } from './EditCourse';
-  import { BrowserRouter as Router,Route,Routes,Link } from 'react-router-dom'
+import { useState } from 'react';
+import '../App.css';
+import { ThemeIcon } from '@mantine/core';
+import { IconPlus, IconFile, IconPdf, IconClock } from '@tabler/icons-react';
+import { CreateCourse } from './CreateCourse';
+import { EditCourse } from './EditCourse';
+import { BrowserRouter as Router,Route,Routes,Link } from 'react-router-dom'
 
-
-  
-
-  export default function Homepage() {
-    const [showHomepageContent, setShowHomepageContent] = useState(true);
+export default function Homepage() {
+  const [showHomepageContent, setShowHomepageContent] = useState(true);
     return (
       <Router>
         {showHomepageContent && (
@@ -50,12 +47,12 @@
             </div>
           </div>
         </div> 
-         )}
+        )}
 
         <Routes>
-          <Route path='/create-course' element={<CreateCourse setShowHomepageContent={setShowHomepageContent} />} />
-          <Route path='/edit-course' element={<EditCourse setShowHomepageContent={setShowHomepageContent} />} />
+          <Route path='/create-course' element={<CreateCourse/>} />
+          <Route path='/edit-course' element={<EditCourse/>}/>
         </Routes>
     </Router>
     );
-  }
+}
