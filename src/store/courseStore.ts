@@ -3,11 +3,11 @@ import create from 'zustand';
 import {devtools, persist} from 'zustand/middleware'
 
 export interface courseValues {
-  Titel?:string
-  Autor?: string    
+  title?:string
+  author?: string    
   dateStart?:string
   dateEnd?: string
-  TitelSegment?: string
+  titleSegment?: string
   startTime?: string 
   endTime?: string
   target?: string
@@ -19,43 +19,43 @@ export interface courseValues {
 
 const courseStore = (set:any) => ({
 
-   newListInformation: <courseValues[]>[],
+   courseMetaData: <courseValues[]>[],
 
-   segmentId: <number>0,
+   segmentIdMetaData: <number>0,
 
-   addAllgemeinInformation: (AllgemeinInformation:any) => {
+   addCommonMetaData: (commonMetaData:courseValues) => {
      set((state:any) => ({
-       newListInformation: [...state.newListInformation, AllgemeinInformation ]
+       courseMetaData: [...state.courseMetaData, commonMetaData ]
      }))
    },
-   addSegmentCourseInformation: (SegmentInformation:any) => {
+   addSegmentMetaData: (SegmentMetaData:courseValues) => {
      set((state:any) => ({
-      newListInformation: [...state.newListInformation, SegmentInformation ]
+      courseMetaData: [...state.courseMetaData, SegmentMetaData ]
      }))
    },
    saveSegmentId: (id:number) =>{
-    set((state:number) => ({
-      segmentId: id
+    set(() => ({
+      segmentIdMetaData: id
     }))
    },
-   updateSegmentInformation: (id:number, updatedSegmentValues:courseValues) => {
+   updatedSegmentMetaData: (id:number, updatedSegmentMetaData:courseValues) => {
       set((state:any) => ({
-        newListInformation: state.newListInformation.map((obj:courseValues) => {
+        courseMetaData: state.courseMetaData.map((obj:courseValues) => {
           if (obj.id === id) {
-           return {...obj, ...updatedSegmentValues};
+           return {...obj, ...updatedSegmentMetaData};
           } else {
            return obj;
           }
         })
       }))
     },
-  updateAllgemeinInformation: (courseId: number, updatedAllgemeinValues: courseValues) => {
+  updatedCommonMetaData: (courseId: number, updatedCommonMetaData: courseValues) => {
       set((state: any) => ({
-        newListInformation: state.newListInformation.map((course: courseValues) => {
+        courseMetaData: state.courseMetaData.map((course: courseValues) => {
           if (course.id === courseId) {
             return {
               ...course,
-              ...updatedAllgemeinValues
+              ...updatedCommonMetaData
             };
           } else {
             return course;
@@ -63,9 +63,9 @@ const courseStore = (set:any) => ({
         })
       }))
     },
-  deleteSegment: (id: number) => {
+  deleteSegmentMetaData: (id: number) => {
   set((state: any) => ({
-    newListInformation: state.newListInformation.filter((obj: courseValues) => obj.id !== id),
+    courseMetaData: state.courseMetaData.filter((obj: courseValues) => obj.id !== id),
   }));
 },
   });
@@ -73,7 +73,7 @@ const courseStore = (set:any) => ({
 const useCourseStore = create(
   devtools(
     persist(courseStore, {
-      name: 'CourseInformation'
+      name: 'CourseMetaData'
     })
   )
 );
