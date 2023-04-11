@@ -1,14 +1,14 @@
+import React from 'react'
+import '../App.css'
 import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core';
 import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react';
-import { Link } from "react-router-dom";
-import { useState } from 'react';
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import '../App.css'
-import  CreateComponents  from '../components/CreateComponents';
-
-export function CreateCourse(){
-const [showHomepageContent, setShowHomepageContent] = useState(true);
- return(
-  <AppShell
+import { EditComponents } from '../components/EditComponents';
+import CoursesList from '../components/CoursesList';
+function MyCourses() {
+  return (
+   <AppShell
       padding="md"
       header={
       <Header height={100} p="xs" className='header'>
@@ -24,17 +24,18 @@ const [showHomepageContent, setShowHomepageContent] = useState(true);
       <Navbar width={{ base: 100 }} p="xs" className='navbar'>
         {
           <div className='nav-Bar'> 
-          
-            <Link to='/my-courses'>
-            <ThemeIcon className='main-Option' style={{marginTop: '1rem'}} variant={"outline"} radius={360} size={'lg'} color={"dark"}>
+
+            <Link to='/create-course'>
+
+            <ThemeIcon className='main-Option' style={{marginTop: '1rem'}} radius={360} size={'lg'} color={"orange"}>
               <IconFile/>
             </ThemeIcon>
-            </Link>
             <br />
 
-            <ThemeIcon className='main-Option' radius={360} size={'lg'} color={"orange"}>
+            <ThemeIcon className='main-Option' variant={'outline'}  radius={360} size={'lg'} color={"dark"}>
               <IconPlus/>
             </ThemeIcon>
+            </Link>
             <br />
 
             <ThemeIcon className='main-Option' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
@@ -55,9 +56,11 @@ const [showHomepageContent, setShowHomepageContent] = useState(true);
         main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
   })}>
 
-    {<CreateComponents></CreateComponents>}
+    {<CoursesList></CoursesList>}
 
   </AppShell>
 
-  );
+  )
 }
+
+export default MyCourses

@@ -19,13 +19,15 @@ export interface courseValues {
 
 const courseStore = (set:any) => ({
 
-   courseMetaData: <courseValues[]>[],
+   appMetaData: <courseValues[]>[],
+
+   courseMetaData: <courseValues[]>[  ],
 
    segmentIdMetaData: <number>0,
 
    addCommonMetaData: (commonMetaData:courseValues) => {
      set((state:any) => ({
-       courseMetaData: [...state.courseMetaData, commonMetaData ]
+       courseMetaData: [...state.courseMetaData, commonMetaData]
      }))
    },
    addSegmentMetaData: (SegmentMetaData:courseValues) => {
@@ -64,16 +66,29 @@ const courseStore = (set:any) => ({
       }))
     },
   deleteSegmentMetaData: (id: number) => {
-  set((state: any) => ({
-    courseMetaData: state.courseMetaData.filter((obj: courseValues) => obj.id !== id),
-  }));
-},
+      set((state: any) => ({
+        courseMetaData: state.courseMetaData.filter((obj: courseValues) => obj.id !== id),
+      }));
+    },
+  pushNewMetaData: (newArray: any[]) => {
+      set((state:any) => ({
+        appMetaData: [...state.appMetaData, ...newArray]
+      }))
+    },
+  pushsCourseMetaDataToApp: () => {
+      set((state: any) => ({
+        appMetaData: [...state.appMetaData, state.courseMetaData],
+      }))
+    },
+  resetCourseMetaData: () => {
+    set({courseMetaData:[]})
+  }
   });
 
 const useCourseStore = create(
   devtools(
     persist(courseStore, {
-      name: 'CourseMetaData'
+      name: 'AppMetaData'
     })
   )
 );

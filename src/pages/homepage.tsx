@@ -5,6 +5,7 @@ import { IconPlus, IconFile, IconPdf, IconClock } from '@tabler/icons-react';
 import { CreateCourse } from './CreateCourse';
 import { EditCourse } from './EditCourse';
 import { BrowserRouter as Router,Route,Routes,Link } from 'react-router-dom'
+import MyCourses from './MyCourses';
 
 export default function Homepage() {
   const [showHomepageContent, setShowHomepageContent] = useState(true);
@@ -24,19 +25,19 @@ export default function Homepage() {
 
 
           <div className='options'>
-            
-            <Link to='/create-course' className='options-Settings' style={{ backgroundColor: 'black', color: 'white' }} onClick={() => setShowHomepageContent(false)}>
-              <ThemeIcon style={{ alignContent: 'center' }} radius={360} size={'lg'} color={'orange'}>
-                <IconPlus />
-              </ThemeIcon>  
-              <h3>new<span className='teko'>COURSE</span></h3>
-            </Link>
 
-            <Link to='/edit-course' className='options-Settings' style={{ backgroundColor: '#b1b2b5' }} onClick={() => setShowHomepageContent(false)}>
+            <Link to='/my-courses' className='options-Settings' style={{ backgroundColor: 'black' }} onClick={() => setShowHomepageContent(false)}>
               <ThemeIcon className='find-Icon' style={{ alignContent: 'center' }} radius={360} size={'lg'} color={'orange'}>
                 <IconFile />
               </ThemeIcon>
               <h3>your<span className='teko'>COURSES</span></h3>
+            </Link>
+            
+            <Link to='/create-course' className='options-Settings' style={{ backgroundColor: '#b1b2b5', color: 'white' }} onClick={() => setShowHomepageContent(false)}>
+              <ThemeIcon style={{ alignContent: 'center' }} radius={360} size={'lg'} color={'orange'}>
+                <IconPlus />
+              </ThemeIcon>  
+              <h3>new<span className='teko'>COURSE</span></h3>
             </Link>
 
             <div className='options-Settings' style={{ backgroundColor: '#e5e5e5' }}>
@@ -51,6 +52,7 @@ export default function Homepage() {
 
         <Routes>
           <Route path='/create-course' element={<CreateCourse/>} />
+          <Route path='/my-courses' element={<MyCourses/>}/>
           <Route path='/edit-course' element={<EditCourse/>}/>
         </Routes>
     </Router>
