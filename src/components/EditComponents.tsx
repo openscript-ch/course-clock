@@ -51,7 +51,7 @@ const sd= selectedCourse.find(obj => obj.id === 0)
   validate: {
     title: (value='') => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
     author: (value='') => (value.length   < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    dateStart: (value, values) => {
+    dateEnd: (value, values) => {
       if(typeof value === 'undefined') {
         return 'Bitte Pflichtfeld ausfüllen'
       }else if(value < values.dateEnd) {
@@ -60,7 +60,7 @@ const sd= selectedCourse.find(obj => obj.id === 0)
         return null
       }
     },
-    dateEnd: (value) => (typeof value === 'undefined' ? 'Bitte Pflichtfeld ausfüllen' : null),
+    dateStart: (value) => (typeof value === 'undefined' ? 'Bitte Pflichtfeld ausfüllen' : null),
   }
 });
 
@@ -141,7 +141,7 @@ return (
       <Tabs.List>
         <Tabs.Tab value="general">Allgemein</Tabs.Tab>
         <Tabs.Tab value="segment">Segmente</Tabs.Tab>
-        <Button color={'green'} ml="auto" onClick={() => safeCourse()}>speichern</Button>
+        <Button color={'green'} ml="auto" onClick={form.onSubmit(safeCourse)}>speichern</Button>
       </Tabs.List> 
       <br />
       <Tabs.Panel value="general" pt="xs" >
