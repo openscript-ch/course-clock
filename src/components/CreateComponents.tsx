@@ -7,6 +7,8 @@ import { Segment } from './Segment';
 import { IconCalendar, IconClock, IconPlus} from '@tabler/icons-react';
 import useCourseStore from "../store/courseStore"
 import { courseValues } from '../store/courseStore';
+import { BrowserRouter as Router, Link} from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 export const idAllgemein:number =  0
 
@@ -31,6 +33,8 @@ const {courseMetaData} = useCourseStore(
     courseMetaData: state.courseMetaData
   })
 )
+
+const navigate = useNavigate();
 
 const filteredCourseMetaData =  courseMetaData.filter((obj) => !obj.id?.toString().startsWith('0'))
 const [segments, setSegments] = useState<courseValues[]>(filteredCourseMetaData);
@@ -107,6 +111,7 @@ const handleFormsSubmit = (event: any) => {
   addCommonMetaData(form.values);
   pushsCourseMetaDataToApp();
   resetCourseMetaData();
+  navigate('/my-courses')
 };  
 
 return(
@@ -171,7 +176,7 @@ return(
             name='titleSegment'
             label='Titel'
             placeholder="Segment Name"
-            {...formSegment.getInputProps('titleSegment')}
+            {...formSegment.getInputProps('titleSegment')}  
           />
 
           <TimeInput

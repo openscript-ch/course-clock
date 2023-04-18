@@ -4,7 +4,6 @@ import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core';
 import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react';
 import { BrowserRouter as Router, Link } from "react-router-dom";
 import '../App.css'
-import { EditComponents } from '../components/EditComponents';
 import CoursesList from '../components/CoursesList';
 function MyCourses() {
   return (
@@ -25,13 +24,13 @@ function MyCourses() {
         {
           <div className='nav-Bar'> 
 
-            <Link to='/create-course'>
-
+            <Link to='/my-courses'>
             <ThemeIcon className='main-Option' style={{marginTop: '1rem'}} radius={360} size={'lg'} color={"orange"}>
               <IconFile/>
             </ThemeIcon>
+            </Link>
             <br />
-
+            <Link to='/create-course'>
             <ThemeIcon className='main-Option' variant={'outline'}  radius={360} size={'lg'} color={"dark"}>
               <IconPlus/>
             </ThemeIcon>
