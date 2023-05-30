@@ -2,10 +2,9 @@ import '../App.css'
 import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core';
 import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock, IconCalendarEvent } from '@tabler/icons-react';
 import { Link } from "react-router-dom";
+import CoursView from '../components/CourseView';
 
-import  CreateComponents  from '../components/CreateComponents';
-
-export function CreateCourse(){
+export function CourseViewLayout(){
  return(
   <AppShell
       padding="md"
@@ -31,9 +30,11 @@ export function CreateCourse(){
             </Link>
             <br />
 
-            <ThemeIcon className='main-Option' radius={360} size={'lg'} color={"orange"}>
+            <Link to='/create-course'>
+            <ThemeIcon className='main-Option' radius={360} variant={"outline"} size={'lg'} color={"dark"}>
               <IconPlus/>
             </ThemeIcon>
+            </Link>
             <br />
 
             <ThemeIcon className='main-Option' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
@@ -54,7 +55,7 @@ export function CreateCourse(){
         main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
   })}>
 
-    {<CreateComponents></CreateComponents>}
+    {<CoursView></CoursView>}
 
   </AppShell>
 

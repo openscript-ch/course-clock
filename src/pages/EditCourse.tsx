@@ -1,10 +1,9 @@
 import '../App.css'
-import { useNavigate } from "react-router-dom";
-import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core';
-import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react';
-import { BrowserRouter as Router, Link } from "react-router-dom";
-import '../App.css'
 import { EditComponents } from '../components/EditComponents';
+import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core';
+import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock, IconCalendarEvent } from '@tabler/icons-react';
+import { Router, Link } from "react-router-dom";
+
 
 export function EditCourse() {
   return (
@@ -24,8 +23,9 @@ export function EditCourse() {
       <Navbar width={{ base: 100 }} p="xs" className='navbar'>
         {
           <div className='nav-Bar'> 
+
             <Link to='/my-courses'>
-            <ThemeIcon className='main-Option'  style={{marginTop: '1rem'}} radius={360} size={'lg'} color={"orange"}>
+            <ThemeIcon className='main-Option' style={{marginTop: '1rem'}} radius={360} size={'lg'} color={"orange"}>
               <IconFile/>
             </ThemeIcon>
             </Link>

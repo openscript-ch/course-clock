@@ -1,6 +1,6 @@
-import { courseValues } from "../store/courseStore"
+import { mainForCourseComponent } from "../modals/main" 
 
-function Courses(props:courseValues) {
+function Courses(props:mainForCourseComponent) {
   return (
    <>
    <div className='course'>

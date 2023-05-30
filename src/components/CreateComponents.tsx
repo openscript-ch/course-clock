@@ -1,53 +1,34 @@
-import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon} from '@mantine/core';
-import { useState } from 'react';
-import { useForm } from '@mantine/form';
-import { DateInput,TimeInput } from '@mantine/dates';
 import '../App.css'
-import { Segment } from './Segment';
-import { IconCalendar, IconClock, IconPlus} from '@tabler/icons-react';
+import { Box, TextInput, NumberInput, Tabs} from '@mantine/core';
+import { useState } from 'react';
+import { useForm } from '@mantine/form';;
 import useCourseStore from "../store/courseStore"
-import { courseValues } from '../store/courseStore';
-import { BrowserRouter as Router, Link} from "react-router-dom";
 import { useNavigate } from 'react-router-dom'
-
-export const idAllgemein:number =  0
-
-export let courseArray:Array<string> = [] 
+import { v4 as uuidv4 } from 'uuid';
+import Week from './Week';
+import { Button } from '@mantine/core';
+import Day from './Day';
 
 const CreateComponents = () => {
-
 const [activeTab, setActiveTab] = useState<string | null>('general');
+const pushsDayInformationToApp = useCourseStore((state) => state.pushsDayInformationToApp);
+const updateDayInformation = useCourseStore((state) => state.updateDayInformation);
+const resetDayInformation = useCourseStore((state) => state.resetDayInformation);
+const updateCommonMetaData = useCourseStore((state) => state.updateCommonMetaData);
 
-const addCommonMetaData = useCourseStore((state) => state.
-addCommonMetaData);
+const createDays = useCourseStore((state) => state.createDays)
 
-const addSegmentMetaData= useCourseStore((state) => state.
-addSegmentMetaData);
-
-const pushsCourseMetaDataToApp = useCourseStore((state) => state.pushsCourseMetaDataToApp);
-
-const resetCourseMetaData = useCourseStore((state) => state.resetCourseMetaData) 
-
-const {courseMetaData} = useCourseStore(
-  (state) => ({
-    courseMetaData: state.courseMetaData
-  })
-)
 
 const navigate = useNavigate();
 
-const filteredCourseMetaData =  courseMetaData.filter((obj) => !obj.id?.toString().startsWith('0'))
-const [segments, setSegments] = useState<courseValues[]>(filteredCourseMetaData);
- 
 const form = useForm({
-  initialValues: { 
+  initialValues: {    
     title: '',
     author: '',
-    dateStart: '',
-    dateEnd: '',
-    id: 0,
+    day: 1,
+    id: '',
   },
-
+  
   validate: {
     title: (value) => {
       if(value.length < 1) {
@@ -57,190 +38,87 @@ const form = useForm({
       } else {
         return null
       }
-  },
+    },
     author: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    dateStart: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    dateEnd: (value, values) => {
-      if(value.length < 1 ) {
-        return 'Bitte Pflichtfeld ausfüllen'
-      } else if(value < values.dateStart) {
-        return 'Ups! Der Endzeitpunkt muss nach dem Startzeitpunkt liegen.'
-      } else {
-        return null
-      }
-    },
+    day: (value) => (value < 1 ? 'Ungültiger Kurs dauer ' : null),
   }
 });
 
-const formSegment = useForm({
-  initialValues: {
-    titleSegment: '',
-    startTime: '',
-    endTime: '',
-    target: '',
-    procedure: '',
-    materials: '',
-    id: 0
-  },
-  validate: {
-    titleSegment: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    startTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    endTime: (value, values) => {
-      if(value.length < 1) {
-        return 'Bitte Pflichtfeld ausfüllen'
-      } else if(value < values.startTime) {
-        return 'Ups! Der Endzeitpunkt muss nach dem Startzeitpunkt liegen.'
-      } else {
-        return null
-      }
-    },
-    procedure: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-  }
-});
 
-const handleAddSegment = () => { 
-  formSegment.reset();
-  formSegment.values.id = Math.floor(Math.random()*10000)
-  setSegments([...segments, formSegment.values]);
-  addSegmentMetaData(formSegment.values)
+const handleFormsSubmit = () => { 
+  form.values.id = uuidv4()
+  updateDayInformation(form.values)
+  pushsDayInformationToApp();
+  resetDayInformation();
+  updateCommonMetaData(form.values.id)
+  navigate
+  navigate('/my-courses') ;
 };
 
-
-const handleFormsSubmit = (event: any) => {
-  form.values.id = idAllgemein;
-  addCommonMetaData(form.values);
-  pushsCourseMetaDataToApp();
-  resetCourseMetaData();
-  navigate('/my-courses')
-};  
+const [numberOfDays, setNumberOfDays] = useState<number>(form.values.day);
 
 return(
-  <>
-  <div style={{marginBottom: '1rem'}}>
-    <div className='title-Section'>
-      <h1> <span className='teko'>KURS</span> erstellen</h1>
-      <p className='description'>hier <span className='teko'>KURS</span> Information hinzufügen</p>
-    </div>
-    <hr />
-    <form>
-      <Tabs variant="outline" defaultValue="gallery" className='tabs' value={activeTab} onTabChange={setActiveTab}>  
-        <Tabs.List>
-         <Tabs.Tab value="general">Allgemein</Tabs.Tab>
-          <Tabs.Tab value="segment">Segmente</Tabs.Tab>
-          <Button onClick={form.onSubmit(handleFormsSubmit)} color={'green'} ml="auto">erstellen</Button>
-        </Tabs.List> 
-      <br />
-      <Tabs.Panel value="general" pt="xs" >
-        <Box maw={250}>
-          <TextInput
+<>
+<div style={{marginBottom: '1rem'} }>
+  <div className='title-Section'>
+    <h1> <span className='teko'> KURS </span> erstellen</h1>
+    <p className='description'> hier <span className='teko'>KURS</span> Information hinzufügen</p>
+  </div>
+  <hr />  
+  <Tabs defaultValue={'general'} style={{marginTop: '2rem', marginLeft: '2%'}}>
+    <Tabs.List>
+      <Tabs.Tab value='general' color='orange'>Allgemein</Tabs.Tab>
+      <Tabs.Tab value='segment' color='orange' onClick={() => createDays(numberOfDays)}
+      >Woche</Tabs.Tab>
+      <Tabs.Tab value='day' color='orange'>Tag</Tabs.Tab>
+      <Button 
+      color='green' 
+      ml='auto' 
+      onClick={form.onSubmit(handleFormsSubmit)}
+      >
+        erstellen
+      </Button>
+    </Tabs.List>
+    <Tabs.Panel value='general' pt="xs">
+      <div className='form'>
+        <form>
+          <Box maw={250}>
+            <TextInput
             withAsterisk
             name='title'
-            label="Titel"
-            placeholder="Kurs Name"
+            label='Titel'
+            placeholder='Kurs Name'
             {...form.getInputProps('title')}
-          />
+            />
 
-          <TextInput
+            <TextInput
             withAsterisk
             name='author'
-            label="Autor"
-            placeholder="Autor Name"
+            label='Autor'
+            placeholder='Autor Name'
             {...form.getInputProps('author')}
-          />
-
-          <DateInput
-            withAsterisk
-            name='dateStart'   
-            label="Von-"
-            placeholder="Datum"
-            icon={<IconCalendar />}
-            {...form.getInputProps('dateStart')}
-          />
-
-          <DateInput
-            withAsterisk
-            name='dateEnd'
-            label="-Bis"
-            placeholder="Datum"
-            icon={<IconCalendar />}
-            {...form.getInputProps('dateEnd')}
-          />
-        </Box>
-      </Tabs.Panel>
-
-      <Tabs.Panel value='segment' pt='xs'>
-      <div style={{display: 'flex'}} className={'segment'}>
-        <Box maw={250} className={'box'}>
-          <TextInput
-            withAsterisk
-            name='titleSegment'
-            label='Titel'
-            placeholder="Segment Name"
-            {...formSegment.getInputProps('titleSegment')}  
-          />
-
-          <TimeInput
-            withAsterisk
-            name='startTime'
-            label='Startzeizpunkt'
-            placeholder='Zeit'
-            icon={<IconClock />}
-            {...formSegment.getInputProps('startTime')}
             />
-            
-          <TimeInput
+
+            <NumberInput
             withAsterisk
-            name='endTime'
-            label='Endzeitpunkt'
-            placeholder='Zeit'
-            icon={<IconClock />}
-            {...formSegment.getInputProps('endTime')}
-          />
-
-          <Textarea
-            name='target'
-            label='Ziele'
-            placeholder='Segment Ziele'
-            {...formSegment.getInputProps('target')}
-          />
-
-          <Textarea
-            withAsterisk
-            name='procedure'
-            label='Ablauf'
-            placeholder='Segment Ablauf'
-            {...formSegment.getInputProps('procedure')}
-          />
-
-          <Textarea
-            name='materials'
-            label='Materials'
-            placeholder='Materialen'
-            {...formSegment.getInputProps('materials')}
-          />
-
-          <Group position="right" mt="md">
-              <ThemeIcon color={'orange'} size={'xl'} radius={'xl'} onClick={formSegment.onSubmit(handleAddSegment)}>
-                <IconPlus />
-              </ThemeIcon>
-          </Group>
-        </Box>
-          {segments.map((segmentData, index) => (
-            <Segment
-              key={index}
-              titleSegment={segmentData.titleSegment}
-              startTime={segmentData.startTime}
-              endTime={segmentData.endTime}
-              target={segmentData.target}
-              procedure={segmentData.procedure}
-              materials={segmentData.materials}/>
-          ))}
-        </div>
-      </Tabs.Panel>
-      </Tabs>
-    </form>
-    </div>
-  </>
- );
-}
-export default CreateComponents
+            name='day'   
+            label='Tage'
+            placeholder='Dauer in Tage'
+            {...form.getInputProps('day')}
+            onChange={(value:number) => setNumberOfDays(value)}
+            />
+          </Box>
+        </form>
+      </div>
+    </Tabs.Panel>
+    <Tabs.Panel value='segment' pt='xs'>
+      <Week numberOfDays={numberOfDays} />
+    </Tabs.Panel>
+    <Tabs.Panel value='day'>
+      <Day></Day>
+    </Tabs.Panel>
+  </Tabs> 
+</div>
+</>
+)}
+export default CreateComponents 

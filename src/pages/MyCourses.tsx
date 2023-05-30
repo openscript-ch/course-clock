@@ -1,10 +1,10 @@
-import React from 'react'
-import '../App.css'
-import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core';
-import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react';
-import { BrowserRouter as Router, Link } from "react-router-dom";
 import '../App.css'
 import CoursesList from '../components/CoursesList';
+import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core';
+import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock, IconCalendarEvent } from '@tabler/icons-react';
+import { Router, Link } from "react-router-dom";
+import '../App.css'
+
 function MyCourses() {
   return (
    <AppShell
@@ -22,10 +22,9 @@ function MyCourses() {
       navbar={
       <Navbar width={{ base: 100 }} p="xs" className='navbar'>
         {
-          <div className='nav-Bar'> 
-
+          <div className='nav-Bar'>   
             <Link to='/my-courses'>
-            <ThemeIcon className='main-Option' style={{marginTop: '1rem'}} radius={360} size={'lg'} color={"orange"}>
+            <ThemeIcon className='main-Option' style={{marginTop: '1rem'}}radius={360} size={'lg'} color={"orange"}>
               <IconFile/>
             </ThemeIcon>
             </Link>

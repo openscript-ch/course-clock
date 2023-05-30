@@ -2,35 +2,39 @@
  padding: 0;
  margin: 0;
  font-family: 'Text Me One', sans-serif;
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .links {
- color: black;
+ color: #000000;
 }
 .teko{
  font-family: 'Teko', sans-serif;
 }
 
 .project-Name{
- font-size: 180px; 
- line-height: 10rem;
+ font-size: 11vw; 
+ line-height: 10rem; 
 }
 
 .home-Page{
- margin-top: 13%;
- display: grid;
- grid-template-columns: 45% 55%;
- text-align: center;
- align-items: center;
- gap: 20%;
+ flex-wrap: wrap;
+ margin: 10vw;
+ display: flex;
+ gap: 5vw;
  margin-inline: 15rem;
- background-image: url(./images/bg.png);
 }
 
 .options-Settings{
+ margin-top: 2rem;
  border-radius: 2rem;
  display: flex;
  align-items: center;
- width: 28rem;
+ width: 25vw;
  margin-bottom: 2rem;
  height: 5rem;
  font-size: 1.5rem;
@@ -38,6 +42,12 @@
  justify-content: space-between;
  padding-inline: 3rem;
  color: white;
+ box-shadow: 5px 8px 6px 8px #888888;
+ transition: transform .5s;
+}
+
+.options-Settings:hover{
+  transform: scale(1.05);
 }
 
 /* ---------------Page Layout-------------- */
@@ -47,7 +57,8 @@
 }
 
 .navbar {
- background-color: #a4a4a5;
+ background-color: #b1b2b5;     
+
 }
 
 h2 {
@@ -65,7 +76,9 @@ h2 {
 }
 
 .setting-Icon {
- margin-top: 24rem;
+ position: absolute;
+ bottom: 20px;
+ margin-left: -1rem;
 }
 
 .title-Section {
@@ -108,8 +121,33 @@ h2 {
  margin-left: 0;
 }
 
-/* ---------------new segment-------------- */
+/* ---------------Form-------------- */
 
+.form{
+  display: flex;
+  justify-content: left;
+  margin-top: 1rem;
+}
+
+.column{  
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: center;
+  margin-left: 10rem; 
+}
+
+.item {
+  flex: 1 1 auto;
+  min-width: 15%;
+  padding: 10px;
+  background-color: rgba(100, 102, 103, 0.342);
+  height: 80rem;
+  box-sizing: border-box;
+}
+
+
+/* ---------------new segment-------------- */
 .box {
  min-width: 250px
 }
@@ -126,6 +164,7 @@ h2 {
  width: 250px;
  border-radius: .5rem;
  padding: 2rem;
+box-shadow: inset 0 0 5px #000000;
 }
 
 .newSegmente:hover{
@@ -142,10 +181,10 @@ h2 {
  display: flex;
  gap: 2rem;
  flex-wrap: wrap;
-
 }
 
 .course{
+ box-shadow: inset 0 0 5px #000000;
  background-color: #a4a4a5;
  min-width: 15rem;
  max-width: 15rem;
@@ -176,4 +215,45 @@ h2 {
 .newCourse:hover{
  background-color: #fd7d14bd;
  color: white;
+}       
+
+/* ---------------days-------------- */
+
+.days{
+  background-color: #a4a4a5;
+  min-width: 250px;
+  max-width: 250px;
+  text-align: center;
+  border-bottom-right-radius: 3rem;
+  border-top-left-radius: 1rem;
+  box-shadow: inset 0 0 5px #000000;
+}
+
+.days:hover{
+  background-color: #fd7e14;
+}
+
+.day-view .month-event,
+.week-view .month-event {
+  display: none;
+}
+
+.thTHead{
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.td{
+  height: 200vh;
+  border: 1px solid black;
+}
+
+.tdDay {
+  height: 10rem;
+  padding: 1rem;
+  border: 1px solid black;
+}
+
+.td:hover{
+  background-color: #e1916c13;
 }

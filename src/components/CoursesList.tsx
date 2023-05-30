@@ -1,14 +1,15 @@
 import Courses from './course'
-import useCourseStore, { courseValues } from '../store/courseStore'
+import useCourseStore from '../store/courseStore'
+import { mainForCourseComponent, mainForSearchId } from '../modals/main'
 import { useState } from 'react'
 import { IconCirclePlus, IconEdit, IconTrash} from '@tabler/icons-react'
 import { Link } from "react-router-dom";
+import { ActionIcon } from '@mantine/core';
 import { useEffect } from 'react';
 
-export let selectedCourse:courseValues[] = []
 
 function CoursesList() {
-
+  
 const {appMetaData} = useCourseStore(
   (state) => ({
     appMetaData: state.appMetaData
@@ -16,7 +17,6 @@ const {appMetaData} = useCourseStore(
 )
 
 const setSelectedCourse = useCourseStore((state) => state.setSelectedCourse);
-const resetSelectedCourse = useCourseStore((state) => state.resetSelectedCourse);
 const deleteCourse = useCourseStore((state) => state.deleteCourse);
 
 const [course, setCourse] = useState(appMetaData)
@@ -24,12 +24,12 @@ const [course, setCourse] = useState(appMetaData)
 useEffect(() => {
   setCourse(appMetaData)
   }, [appMetaData]
-)
+) 
 
 function selectCourse(array:any) {
-  resetSelectedCourse
-  setSelectedCourse(array)
+  setSelectedCourse(array) 
 }
+
 
 function delCourse(array:Array<object>){
   selectCourse(array)
@@ -44,30 +44,37 @@ return (
     </div>
     <hr />
     <div className='courseList'>
-      {course.map((innerArray:courseValues, index) => (
-        <div key={index}>
-          {innerArray.filter(obj => obj.id === 0).map((obj:courseValues, index1:number) => (
-            <div key={index1}>
-              <Courses
-                key={index}
-                title={obj?.title} 
-              /> 
-            </div>))
-          }
-          <Link to='/edit-course' className='links'>
-            <IconEdit onClick={() => selectCourse(innerArray)}/>
-          </Link> 
-          <IconTrash onClick={() => delCourse(innerArray)}/>
-        </div>
-      ))}
-
       <Link to='/create-Course'>
         <div className='newCourse'>
           <span className='teko'>KURS</span> erstellen
           <IconCirclePlus color='white' size={'4rem'}></IconCirclePlus>
         </div>
       </Link>
+      {course.map((innerArray:[]) => (
+        <div>
+          {innerArray.filter((obj:mainForSearchId) => typeof obj.id === 'string').map((obj:mainForCourseComponent) => (
+            <Link to='/course-view'>
+            <div>
+              <Courses
+                title={obj.title} 
+              /> 
+            </div>
+            </Link>
+            ))
+          }
+          <div style={{display: 'flex'}}>
+            <Link to='/edit-course' className='links'>
+              <ActionIcon>
+                <IconEdit  color='black'onClick={() => selectCourse(innerArray)}/>
+              </ActionIcon>
+            </Link> 
+            <ActionIcon>
+             <IconTrash onClick={() => delCourse(innerArray)}/>
+            </ActionIcon>
+          </div>
+        </div>
+      ))}
     </div>
   </>
 )}
-export default CoursesList   
+export default CoursesList

@@ -1,6 +1,6 @@
 import './App.css'
 import {MantineProvider} from '@mantine/core';
-import  Homepage  from './pages/Homepage';
+import Homepage from './pages/homepage';
 
 export default function App() {
   

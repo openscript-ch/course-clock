@@ -1,11 +1,16 @@
-import { useState } from 'react';
 import '../App.css';
-import { ThemeIcon } from '@mantine/core';
-import { IconPlus, IconFile, IconPdf, IconClock } from '@tabler/icons-react';
 import { CreateCourse } from './CreateCourse';
 import { EditCourse } from './EditCourse';
-import { BrowserRouter as Router,Route,Routes,Link } from 'react-router-dom'
+import { CourseViewLayout } from './CourseViewLayout';
 import MyCourses from './MyCourses';
+
+import { useState } from 'react';
+import { ThemeIcon } from '@mantine/core';
+import { IconPlus, IconFile, IconClock, IconCalendarEvent } from '@tabler/icons-react';
+import { BrowserRouter as Router,Route,Routes,Link } from 'react-router-dom'
+
+
+
 
 export default function Homepage() {
   const [showHomepageContent, setShowHomepageContent] = useState(true);
@@ -16,36 +21,27 @@ export default function Homepage() {
           <h1 className='project-Name'>
             course<br />
             <span className='teko'>
-              <ThemeIcon style={{ marginTop: '1rem' }} radius={360} size={'7rem'} color={'orange'}>
-                <IconClock size={'7rem'} />
-              </ThemeIcon>
-              CLOCK
+              <ThemeIcon style={{ marginTop: '1rem' }} radius={360} size={'6vw'} color={'orange'}>
+                <IconClock size={'6rem'} />
+              </ThemeIcon> CLOCK
             </span>
           </h1>
 
 
           <div className='options'>
-
-            <Link to='/my-courses' className='options-Settings' style={{ backgroundColor: 'black' }} onClick={() => setShowHomepageContent(false)}>
-              <ThemeIcon className='find-Icon' style={{ alignContent: 'center' }} radius={360} size={'lg'} color={'orange'}>
-                <IconFile />
+            <Link to='/create-course' className='options-Settings' style={{ backgroundColor:'#fd7e14', width: '30vw', marginBottom: '2rem',  height: '5.5rem' }} onClick={() => setShowHomepageContent(false)}>
+              <ThemeIcon className='find-Icon' style={{ alignContent: 'center' }} radius={360} size={'lg'} color={'none'}>
+                <IconPlus />
               </ThemeIcon>
-              <h3>your<span className='teko'>COURSES</span></h3>
+              <h3><span className='teko'>ERSTELLEN</span></h3>
             </Link>
             
-            <Link to='/create-course' className='options-Settings' style={{ backgroundColor: '#b1b2b5', color: 'white' }} onClick={() => setShowHomepageContent(false)}>
-              <ThemeIcon style={{ alignContent: 'center' }} radius={360} size={'lg'} color={'orange'}>
-                <IconPlus />
+            <Link to='/my-courses' className='options-Settings' style={{ backgroundColor: '#b1b2b5' }} onClick={() => setShowHomepageContent(false)}>
+              <ThemeIcon style={{ alignContent: 'center' }} radius={360} size={'lg'} color={'none'}>
+                <IconFile />
               </ThemeIcon>  
-              <h3>new<span className='teko'>COURSE</span></h3>
+              <h3><span className='teko'>KURSE</span></h3>
             </Link>
-
-            <div className='options-Settings' style={{ backgroundColor: '#e5e5e5' }}>
-              <ThemeIcon className='pdf-Icon' style={{ alignContent: 'center' }} radius={360} size={'lg'} color={'orange'}>
-                <IconPdf />
-              </ThemeIcon>
-              <h3>PDF</h3>
-            </div>
           </div>
         </div> 
         )}
@@ -54,6 +50,7 @@ export default function Homepage() {
           <Route path='/create-course' element={<CreateCourse/>} />
           <Route path='/my-courses' element={<MyCourses/>}/>
           <Route path='/edit-course' element={<EditCourse/>}/>
+          <Route path='/course-view' element={<CourseViewLayout/>}/>
         </Routes>
     </Router>
     );
