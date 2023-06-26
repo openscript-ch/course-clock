@@ -1,5 +1,5 @@
-import { Segment, segmentBeforeStored} from "../modals/segment";
-import { Main, mainBeforeStored } from "./main";
+import { Segment, segmentBeforeStored} from "../modals/segment"
+import { Main, mainBeforeStored } from "./main"
 
 export type Course = {
  main: Main[]

@@ -1,12 +1,12 @@
 import Courses from './course'
 import useCourseStore from '../store/courseStore'
-import { mainForCourseComponent, mainForSearchId } from '../modals/main'
+import { mainForSearchId } from '../modals/main'
 import { useState } from 'react'
 import { IconCirclePlus, IconEdit, IconTrash} from '@tabler/icons-react'
-import { Link } from "react-router-dom";
-import { ActionIcon } from '@mantine/core';
-import { useEffect } from 'react';
-
+import { Link } from "react-router-dom"
+import { ActionIcon } from '@mantine/core'
+import { useEffect } from 'react'
+import { Main } from '../modals/main'
 
 function CoursesList() {
   
@@ -16,8 +16,9 @@ const {appMetaData} = useCourseStore(
   })
 )
 
-const setSelectedCourse = useCourseStore((state) => state.setSelectedCourse);
-const deleteCourse = useCourseStore((state) => state.deleteCourse);
+const setSelectedCourse = useCourseStore((state) => state.setSelectedCourse)
+const deleteCourse = useCourseStore((state) => state.deleteCourse)
+const updateCommonMetaData = useCourseStore((state) => state.updateCommonMetaData)
 
 const [course, setCourse] = useState(appMetaData)
 
@@ -27,15 +28,16 @@ useEffect(() => {
 ) 
 
 function selectCourse(array:any) {
-  setSelectedCourse(array) 
+  setSelectedCourse(array)
+  const mainInfoArray:Main = array.find((obj:mainForSearchId) => typeof obj.id === 'string')
+  updateCommonMetaData(mainInfoArray.id)
 }
 
 
-function delCourse(array:Array<object>){
+function delCourse(array:[]){
   selectCourse(array)
   deleteCourse()
 }
-
 return (
   <>
     <div className='title-Section'>
@@ -46,14 +48,14 @@ return (
     <div className='courseList'>
       <Link to='/create-Course'>
         <div className='newCourse'>
-          <span className='teko'>KURS</span> erstellen
+          <span className='teko'> KURS </span> erstellen
           <IconCirclePlus color='white' size={'4rem'}></IconCirclePlus>
         </div>
       </Link>
       {course.map((innerArray:[]) => (
         <div>
-          {innerArray.filter((obj:mainForSearchId) => typeof obj.id === 'string').map((obj:mainForCourseComponent) => (
-            <Link to='/course-view'>
+          {innerArray.filter((obj:mainForSearchId) => typeof obj.id === 'string').map((obj:Main) => (
+            <Link className='link' to='/course-view' onClick={() => selectCourse(innerArray)}>
             <div>
               <Courses
                 title={obj.title} 

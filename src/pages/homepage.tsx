@@ -1,16 +1,13 @@
-import '../App.css';
-import { CreateCourse } from './CreateCourse';
-import { EditCourse } from './EditCourse';
-import { CourseViewLayout } from './CourseViewLayout';
-import MyCourses from './MyCourses';
 
-import { useState } from 'react';
-import { ThemeIcon } from '@mantine/core';
-import { IconPlus, IconFile, IconClock, IconCalendarEvent } from '@tabler/icons-react';
+import { CreateCourse } from './CreateCourse'
+import '../App.css'
+import { EditCourse } from './EditCourse'
+import { CourseViewLayout } from './CourseViewLayout'
+import MyCourses from './MyCourses'
+import { useState } from 'react'
+import { ThemeIcon } from '@mantine/core'
+import { IconPlus, IconFile, IconClock } from '@tabler/icons-react'
 import { BrowserRouter as Router,Route,Routes,Link } from 'react-router-dom'
-
-
-
 
 export default function Homepage() {
   const [showHomepageContent, setShowHomepageContent] = useState(true);

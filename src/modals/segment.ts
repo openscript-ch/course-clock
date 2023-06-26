@@ -5,7 +5,7 @@ export type Segment = {
  target: string
  procedure: string
  material: string
- id: number | string
+ id:  string 
 }
 
 export type segmentBeforeStored = Omit<Segment, "id">

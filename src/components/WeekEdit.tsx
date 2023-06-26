@@ -1,7 +1,7 @@
 import '../App.css'
 import { Segment, segmentDayId } from '../modals/segment'
 import { useDisclosure } from '@mantine/hooks'
-import { Modal, Button, TextInput, Box, Textarea} from '@mantine/core'
+import { Modal, Button, TextInput, Box, Textarea } from '@mantine/core'
 import { TimeInput } from '@mantine/dates'
 import { IconClock } from '@tabler/icons-react'
 import useCourseStore from '../store/courseStore'
@@ -10,7 +10,7 @@ import { useForm } from '@mantine/form'
 import { Rnd } from 'react-rnd'
 import { useEffect } from 'react'
 
-function Week({ numberOfDays }: { numberOfDays: number }) {
+function WeekEdit({ numberOfDays, state }: { numberOfDays: number, state:boolean }) {
 
   let dayStart = 0
   let daysCount = []
@@ -18,14 +18,14 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
   while (dayStart < numberOfDays) { daysCount.push(dayStart++) }
 
   const [opened, { open, close }] = useDisclosure(false);
-  const addNewSegment = useCourseStore((state) => state.addNewSegment)
+  const addNewSegmentEdit = useCourseStore((state) => state.addNewSegmentEdit)
   const numberOfDay = useCourseStore((state) => state.numberOfDay);
 
   const { day } = useCourseStore(
     (state) => ({ day: state.day }))
 
-  const { dayInformation } = useCourseStore(
-    (state) => ({ dayInformation: state.dayInformation }))
+  const { selectedCourse } = useCourseStore(
+    (state) => ({ selectedCourse: state.selectedCourse }))
 
   const formSegment = useForm({
     initialValues: {
@@ -59,13 +59,13 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
 
   const handleAddSegment = () => {
     formSegment.values.id = uuidv4()
-    addNewSegment(day, formSegment.values)
+    addNewSegmentEdit(day, formSegment.values)
     formSegment.reset()
     close()
   }
 
   useEffect(() => {
-  }, [dayInformation, daysCount])
+  }, [selectedCourse, daysCount])
 
 
   const calculateHeight = (endTime: string, startTime: string) => {
@@ -79,10 +79,10 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
     } else if (Number.isFinite(difference) && difference % 1 !== 0 && difference.toString().startsWith('0.')) {
       return ((difference * 2) * 100)
     } else {
-      const [hoursStart, minutesStart] = startTime.split(':');
-      const [hoursEnd, minutesEnd] = endTime.split(':');
-      const startTimeNumber = parseInt(hoursStart, 10) + parseInt(minutesStart, 10) / 60;
-      const endTimeNumber = parseInt(hoursEnd, 10) + parseInt(minutesEnd, 10) / 60;
+      const [hoursStart, minutesStart] = startTime.split(':')
+      const [hoursEnd, minutesEnd] = endTime.split(':')
+      const startTimeNumber = parseInt(hoursStart, 10) + parseInt(minutesStart, 10) / 60
+      const endTimeNumber = parseInt(hoursEnd, 10) + parseInt(minutesEnd, 10) / 60
       const logicDifference = endTimeNumber - startTimeNumber
       return (logicDifference * 60) * 2
     }
@@ -94,16 +94,17 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
     return (startTimeNumber * 60) * 2 - 600
   }
 
+  
   return (
     <>
       <div style={{ marginTop: '2rem' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
+         <thead>
             <tr>
               {daysCount.map((number: number) => (
                 <th
                   style={{
-                    border: '1px solid black',
+                   border: '1px solid black',
                     padding: '10px',
 
                   }}
@@ -118,29 +119,30 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
               {daysCount.map((number: number, index: number) => (
                 <td className='td' key={index + 1} onDoubleClick={() => dayNumber(number + 1)}>
                   <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}>
-                    <div style={{ position: 'absolute', width: '100%', height: '100%' }}>
-                      {Array.from({ length: 60 }, (_, subIndex) => {
-                        const hour = Math.floor(subIndex / 4) + 5;
-                        const minute = subIndex % 4 * 15;
-                        if (minute === 0) {
-                          const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-                          return (
-                            <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: 'calc(100% / 60)', border: '1px solid #E6E6E6', flexGrow: '1' }}>
-                              <div style={{ marginLeft: '5px', fontSize: '8px' }}>
-                                {time}
+                      <div style={{ position: 'absolute', width: '100%', height: '100%' }}>
+                        {Array.from({ length: 60 }, (_, subIndex) => {
+                          const hour = Math.floor(subIndex / 4) + 5;
+                          const minute = subIndex % 4 * 15;
+                          if (minute === 0) {
+                            const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                            return (
+                              <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: 'calc(100% / 60)', border: '1px solid #E6E6E6', flexGrow: '1' }}>
+                                <div style={{ marginLeft: '5px', fontSize: '8px' }}>
+                                  {time}
+                                </div>
+              
                               </div>
-                            </div>
-                          )
-                        } else {
-                          return (
-                            <div style={{ height: 'calc(100% / 60)', border: '1px dotted #E6E6E6', flexGrow: '1' }}>
+                            )
+                          } else {
+                            return (
+                              <div style={{ height: 'calc(100% / 60)', border: '1px dotted #E6E6E6', flexGrow: '1' }}> 
 
-                            </div>
-                          )
-                        }
-                      })}
-                    </div>
-                    {dayInformation.filter((arr: Array<segmentDayId>) => arr.length > 0 && arr[0]?.id ===
+                              </div>
+                            )
+                          }
+                        })}
+                      </div>
+                    {selectedCourse.slice(0,-1).filter((arr: Array<segmentDayId>) => arr.length > 0 && arr[0]?.id === 
                       index + 1).map((arr: []) => arr.slice(1).map((obj: Segment) => (
                         <Rnd
                           key={obj.id}
@@ -151,18 +153,20 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
                             width: '100%',
                             height: calculateHeight(obj.endTime, obj.startTime),
                           }}
-                          bounds="parent" 
-                          disableResize
-                        > 
+                          bounds="parent"
+                          enableResizing={false}
+                        >
+  
                           <h3>{obj.title}</h3>
                           <p>{obj.startTime}-{obj.endTime}</p>
+
                         </Rnd>
                       )))}
                   </div>
                 </td>
               ))}
             </tr>
-          </tbody>
+          </tbody >
         </table>
       </div>
       <Modal size="s" opened={opened} onClose={close} title="Segment erstellen" centered padding={'xl'} radius={'md'}>
@@ -170,7 +174,6 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
           <div>
             <Box maw={250} className={'box'}>
               <TextInput
-                className='formular'
                 data-autofocus
                 withAsterisk
                 name='title'
@@ -178,48 +181,41 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
                 placeholder="Segment Name"
                 {...formSegment.getInputProps('title')}
               />
-              <div style={{display: 'flex', gap: '1rem'}}>
-                <TimeInput
-                  className='formular'
-                  style={{width:'50%'}}
-                  withAsterisk
-                  name='startTime'
-                  label='Startzeizpunkt'
-                  placeholder='Zeit'
-                  icon={<IconClock />}
-                  {...formSegment.getInputProps('startTime')}
-                />
 
-                <TimeInput
-                  className='formular'
-                  style={{width:'50%'}}
-                  withAsterisk
-                  name='endTime'
-                  label='Endzeitpunkt'
-                  placeholder='Zeit'
-                  icon={<IconClock/>}
-                  {...formSegment.getInputProps('endTime')}
-                />
-              </div>
+              <TimeInput
+                withAsterisk
+                name='startTime'
+                label='Startzeizpunkt'
+                placeholder='Zeit'
+                icon={<IconClock />}
+                {...formSegment.getInputProps('startTime')}
+              />
+
+              <TimeInput
+                withAsterisk
+                name='endTime'
+                label='Endzeitpunkt'
+                placeholder='Zeit'
+                icon={<IconClock />}
+                {...formSegment.getInputProps('endTime')}
+              />
+
               <Textarea
-                className='formular'
                 name='target'
-                label='Ziele: '
+                label='Ziele'
                 placeholder='Segment Ziele'
                 {...formSegment.getInputProps('target')}
               />
 
               <Textarea
-                className ='formular'
                 withAsterisk
                 name='procedure'
                 label='Ablauf'
                 placeholder='Segment Ablauf'
                 {...formSegment.getInputProps('procedure')}
-              /> 
+              />
 
               <Textarea
-                className='formular'
                 name='material'
                 label='Material'
                 placeholder='Materialen'
@@ -243,4 +239,4 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
   )
 }
 
-export default Week
+export default WeekEdit

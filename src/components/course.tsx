@@ -1,4 +1,4 @@
-import { mainForCourseComponent } from "../modals/main" 
+import { mainForCourseComponent } from "../modals/main"
 
 function Courses(props:mainForCourseComponent) {
   return (
