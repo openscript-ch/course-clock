@@ -3,7 +3,7 @@ import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core'
 import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock} from '@tabler/icons-react'
 import { Link } from "react-router-dom"
 
-import  CreateComponents  from '../components/CreateComponents'
+import  CreateComponents  from '../components/createCourse/CreateComponents'
 
 export function CreateCourse(){
  return(

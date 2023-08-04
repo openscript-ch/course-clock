@@ -1,4 +1,4 @@
-import Courses from './course'
+import Courses from './createCourse/course'
 import useCourseStore from '../store/courseStore'
 import { mainForSearchId } from '../modals/main'
 import { useState } from 'react'
@@ -11,14 +11,14 @@ import { Main } from '../modals/main'
 function CoursesList() {
   
 const {appMetaData} = useCourseStore(
-  (state) => ({
+  (state:any) => ({
     appMetaData: state.appMetaData
   })
 )
 
-const setSelectedCourse = useCourseStore((state) => state.setSelectedCourse)
-const deleteCourse = useCourseStore((state) => state.deleteCourse)
-const updateCommonMetaData = useCourseStore((state) => state.updateCommonMetaData)
+const setSelectedCourse = useCourseStore((state:any) => state.setSelectedCourse)
+const deleteCourse = useCourseStore((state:any) => state.deleteCourse)
+const updateCommonMetaData = useCourseStore((state:any) => state.updateCommonMetaData)
 
 const [course, setCourse] = useState(appMetaData)
 
@@ -38,6 +38,7 @@ function delCourse(array:[]){
   selectCourse(array)
   deleteCourse()
 }
+
 return (
   <>
     <div className='title-Section'>
@@ -71,7 +72,7 @@ return (
               </ActionIcon>
             </Link> 
             <ActionIcon>
-             <IconTrash onClick={() => delCourse(innerArray)}/>
+             <IconTrash onClick={() => delCourse(innerArray)}/>             
             </ActionIcon>
           </div>
         </div>
@@ -79,4 +80,5 @@ return (
     </div>
   </>
 )}
+
 export default CoursesList

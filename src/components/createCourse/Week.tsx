@@ -1,14 +1,13 @@
-import '../App.css'
-import { Segment, segmentDayId } from '../modals/segment'
+import { Segment, segmentDayId } from '../../modals/segment'
 import { useDisclosure } from '@mantine/hooks'
 import { Modal, Button, TextInput, Box, Textarea} from '@mantine/core'
 import { TimeInput } from '@mantine/dates'
 import { IconClock } from '@tabler/icons-react'
-import useCourseStore from '../store/courseStore'
+import useCourseStore from '../../store/courseStore'
 import { v4 as uuidv4 } from 'uuid'
 import { useForm } from '@mantine/form'
 import { Rnd } from 'react-rnd'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 function Week({ numberOfDays }: { numberOfDays: number }) {
 
@@ -18,14 +17,44 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
   while (dayStart < numberOfDays) { daysCount.push(dayStart++) }
 
   const [opened, { open, close }] = useDisclosure(false);
-  const addNewSegment = useCourseStore((state) => state.addNewSegment)
-  const numberOfDay = useCourseStore((state) => state.numberOfDay);
+  const addNewSegment = useCourseStore((state:any) => state.addNewSegment)
+  const numberOfDay = useCourseStore((state:any) => state.numberOfDay)
 
   const { day } = useCourseStore(
-    (state) => ({ day: state.day }))
+    (state:any) => ({ day: state.day }))
 
   const { dayInformation } = useCourseStore(
-    (state) => ({ dayInformation: state.dayInformation }))
+    (state:any) => ({ dayInformation: state.dayInformation }))
+
+  //--------------------- set AvtiveInputField -----------------------------
+
+
+  const titleRef = useRef<HTMLInputElement>(null)
+  const targetRef = useRef< HTMLTextAreaElement>(null)
+  const procedureRef = useRef<HTMLTextAreaElement>(null)
+  const materialRef = useRef<HTMLTextAreaElement>(null)
+
+  const navInputFields = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault()
+      const activeElement = document.activeElement as HTMLInputElement
+      const inputFields = [titleRef,targetRef,procedureRef,materialRef]
+      const currentIndex = inputFields.findIndex((ref) => ref.current === activeElement)
+
+      let nextIndex = -1
+      if (currentIndex !== -1) {
+        if (e.key === 'ArrowDown' ) {
+          nextIndex = (currentIndex + 1) % inputFields.length
+        } else if (e.key === 'ArrowUp') {
+          nextIndex = (currentIndex - 1 + inputFields.length) % inputFields.length
+        }
+      }
+      if (nextIndex !== -1) {
+        inputFields[nextIndex].current?.focus();
+      }
+    }}
+
+//----------------------- general ----------------------------------------------- 
 
   const formSegment = useForm({
     initialValues: {
@@ -85,6 +114,7 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
       const endTimeNumber = parseInt(hoursEnd, 10) + parseInt(minutesEnd, 10) / 60;
       const logicDifference = endTimeNumber - startTimeNumber
       return (logicDifference * 60) * 2
+      
     }
   }
 
@@ -105,13 +135,12 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
                   style={{
                     border: '1px solid black',
                     padding: '10px',
-
                   }}
                 >
                   Tag {number + 1}
                 </th>
               ))}
-            </tr>
+            </tr>    
           </thead>
           <tbody>
             <tr>
@@ -120,8 +149,8 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
                   <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}>
                     <div style={{ position: 'absolute', width: '100%', height: '100%' }}>
                       {Array.from({ length: 60 }, (_, subIndex) => {
-                        const hour = Math.floor(subIndex / 4) + 5;
-                        const minute = subIndex % 4 * 15;
+                        const hour = Math.floor(subIndex / 4) + 5
+                        const minute = subIndex % 4 * 15
                         if (minute === 0) {
                           const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
                           return (
@@ -133,8 +162,7 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
                           )
                         } else {
                           return (
-                            <div style={{ height: 'calc(100% / 60)', border: '1px dotted #E6E6E6', flexGrow: '1' }}>
-
+                            <div style={{ height: 'calc(100% / 60)', border: '1px dotted #E6E6E6', flexGrow: '1' }}> 
                             </div>
                           )
                         }
@@ -171,11 +199,13 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
             <Box maw={250} className={'box'}>
               <TextInput
                 className='formular'
-                data-autofocus
+                data-autoFocus
                 withAsterisk
                 name='title'
                 label='Tema'
                 placeholder="Segment Name"
+                onKeyDown={navInputFields}
+                ref={titleRef}
                 {...formSegment.getInputProps('title')}
               />
               <div style={{display: 'flex', gap: '1rem'}}>
@@ -201,20 +231,25 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
                   {...formSegment.getInputProps('endTime')}
                 />
               </div>
+
               <Textarea
                 className='formular'
                 name='target'
-                label='Ziele: '
+                label='Ziele:'
                 placeholder='Segment Ziele'
+                onKeyDown={navInputFields}
+                ref={targetRef}
                 {...formSegment.getInputProps('target')}
               />
 
               <Textarea
-                className ='formular'
                 withAsterisk
+                className ='formular'
                 name='procedure'
                 label='Ablauf'
                 placeholder='Segment Ablauf'
+                onKeyDown={navInputFields}
+                ref={procedureRef}
                 {...formSegment.getInputProps('procedure')}
               /> 
 
@@ -223,13 +258,16 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
                 name='material'
                 label='Material'
                 placeholder='Materialen'
+                onKeyDown={navInputFields}
+                ref={materialRef}
                 {...formSegment.getInputProps('material')}
               />
 
               <br />
 
               <Button
-                color={'orange'} size={'sm'}
+                color={'orange'} 
+                size={'sm'}
                 onClick={formSegment.onSubmit(handleAddSegment)}
                 variant='filled'
               >
@@ -240,7 +278,5 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
         }
       </Modal>
     </>
-  )
-}
-
+  )} 
 export default Week

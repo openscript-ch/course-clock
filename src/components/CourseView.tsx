@@ -1,13 +1,14 @@
 import { IconPencil } from '@tabler/icons-react'
 import { Main } from '../modals/main'
 import useCourseStore from '../store/courseStore'
-import DayView from './DayView'
-import WeekEdit from './WeekEdit'
+import DayView from './createCourse/DayView'
+import WeekEdit from './editCourse/WeekEdit'
+import { Link } from 'react-router-dom'
 
-const CoursView = ({ disabled = false }) => {
+const CoursView = () => {
 
 const {selectedCourse} = useCourseStore(
-  (state) => ({
+  (state:any) => ({
     selectedCourse: state.selectedCourse
   })
 )
@@ -22,20 +23,21 @@ return(
   <hr />
     <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '1rem', padding: '1rem'}}>
     <p><span className='teko'>Autor:</span> {generalInfo.author}</p>
-    <p><span className='teko'>Erstellt am: </span>{generalInfo.date}</p>
   </div>
   <div style={{display:'flex', justifyContent: 'space-between', gap: '1rem'}}>
   <div style={{width:'50%'}}>
-    {!disabled && (<WeekEdit numberOfDays={generalInfo.day} state={true}></WeekEdit>)}
+   <WeekEdit numberOfDays={generalInfo.day} blockInteractions={true}></WeekEdit>)
   </div>
   <div style={{width: '50%'}}>
   {days.map(( index) => (
     <div className='courseViewDays'>
       <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
         <p><span className='teko'>Tag:</span> {index}</p>
-        <IconPencil></IconPencil>
+        <Link to='/edit-course'>
+          <IconPencil></IconPencil>
+        </Link>
       </div>
-      <DayView numberOfDay={index} ></DayView>
+      <DayView numberOfDay={index} blockInteractions={true}></DayView>
     </div>
   ))}
   </div>

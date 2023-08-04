@@ -1,25 +1,23 @@
 import create from 'zustand'
 import {devtools, persist} from 'zustand/middleware'
 import { courseClockStore } from './store'
-import { Main } from '../modals/main'
+import { Main, mainWithoutDate } from '../modals/main'
 import { Segment, segmentDayId } from '../modals/segment'
 import _ from 'lodash';
 
 const courseStore = (set:any) => ({ 
 
   appMetaData:             [],
-  selectedCourse:           <any>[],
-  draggedSelectedCourse:    [],
-  addedSegment: [],
-  segmentIdMetaData:        <number> 0,
+  selectedCourse:           <any>[], 
+  segmentIdMetaData:        <string> '',
   commonIdMetaData:         <string>'',
   daysNum:                  <number>1,
   day:                      <number>0,
   dayOn:                    <number>1,
-  deletedSegmentIdMetaData:  <courseClockStore[]>[],
+  dayDragged: <number>0,
   dayInformation: [],
   
-saveSegmentId: (id:number) =>{
+saveSegmentId: (id:string) =>{
   set(() => ({
     segmentIdMetaData: id
   }))
@@ -30,7 +28,7 @@ filteredDayInformation: (day:number, values:Main) => {
     const arrayPosition = state.dayInformation.findIndex(
       (array:Array<Main>) => array.some((obj) => obj.day === day)
     )
-    if (arrayPosition >= 0) {
+    if (arrayPosition >= 0) { 
       state.dayInformation[arrayPosition].forEach((obj:Main) => {
         if (obj.day === day) {
           state.dayInformation[arrayPosition].push(values)
@@ -38,21 +36,20 @@ filteredDayInformation: (day:number, values:Main) => {
       })
     }
     return {
-      ...state,
-      dayInformation: state.dayInformation,
+      ...state, dayInformation: state.dayInformation,
     };
   })
 },
 
-addNewSegment: (id:number, obj:Segment) => {
+addNewSegment: (id:number, obj:Segment) => { 
     set((state:any) => {
       const newArray = state.dayInformation.map((arr:any) => { 
         if (Array.isArray(arr) && arr.some((obj:segmentDayId) => obj.id === id)) {
-          return [...arr, obj];
+          return [...arr, obj]
         }
-        return arr;
+        return arr
       })
-      return { dayInformation: newArray };
+      return { dayInformation: newArray }
     })
 },
 
@@ -60,18 +57,17 @@ addNewSegmentEdit: (id:number, obj:Segment) => {
     set((state:any) => {
       const newArray = state.selectedCourse.map((arr:any) => { 
         if (Array.isArray(arr) && arr.some((obj:segmentDayId) => obj.id === id)) {
-          return [...arr, obj];
+          return [...arr, obj]
         }
-        return arr;
+        return arr
       })
       return { 
         selectedCourse: newArray,
-        addedSegment: [...state.addedSegment, obj]
       };
     })
 },
 
-updateDayInformation: (value:Main) =>{
+updateDayInformation: (value:mainWithoutDate) =>{
   set((state:any) => ({
     dayInformation: [...state.dayInformation, value]
   }))
@@ -81,7 +77,7 @@ updateSelectedCourse: (updatedSelectedCourse:Segment) => {
   set((state:any) => {
     const updatedArray = state.selectedCourse.map((arr:Array<Segment>) => {
       if(Array.isArray(arr)){
-        return arr.map((obj:Segment) => (obj.id === state.segmentIdMetaData ? updatedSelectedCourse : obj));
+        return arr.map((obj:Segment) => (obj.id === state.segmentIdMetaData ? updatedSelectedCourse : obj))
       }
       return arr === state.segmentIdMetaData ? updatedSelectedCourse : arr
     })
@@ -89,7 +85,7 @@ updateSelectedCourse: (updatedSelectedCourse:Segment) => {
   })
 },
 
-updatedSelectedCourseMetaData: (updatedCommonMetaData: Main) => {
+updatedSelectedCourseMetaData: (updatedCommonMetaData: mainWithoutDate) => {
   set((state: any) => ({
     selectedCourse: state.selectedCourse.map((obj:Main) => {
       if(obj.id === state.commonIdMetaData) {
@@ -110,9 +106,9 @@ pushSelectedCourseToApp: () => {
       const arraysAppMetaDaTA = state.appMetaData[i];
       const foundArray = arraysAppMetaDaTA.findIndex((obj: Main) => obj.id === state.commonIdMetaData)
       if (foundArray !== -1) {
-        newAppMetaData.push(state.selectedCourse);
+        newAppMetaData.push(state.selectedCourse)
       } else {
-        newAppMetaData.push(arraysAppMetaDaTA);
+        newAppMetaData.push(arraysAppMetaDaTA)
       }
     }
     return {
@@ -186,61 +182,75 @@ deleteCourse: () => {
 deleteSegment: (id:number|string) => {
   set((state:any) => {
     const searchForArray = state.selectedCourse.slice(0, -1).map((arr:[]) => {
-      const searchForArray = arr.filter((obj:Segment) => obj.id !== id);
-      return searchForArray.length > 0 ? searchForArray : null;
+      const searchForArray = arr.filter((obj:Segment) => obj.id !== id)
+      return searchForArray.length > 0 ? searchForArray : null
     })
     return { ...state, selectedCourse: [...searchForArray, state.selectedCourse[state.selectedCourse.length - 1]] };
   })
 },
 
-updateSegment: (id: number | string, f:Segment) => {
+updateSegment: (id: number | string, f: Segment) => {
   set((state: any) => {
-    const updatedCourse = state.selectedCourse.slice(0, -1).map((arr: []) => {
-      const updatedArray = arr.map((obj: Segment) => {
-        if (obj.id === id) {
-          return { ...obj, ...f }
-        }
-        return obj;
-      })
-      return updatedArray.length > 0 ? updatedArray : null;
-    })
-    return { ...state, selectedCourse: [...updatedCourse, state.selectedCourse[state.selectedCourse.length - 1]] };
-  })
-},
-
-updSelectedCourse: (day: number, newArray: Array<Segment>) => {
-  set((state: any) => {
-    const addedSegment = state.addedSegment;
-    const updatedSelectedCourse = state.selectedCourse.map((arr: any) => {
-      if (arr.length > 0 && arr[0]?.id === day) {
-        const mergedArray = [...newArray];
-        addedSegment.forEach((addedObj: Segment) => {
-          if (!mergedArray.some((obj: Segment) => !_.isEqual(obj, addedObj))) {
-            mergedArray.push(addedObj);
+    const updatedCourse = state.selectedCourse.map((arr: any) => {
+      if (Array.isArray(arr)) {
+        const updatedArray = arr.map((obj: Segment) => {
+          if (obj.id === id) {
+            return { ...obj, ...f }
           }
+          return obj
         });
-        return mergedArray;
+        return updatedArray.length > 0 ? updatedArray : null;
       }
-      return arr;
+      return arr
     });
-    return { selectedCourse: updatedSelectedCourse };
+    return { selectedCourse: updatedCourse };
   });
 },
-addSegment: (obj:Segment) => {
-  set((state:any) => ({
-    addedSegment: [...state.addedSegment, obj]
-  }))
-},
-resetAddedSegment: () => {
-  set({addedSegment:[]})
-},
-setDraggedSelectedCourse: (newSelectedCourseOrder: any[], day: number) => {
-  set((state:any) => ({ draggedSelectedCourse: [{ id: day },...newSelectedCourseOrder] }))
+
+droppedEvent: (draggedItem:Segment, dayNum:number) => {
+  set((state:any) => {
+    const selectedCourse = state.selectedCourse.map((course:Segment) => {
+      if (Array.isArray(course)) {
+        const filteredCourse = course.filter((item) => JSON.stringify(item) !== JSON.stringify(draggedItem))
+        if (course.some((item) => JSON.stringify(item) !== JSON.stringify(draggedItem))) {
+          if (course[0]?.id === dayNum) {
+            return [...filteredCourse, draggedItem] 
+          } 
+          return filteredCourse
+
+        } else if(course.some((item) => JSON.stringify(item) === JSON.stringify(draggedItem))) {
+            return course
+          }
+      }
+      return course
+    });
+
+    return {selectedCourse:selectedCourse}
+  });
 },
 
-resetDraggedSelectedCourse: () => {
-  set({draggedSelectedCourse:[]})
-}
+updateSegmentEndTime: (segmentId: string, newEndTime: string) => {
+    set((state:any) => {
+      const updatedSegments = state.selectedCourse.segments.map((segment:Segment) => {
+        if (segment.id === segmentId) {
+          return { ...segment, endTime: newEndTime }
+        }
+        return segment
+      })
+
+      return {
+        ...state,
+        selectedCourse: {
+          ...state.selectedCourse,
+          segments: updatedSegments,
+        },
+      }
+    })
+  },
+
+  eventDragged: (dayDrag:number) => {
+    set({dayDragged:dayDrag})
+  }
 
 })
 
@@ -250,6 +260,6 @@ const useCourseStore = create(
       name: 'AppMetaData'
     })
   )
-);
+)
 
 export default useCourseStore

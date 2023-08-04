@@ -10,10 +10,10 @@ import { IconPlus, IconFile, IconClock } from '@tabler/icons-react'
 import { BrowserRouter as Router,Route,Routes,Link } from 'react-router-dom'
 
 export default function Homepage() {
-  const [showHomepageContent, setShowHomepageContent] = useState(true);
+  const [showHomepageContent, setShowHomepageContent] = useState(true)
     return (
       <Router>
-        {showHomepageContent && (
+        {showHomepageContent &&  (
         <div className='home-Page'>
           <h1 className='project-Name'>
             course<br />

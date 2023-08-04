@@ -3,27 +3,58 @@ import { Button,Modal,Box, TextInput, Textarea } from '@mantine/core'
 import { TimeInput } from '@mantine/dates'
 import { IconClock } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks'
-import useCourseStore from '../store/courseStore'
-import { Segment } from '../modals/segment'
+import useCourseStore from '../../store/courseStore'
+import { Segment } from '../../modals/segment'
 import { v4 as uuidv4 } from 'uuid'
+import { useRef } from 'react'
 
 function Day({ day }: { day: number }) {
 
 const {dayInformation} = useCourseStore(
-  (state) => ({
+  (state:any) => ({
     dayInformation: state.dayInformation
   })
 )
 
+  //--------------------- set AvtiveInputField -----------------------------
+
+
+  const titleRef = useRef<HTMLInputElement>(null)
+  const targetRef = useRef< HTMLTextAreaElement>(null)
+  const procedureRef = useRef<HTMLTextAreaElement>(null)
+  const materialRef = useRef<HTMLTextAreaElement>(null)
+
+  const navInputFields = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault()
+      const activeElement = document.activeElement as HTMLInputElement
+      const inputFields = [titleRef,targetRef,procedureRef,materialRef]
+      const currentIndex = inputFields.findIndex((ref) => ref.current === activeElement)
+
+      let nextIndex = -1
+      if (currentIndex !== -1) {
+        if (e.key === 'ArrowDown' ) {
+          nextIndex = (currentIndex + 1) % inputFields.length
+        } else if (e.key === 'ArrowUp') {
+          nextIndex = (currentIndex - 1 + inputFields.length) % inputFields.length
+        }
+      }
+      if (nextIndex !== -1) {
+        inputFields[nextIndex].current?.focus();
+      }
+    }}
+
+//----------------------- general ----------------------------------------------- 
+
 const formSegment = useForm({
   initialValues: {
     title: '',
-    startTime: '',
+    startTime: '',  
     endTime: '',
     target: '',
     procedure: '',
     material: '',
-    id: '',      
+    id: '',          
     },
 
   validate: {
@@ -43,7 +74,7 @@ const formSegment = useForm({
 })
 
 const [opened, { open, close }] = useDisclosure(false)
-const addNewSegment = useCourseStore((state) => state.addNewSegment)
+const addNewSegment = useCourseStore((state:any) => state.addNewSegment)
 
 const handleAddSegment = () => { 
   formSegment.values.id = uuidv4()
@@ -92,6 +123,8 @@ const handleAddSegment = () => {
           name='title'
           label='Tema'
           placeholder="Segment Name"
+          onKeyDown={navInputFields}
+          ref={titleRef}
           {...formSegment.getInputProps('title')}
           />
 
@@ -117,6 +150,8 @@ const handleAddSegment = () => {
           name='target'
           label='Ziele'
           placeholder='Segment Ziele'
+          onKeyDown={navInputFields}
+          ref={targetRef}
           {...formSegment.getInputProps('target')}
           />
 
@@ -125,6 +160,8 @@ const handleAddSegment = () => {
           name='procedure'
           label='Ablauf'
           placeholder='Segment Ablauf'
+          onKeyDown={navInputFields}
+          ref={procedureRef}
           {...formSegment.getInputProps('procedure')}
           />
 
@@ -132,6 +169,8 @@ const handleAddSegment = () => {
           name='material'
           label='Material'
           placeholder='Materialen'
+          onKeyDown={navInputFields}
+          ref={materialRef}
           {...formSegment.getInputProps('material')}
           />
 

@@ -2,7 +2,14 @@ export type Main = {
  title: string
  author: string
  day: number
- date?: Date
+ date: Date
+ id: string
+}
+
+export type mainWithoutDate = {
+ title: string
+ author: string
+ day: number
  id: string
 }
 
