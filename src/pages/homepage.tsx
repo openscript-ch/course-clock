@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { ThemeIcon } from '@mantine/core'
 import { IconPlus, IconFile, IconClock } from '@tabler/icons-react'
 import { BrowserRouter as Router,Route,Routes,Link } from 'react-router-dom'
+import { ExportPDF } from './exportPDF'
 
 export default function Homepage() {
   const [showHomepageContent, setShowHomepageContent] = useState(true)
@@ -48,6 +49,7 @@ export default function Homepage() {
           <Route path='/my-courses' element={<MyCourses/>}/>
           <Route path='/edit-course' element={<EditCourse/>}/>
           <Route path='/course-view' element={<CourseViewLayout/>}/>
+          <Route path='/course-pdf' element={<ExportPDF/>}/>
         </Routes>
     </Router>
     );

@@ -202,6 +202,15 @@ h2 {
   padding: 3rem;
 }
 
+.createOption{
+  background-color: #d5d5d6;
+  color: rgb(139, 139, 139);
+  width: 15rem;
+  height: 5rem;
+  border-bottom-right-radius: 3rem;
+  border-top-left-radius: 1rem;
+}
+
 .newCourse {
   background-color: #d5d5d6;
   color: rgb(139, 139, 139);
@@ -218,7 +227,7 @@ h2 {
   background-color: #fd7e14;
   color: white;
 }
-.newCourse:hover {
+.createOption:hover {
   background-color: #fd7d14bd;
   color: white;
 }

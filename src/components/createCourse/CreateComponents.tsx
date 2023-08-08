@@ -138,7 +138,7 @@ return(
     <p className='description'> hier <span className='teko'>KURS</span> Information hinzufügen</p>
   </div>
   <hr />  
-  <Tabs defaultValue={'general'} style={{marginTop: '2rem', marginLeft: '2%'}} active={activeTab}                  onTabChange={() => handleTabChange}>
+  <Tabs defaultValue={'general'} style={{marginTop: '2rem', marginLeft: '2%'}} active={activeTab} onTabChange={() => handleTabChange}>
     <Tabs.List>
       <Tabs.Tab value='general' color='orange'>Allgemein</Tabs.Tab> 
       <Tabs.Tab value='segment' color='orange' onClick={triggerFunction}>Woche</Tabs.Tab>

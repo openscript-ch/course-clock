@@ -248,6 +248,12 @@ updateSegmentEndTime: (segmentId: string, newEndTime: string) => {
     })
   },
 
+  importCourse: (data:any) => {
+    set((state:any) => ({ 
+    appMetaData: [...state.appMetaData, data]
+  }))
+  },
+
   eventDragged: (dayDrag:number) => {
     set({dayDragged:dayDrag})
   }

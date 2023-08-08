@@ -36,10 +36,11 @@ export function CourseViewLayout(){
             </ThemeIcon>
             </Link>
             <br />
-
+          <Link to='/create-course'>
             <ThemeIcon className='main-Option' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
               <IconPdf/>
             </ThemeIcon>
+          </Link>
             <br />
 
             <ThemeIcon className='setting-Icon' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
