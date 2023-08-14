@@ -1,130 +1,277 @@
-import create from 'zustand';
-
+import create from 'zustand'
 import {devtools, persist} from 'zustand/middleware'
+import { courseClockStore } from './store'
+import { Main, mainWithoutDate } from '../modals/main'
+import { Segment, segmentDayId } from '../modals/segment'
+import _ from 'lodash';
+import { stat } from 'fs'
 
-export interface courseValues {
-  title?:string
-  author?: string    
-  dateStart?:string |Date
-  dateEnd?: string | Date
-  titleSegment?: string
-  startTime?: string 
-  endTime?: string
-  target?: string
-  procedure?: string
-  materials?: string
-  id?: number
-  onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, id: number) => void;
-}
-const courseStore = (set:any) => ({
+const courseStore = (set:any) => ({ 
 
-  courseMetaData:           <courseValues[]>[],
-  appMetaData:              <courseValues[]>[],
-  selectedCourse:           <courseValues[]>[],
-  segmentIdMetaData:        <number> 0,
-  deletedSegmentIdMetaData: [],
+  appMetaData:             [],
+  selectedCourse:           <any>[], 
+  segmentIdMetaData:        <string> '',
+  commonIdMetaData:         <string>'',
+  daysNum:                  <number>1,
+  day:                      <number>0,
+  dayOn:                    <number>1,
+  dayDragged: <number>0,
+  dayInformation: [],
+  
+saveSegmentId: (id:string) =>{
+  set(() => ({
+    segmentIdMetaData: id
+  }))
+},
 
-  addCommonMetaData: (commonMetaData:courseValues) => {
-    set((state:any) => ({
-      courseMetaData: [...state.courseMetaData, commonMetaData]
-    }))
-  },
-  addSegmentMetaData: (SegmentMetaData:courseValues) => {
-    set((state:any) => ({
-      courseMetaData: [...state.courseMetaData, SegmentMetaData ]
-    }))
-  },
-  saveSegmentId: (id:number) =>{
-    set(() => ({
-      segmentIdMetaData: id
-    }))
-  },
-saveDeletedSegmentId: (id: number) => {
+filteredDayInformation: (day:number, values:Main) => {
+  set((state:any) => {
+    const arrayPosition = state.dayInformation.findIndex(
+      (array:Array<Main>) => array.some((obj) => obj.day === day)
+    )
+    if (arrayPosition >= 0) { 
+      state.dayInformation[arrayPosition].forEach((obj:Main) => {
+        if (obj.day === day) {
+          state.dayInformation[arrayPosition].push(values)
+        }
+      })
+    }
+    return {
+      ...state, dayInformation: state.dayInformation,
+    };
+  })
+},
+
+addNewSegment: (id:number, obj:Segment) => { 
+    set((state:any) => {
+      const newArray = state.dayInformation.map((arr:any) => { 
+        if (Array.isArray(arr) && arr.some((obj:segmentDayId) => obj.id === id)) {
+          return [...arr, obj]
+        }
+        return arr
+      })
+      return { dayInformation: newArray }
+    })
+},
+
+addNewSegmentEdit: (id:number, obj:Segment) => {
+    set((state:any) => {
+      const newArray = state.selectedCourse.map((arr:any) => { 
+        if (Array.isArray(arr) && arr.some((obj:segmentDayId) => obj.id === id)) {
+          return [...arr, obj]
+        }
+        return arr
+      })
+      return { 
+        selectedCourse: newArray,
+      };
+    })
+},
+
+
+addNewDay: () => {
   set((state: any) => ({
-    deletedSegmentIdMetaData: [
-      ...state.deletedSegmentIdMetaData, id,
+    selectedCourse: [
+      ...state.selectedCourse.slice(0, -1),
+      [{ id: state.selectedCourse.length },  { title:"GENIAL", startTime:"14:00", endTime:"16:34", target:"gwertbgdfbdf", procedure:"gfdbdfgbdfbdfgbdf", material:"bdfgbfdbdfgbf", id:"9f6b8816-7a72-4acd-a244-13afdgb1fa1e1" }],
+      state.selectedCourse[state.selectedCourse.length - 1],
     ],
   }));
 },
-  updatedSegmentMetaData: (updatedSegmentMetaData:courseValues) => {
-    set((state:any) => ({
-      selectedCourse: state.selectedCourse.map((obj:courseValues) => {
-        if(obj.id === state.segmentIdMetaData) {
-          return {
-            ...obj,
-            ...updatedSegmentMetaData,
-          };
-        }
-        return obj
-      }),
-      appMetaData: state.appMetaData.map((arr:Array<object>) => arr.map((obj:courseValues) => {
-        if (obj.id === state.segmentIdMetaData) {
-          return {
-            ...obj,
-            ...updatedSegmentMetaData,      
-          };
-        }
-        return obj
-      }))
-    }))
-  },
-  updatedCommonMetaData: (updatedCommonMetaData: courseValues) => {
-    set((state: any) => ({
-      appMetaData: state.appMetaData.map((arr:Array<object>) => arr.map((obj:courseValues) => {
-        if (obj.id === 0) {
-          return {
-            ...obj,
-            ...updatedCommonMetaData,      
-          };
-        }
-        return obj
-      }))
-    }))
-  },
-  deleteSegmentMetaData: (id:number) => {
-    set((state: any) => ({
-      selectedCourse: state.selectedCourse.filter((obj: courseValues) => obj.id !== id),
-    }));
-  },
-  pushNewMetaData: (newArray: any[]) => {
-    set((state:any) => ({
-      appMetaData: [...state.appMetaData, ...newArray]
-    }))
-  },
-  pushsCourseMetaDataToApp: () => {
-    set((state: any) => ({
-      appMetaData: [...state.appMetaData, state.courseMetaData],
-    }))
-  },
-  resetCourseMetaData: () => {
-    set({courseMetaData:[]})
-  },
-  resetSelectedCourse: () => {
-    set({selectedCourse:[]})
-  },
-  setSelectedCourse: (selectedCourseArray: courseValues[]) => {
-    set(() => ({
-      selectedCourse: selectedCourseArray
-    }));
-  }, 
-updateAppMetaData: () => {
-  set((state: any) => {
-    const deletedIds = state.deletedSegmentIdMetaData;
-    const newAppMetaData = state.appMetaData.map((arr: Array<any>) =>
-      arr.filter((obj: any) => !deletedIds.includes(obj.id))
-    );
+
+
+updateDayInformation: (value:mainWithoutDate) =>{
+  set((state:any) => ({
+    dayInformation: [...state.dayInformation, value]
+  }))
+},
+
+updateSelectedCourse: (updatedSelectedCourse:Segment) => {
+  set((state:any) => {
+    const updatedArray = state.selectedCourse.map((arr:Array<Segment>) => {
+      if(Array.isArray(arr)){
+        return arr.map((obj:Segment) => (obj.id === state.segmentIdMetaData ? updatedSelectedCourse : obj))
+      }
+      return arr === state.segmentIdMetaData ? updatedSelectedCourse : arr
+    })
+    return {selectedCourse: updatedArray}
+  })
+},
+
+updatedSelectedCourseMetaData: (updatedCommonMetaData: mainWithoutDate) => {
+  set((state: any) => ({
+    selectedCourse: state.selectedCourse.map((obj:Main) => {
+      if(obj.id === state.commonIdMetaData) {
+        return {
+          ...obj,
+          ...updatedCommonMetaData,
+        };
+      } 
+      return obj
+    }),
+  }))
+},
+
+pushSelectedCourseToApp: () => {
+  set((state:any) => {
+    const newAppMetaData = []
+    for (let i = 0; i < state.appMetaData.length; i++) {
+      const arraysAppMetaDaTA = state.appMetaData[i];
+      const foundArray = arraysAppMetaDaTA.findIndex((obj: Main) => obj.id === state.commonIdMetaData)
+      if (foundArray !== -1) {
+        newAppMetaData.push(state.selectedCourse)
+      } else {
+        newAppMetaData.push(arraysAppMetaDaTA)
+      }
+    }
     return {
-      appMetaData: newAppMetaData,
-      deletedSegmentIdMetaData: [],
-    };
+      appMetaData: newAppMetaData
+    }
+  })
+},
+updateCommonMetaData: (id:string) => {
+  set({commonIdMetaData:id})
+},
+pushsDayInformationToApp: () => {
+  set((state: any) => ({
+    appMetaData: [...state.appMetaData, state.dayInformation],
+  }))
+},
+
+resetDayInformation: () => {
+  set({dayInformation:[]})
+},
+
+setSelectedCourse: (selectedCourseArray: courseClockStore) => {
+  set(() => ({
+    selectedCourse: selectedCourseArray,
+  }))
+},
+
+// ------------new functions----------------------------
+
+createDays: (daysNum:number) => {
+  set(() => {
+    const initialCourseArray = []
+    for(let i = 1; i <= daysNum; i ++){
+      initialCourseArray.push([{ id: i }]);
+    }
+    return {dayInformation: initialCourseArray}
+  })
+},
+
+setDaysNum: (numberOfDays: number) => {
+  set({daysNum:numberOfDays})
+},
+
+daySelected: (day:number) => {
+  set({dayOn:day})
+},
+
+resetDaysNum: () => {
+  set({daysNum:1})
+},
+
+addDayInformation: (daysArray:Array<object>) => {
+  set((state:any) => ({ 
+    dayInformation: [...state.dayInformation, daysArray] 
+  }))
+},
+
+numberOfDay: (dayNum: number) => {
+  set({day:dayNum})
+},
+
+resetSelectedCourse: () => {
+  set({selectedCourse:[]})
+},
+
+deleteCourse: () => {
+  set((state:any) => ({ 
+    appMetaData: [...state.appMetaData.filter((arr:Array<object>) => arr !== state.selectedCourse)]
+  }))
+},
+
+deleteSegment: (id:number|string) => {
+  set((state:any) => {
+    const searchForArray = state.selectedCourse.slice(0, -1).map((arr:[]) => {
+      const searchForArray = arr.filter((obj:Segment) => obj.id !== id)
+      return searchForArray.length > 0 ? searchForArray : null
+    })
+    return { ...state, selectedCourse: [...searchForArray, state.selectedCourse[state.selectedCourse.length - 1]] };
+  })
+},
+
+updateSegment: (id: number | string, f: Segment) => {
+  set((state: any) => {
+    const updatedCourse = state.selectedCourse.map((arr: any) => {
+      if (Array.isArray(arr)) {
+        const updatedArray = arr.map((obj: Segment) => {
+          if (obj.id === id) {
+            return { ...obj, ...f }
+          }
+          return obj
+        });
+        return updatedArray.length > 0 ? updatedArray : null;
+      }
+      return arr
+    });
+    return { selectedCourse: updatedCourse };
   });
 },
-  deleteCourse: () => {
-    set((state:any) => ({
-      appMetaData: [...state.appMetaData.filter((arr:Array<object>) => arr !== state.selectedCourse)]
-    }))
-  }
-});
+
+droppedEvent: (draggedItem:Segment, dayNum:number) => {
+  set((state:any) => {
+    const selectedCourse = state.selectedCourse.map((course:Segment) => {
+      if (Array.isArray(course)) {
+        const filteredCourse = course.filter((item) => JSON.stringify(item) !== JSON.stringify(draggedItem))
+        if (course.some((item) => JSON.stringify(item) !== JSON.stringify(draggedItem))) {
+          if (course[0]?.id === dayNum) {
+            return [...filteredCourse, draggedItem] 
+          } 
+          return filteredCourse
+
+        } else if(course.some((item) => JSON.stringify(item) === JSON.stringify(draggedItem))) {
+            return course
+          }
+      }
+      return course
+    });
+
+    return {selectedCourse:selectedCourse}
+  });
+},
+
+updateSegmentEndTime: (segmentId: string, newEndTime: string) => {
+    set((state:any) => {
+      const updatedSegments = state.selectedCourse.segments.map((segment:Segment) => {
+        if (segment.id === segmentId) {
+          return { ...segment, endTime: newEndTime }
+        }
+        return segment
+      })
+
+      return {
+        ...state,
+        selectedCourse: {
+          ...state.selectedCourse,
+          segments: updatedSegments,
+        },
+      }
+    })
+  },
+
+  importCourse: (data:any) => {
+    set((state:any) => ({ 
+    appMetaData: [...state.appMetaData, data]
+  }))
+  },
+
+eventDragged: (dayDrag:number) => {
+  set({dayDragged:dayDrag})
+ }
+
+})
 
 const useCourseStore = create(
   devtools(
@@ -132,6 +279,6 @@ const useCourseStore = create(
       name: 'AppMetaData'
     })
   )
-);
- 
+)
+
 export default useCourseStore

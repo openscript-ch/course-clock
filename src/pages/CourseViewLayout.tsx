@@ -1,12 +1,11 @@
 import '../App.css'
-import { EditComponents } from '../components/editCourse/EditComponents'
-import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core'
-import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock} from '@tabler/icons-react'
+import { AppShell, Navbar, Header, ThemeIcon, Button } from '@mantine/core'
+import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react'
 import { Link } from "react-router-dom"
+import CoursView from '../components/CourseView'
 
-
-export function EditCourse() {
-  return (
+export function CourseViewLayout(){
+ return(
   <AppShell
       padding="md"
       header={
@@ -23,24 +22,22 @@ export function EditCourse() {
       <Navbar width={{ base: 100 }} p="xs" className='navbar'>
         {
           <div className='nav-Bar'> 
-
+          
             <Link to='/my-courses'>
-            <ThemeIcon className='main-Option' style={{marginTop: '1rem'}} radius={360} size={'lg'} color={"orange"}>
+            <ThemeIcon className='main-Option' style={{marginTop: '1rem'}}   variant={"outline"} radius={360} size={'lg'} color={"dark"}>
               <IconFile/>
             </ThemeIcon>
             </Link>
             <br />
 
             <Link to='/create-course'>
-            <ThemeIcon className='main-Option' variant={'outline'} radius={360} size={'lg'} color={"dark"}>
+            <ThemeIcon className='main-Option' radius={360} variant={"outline"} size={'lg'} color={"dark"}>
               <IconPlus/>
             </ThemeIcon>
             </Link>
-            <br />
             <ThemeIcon className='setting-Icon' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
               <IconSettings2/>
             </ThemeIcon>
-            
           </div> 
         }
       </Navbar>}
@@ -50,7 +47,7 @@ export function EditCourse() {
         main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
   })}>
 
-    {<EditComponents></EditComponents>}
+    {<CoursView></CoursView>}
 
   </AppShell>
 

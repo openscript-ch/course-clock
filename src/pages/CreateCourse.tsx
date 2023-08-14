@@ -1,12 +1,11 @@
-import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core';
-import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react';
-import { Link } from "react-router-dom";
-import { useState } from 'react';
 import '../App.css'
-import  CreateComponents  from '../components/CreateComponents';
+import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core'
+import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock} from '@tabler/icons-react'
+import { Link } from "react-router-dom"
+
+import  CreateComponents  from '../components/createCourse/CreateComponents'
 
 export function CreateCourse(){
-const [showHomepageContent, setShowHomepageContent] = useState(true);
  return(
   <AppShell
       padding="md"
@@ -26,7 +25,7 @@ const [showHomepageContent, setShowHomepageContent] = useState(true);
           <div className='nav-Bar'> 
           
             <Link to='/my-courses'>
-            <ThemeIcon className='main-Option' style={{marginTop: '1rem'}} variant={"outline"} radius={360} size={'lg'} color={"dark"}>
+            <ThemeIcon className='main-Option' style={{marginTop: '1rem'}}   variant={"outline"} radius={360} size={'lg'} color={"dark"}>
               <IconFile/>
             </ThemeIcon>
             </Link>
@@ -36,12 +35,6 @@ const [showHomepageContent, setShowHomepageContent] = useState(true);
               <IconPlus/>
             </ThemeIcon>
             <br />
-
-            <ThemeIcon className='main-Option' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
-              <IconPdf/>
-            </ThemeIcon>
-            <br />
-
             <ThemeIcon className='setting-Icon' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
               <IconSettings2/>
             </ThemeIcon>
