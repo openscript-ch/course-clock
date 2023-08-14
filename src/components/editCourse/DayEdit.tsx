@@ -140,89 +140,6 @@ const trye = (obj:Segment) => {
 }
 
 //----------------------- events reorder -----------------------------------------------    
-
-const dragItem = useRef<number | null>(null)
-const dragObject = useRef<Segment>()
-const dragOverItem = useRef<number | null>(null)
-const dragOverObject = useRef<Segment>()
-
-
-const serDragItem_Object = (item:number, obj:Segment) => {
-  dragItem.current=item
-  dragObject.current=obj
-}
-
-const setDragOverItem_object = (item:number, obj:Segment) => {
-  dragOverItem.current=item
-  dragOverObject.current=obj
-}
-
-
-const handleSort = () => {
-  const eventsOrder = [...events]
-  const draggedItemContent = eventsOrder.splice(dragItem.current!, 1)[0]
-  eventsOrder.splice(dragOverItem.current!, 0, draggedItemContent)
-  dragItem.current = null
-  dragOverItem.current = null
-  const updatedCourse = selectedCourse.map((arr: any) => {
-    if (arr.length > 0 && arr[0]?.id === numberOfDay) {
-      return [arr[0], ...eventsOrder]
-    }
-    return arr
-  })
-
-  const [hoursStartDrag, minutesStartDrag]: any = dragObject.current?.startTime.split(':')
-  const startTimeNumberDrag = parseInt(hoursStartDrag, 10) * 60 + parseInt(minutesStartDrag, 10);
-  const [hoursEndDrag, minutesEndDrag]: any = dragObject.current?.endTime.split(':')
-  const endTimeNumberDrag = parseInt(hoursEndDrag, 10) * 60 + parseInt(minutesEndDrag, 10)
-  const timeDifferenceDrag = endTimeNumberDrag - startTimeNumberDrag
-
-  const [hoursStartDragOver, minutesStartDragOver]: any = dragOverObject.current?.startTime.split(':')
-  const startTimeNumberDragOver = parseInt(hoursStartDragOver, 10) * 60 + parseInt(minutesStartDragOver, 10)
-  const [hoursEndDragOver, minutesEndDragOver]: any = dragOverObject.current?.endTime.split(':')
-  const endTimeNumberDragOver = parseInt(hoursEndDragOver, 10) * 60 + parseInt(minutesEndDragOver, 10)
-  const timeDifferenceDragOver = endTimeNumberDragOver - startTimeNumberDragOver
-  
-  if(dragObject.current && dragOverObject.current && dragObject.current?.startTime < dragOverObject.current?.startTime){
-
-  const endTimeNumberDragNew = startTimeNumberDrag + timeDifferenceDragOver
-
-  dragObject.current.endTime = `${Math.floor(endTimeNumberDragNew / 60)
-    .toString()
-    .padStart(2, '0')}:${(endTimeNumberDragNew % 60).toString().padStart(2, '0')}`
-
-  const endTimeNumberDragOverNew = startTimeNumberDragOver + timeDifferenceDrag;
-
-  dragOverObject.current.endTime = `${Math.floor(endTimeNumberDragOverNew / 60)
-    .toString()
-    .padStart(2, '0')}:${(endTimeNumberDragOverNew % 60).toString().padStart(2, '0')}`
-  } else if (dragObject.current && dragOverObject.current && dragObject.current?.startTime > dragOverObject.current?.startTime){
-
-  dragObject.current.startTime = `${Math.floor(startTimeNumberDragOver / 60)
-    .toString()
-    .padStart(2, '0')}:${(startTimeNumberDragOver % 60).toString().padStart(2, '0')}`
-
-  const endTimeNumberDragNew = startTimeNumberDragOver + timeDifferenceDrag
-
-  dragObject.current.endTime = `${Math.floor(endTimeNumberDragNew / 60)
-    .toString()
-    .padStart(2, '0')}:${(endTimeNumberDragNew % 60).toString().padStart(2, '0')}`
-
-  dragOverObject.current.startTime = `${Math.floor(startTimeNumberDrag / 60)
-    .toString()
-    .padStart(2, '0')}:${(startTimeNumberDrag % 60).toString().padStart(2, '0')}`
-
-  const endTimeNumberDragOverNew = startTimeNumberDrag + timeDifferenceDragOver
-
-  dragOverObject.current.endTime = `${Math.floor(endTimeNumberDragOverNew / 60)
-    .toString()
-    .padStart(2, '0')}:${(endTimeNumberDragOverNew % 60).toString().padStart(2, '0')}`
-  }
-
-  setEvents(eventsOrder)
-  setSelectedCourse(updatedCourse)
-};
-
 return (
 <>
   <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -239,10 +156,6 @@ return (
        {events.map((obj:Segment, index:number) => (
            <tr className='tr' key={index}          
            onDoubleClick={() => trye(obj)}
-           draggable
-           onDragStart={()=>serDragItem_Object(index,obj)}
-           onDragEnter={()=>setDragOverItem_object(index,obj)}
-           onDragEnd={handleSort}
            onDragOver={(e) => e.preventDefault}
            >
             <td className='tdDay'> {obj.startTime}-{obj.endTime} </td>
@@ -271,31 +184,34 @@ return (
           data-autoFocus
           withAsterisk
           name='title' 
-          label='Tema' 
+          label='Thema' 
           placeholder='event Name'
           onKeyDown={navInputFields}
           ref={titleRef}
           {...formSegment.getInputProps('title')}
         />
-
+      <div style={{display: 'flex', gap: '1rem'}}>
         <TimeInput
           withAsterisk
+          style={{width:'50%'}}
           name='startTime'
-          label='Startzeizpunkt'
+          label='Startzeitpunkt'
           placeholder='Zeit'
           icon={<IconClock />}
           {...formSegment.getInputProps('startTime')}
         />
+   
 
         <TimeInput
           withAsterisk
+          style={{width:'50%'}}
           name='endTime'
           label='Endzeitpunkt'
           placeholder='Zeit'
           icon={<IconClock />}
           {...formSegment.getInputProps('endTime')}
         />
-
+      </div>
         <Textarea
           name='target'
           label='Ziele'
@@ -315,7 +231,6 @@ return (
           {...formSegment.getInputProps('procedure')}
         />
  
-
         <Textarea
           name='material'
           label='Material'
@@ -338,4 +253,5 @@ return (
     </div>}
   </Modal>
 </>)}
+
 export default DayEdit

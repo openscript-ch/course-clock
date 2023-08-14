@@ -135,7 +135,6 @@ return(
   <div style={{marginBottom: '1rem'} }>
     <div className='title-Section'>
       <h1> <span className='teko'> KURS </span> erstellen</h1>
-    <p className='description'> hier <span className='teko'>KURS</span> Information hinzufügen</p>
   </div>
   <hr />  
   <Tabs defaultValue={'general'} style={{marginTop: '2rem', marginLeft: '2%'}} active={activeTab} onTabChange={() => handleTabChange}>

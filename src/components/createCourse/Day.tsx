@@ -121,17 +121,18 @@ const handleAddSegment = () => {
           data-autofocus
           withAsterisk
           name='title'
-          label='Tema'
+          label='Thema'
           placeholder="Segment Name"
           onKeyDown={navInputFields}
           ref={titleRef}
           {...formSegment.getInputProps('title')}
           />
-
+        <div style={{display: 'flex', gap: '1rem'}}>
           <TimeInput
           withAsterisk
+          style={{width:'50%'}}
           name='startTime'
-          label='Startzeizpunkt'
+          label='Startzeitpunkt'
           placeholder='Zeit'
           icon={<IconClock />}
           {...formSegment.getInputProps('startTime')}
@@ -139,12 +140,14 @@ const handleAddSegment = () => {
           
           <TimeInput
           withAsterisk
+          style={{width:'50%'}}
           name='endTime'
           label='Endzeitpunkt'
           placeholder='Zeit'
           icon={<IconClock />}
           {...formSegment.getInputProps('endTime')}
           />
+        </div>
 
           <Textarea
           name='target'

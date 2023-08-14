@@ -8,7 +8,6 @@ import { useState } from 'react'
 import { ThemeIcon } from '@mantine/core'
 import { IconPlus, IconFile, IconClock } from '@tabler/icons-react'
 import { BrowserRouter as Router,Route,Routes,Link } from 'react-router-dom'
-import { ExportPDF } from './exportPDF'
 
 function CourseClockRouter(){
   return(
@@ -19,7 +18,6 @@ function CourseClockRouter(){
       <Route path='/my-courses' element={<MyCourses/>}/>
       <Route path='/edit-course' element={<EditCourse/>}/>
       <Route path='/course-view' element={<CourseViewLayout/>}/>
-      <Route path='/course-pdf' element={<ExportPDF/>}/>
     </Routes>
   </Router>
   );
@@ -54,5 +52,5 @@ function Homepage() {
           </div>
         </div> 
       )}
-      
+
 export default CourseClockRouter;

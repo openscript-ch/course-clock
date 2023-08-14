@@ -1,9 +1,7 @@
 import useCourseStore from '../../store/courseStore'
 import { Segment, segmentDayId } from '../../modals/segment'
 
-function DayView({ numberOfDay, blockInteractions }: { numberOfDay: number, blockInteractions:boolean }) {
-
-const containerClassName = blockInteractions ? 'nonInteractive' : ''
+function DayView({ numberOfDay}: { numberOfDay: number}) {
 
 const {selectedCourse} = useCourseStore(
   (state) => ({
@@ -13,8 +11,8 @@ const {selectedCourse} = useCourseStore(
 
 return (
   <>
-   <div style={{margin: '0rem'}} className={containerClassName}>
-    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+   <div>
+    <table className='dayViewTable'>
      <thead>
       <tr> 
        <th className='thTHeadTime'>Zeit</th> 
@@ -40,7 +38,6 @@ return (
      </tbody>
     </table>
   </div>
-  {blockInteractions && <div className="overlay"></div>}
 </>
 )}
 export default DayView

@@ -4,6 +4,7 @@ import { courseClockStore } from './store'
 import { Main, mainWithoutDate } from '../modals/main'
 import { Segment, segmentDayId } from '../modals/segment'
 import _ from 'lodash';
+import { stat } from 'fs'
 
 const courseStore = (set:any) => ({ 
 
@@ -66,6 +67,18 @@ addNewSegmentEdit: (id:number, obj:Segment) => {
       };
     })
 },
+
+
+addNewDay: () => {
+  set((state: any) => ({
+    selectedCourse: [
+      ...state.selectedCourse.slice(0, -1),
+      [{ id: state.selectedCourse.length },  { title:"GENIAL", startTime:"14:00", endTime:"16:34", target:"gwertbgdfbdf", procedure:"gfdbdfgbdfbdfgbdf", material:"bdfgbfdbdfgbf", id:"9f6b8816-7a72-4acd-a244-13afdgb1fa1e1" }],
+      state.selectedCourse[state.selectedCourse.length - 1],
+    ],
+  }));
+},
+
 
 updateDayInformation: (value:mainWithoutDate) =>{
   set((state:any) => ({
@@ -254,9 +267,9 @@ updateSegmentEndTime: (segmentId: string, newEndTime: string) => {
   }))
   },
 
-  eventDragged: (dayDrag:number) => {
-    set({dayDragged:dayDrag})
-  }
+eventDragged: (dayDrag:number) => {
+  set({dayDragged:dayDrag})
+ }
 
 })
 

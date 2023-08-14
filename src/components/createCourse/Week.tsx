@@ -202,7 +202,7 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
                 data-autoFocus
                 withAsterisk
                 name='title'
-                label='Tema'
+                label='Thema'
                 placeholder="Segment Name"
                 onKeyDown={navInputFields}
                 ref={titleRef}
@@ -214,7 +214,7 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
                   style={{width:'50%'}}
                   withAsterisk
                   name='startTime'
-                  label='Startzeizpunkt'
+                  label='Startzeitpunkt'
                   placeholder='Zeit'
                   icon={<IconClock />}
                   {...formSegment.getInputProps('startTime')}

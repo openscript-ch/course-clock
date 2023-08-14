@@ -1,5 +1,5 @@
 import '../App.css'
-import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core'
+import { AppShell, Navbar, Header, ThemeIcon, Button } from '@mantine/core'
 import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react'
 import { Link } from "react-router-dom"
 import CoursView from '../components/CourseView'
@@ -35,18 +35,9 @@ export function CourseViewLayout(){
               <IconPlus/>
             </ThemeIcon>
             </Link>
-            <br />
-          <Link to='/create-course'>
-            <ThemeIcon className='main-Option' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
-              <IconPdf/>
-            </ThemeIcon>
-          </Link>
-            <br />
-
             <ThemeIcon className='setting-Icon' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
               <IconSettings2/>
             </ThemeIcon>
-            
           </div> 
         }
       </Navbar>}

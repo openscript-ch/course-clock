@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react'
 import TableColumn from '../createCourse/TableColumn'
 import useCourseStore from '../../store/courseStore'
 
-function WeekEdit({ numberOfDays, blockInteractions }: { numberOfDays: number , blockInteractions:boolean}) {
+function WeekEdit({ numberOfDays}: { numberOfDays: number}) {
 
-  const containerClassName = blockInteractions ? 'nonInteractive' : ''
   let dayStart = 0
   let daysCount = []
 
@@ -19,7 +18,7 @@ function WeekEdit({ numberOfDays, blockInteractions }: { numberOfDays: number , 
 
   return (
     <>
-    <table style={{width: '100%', borderCollapse: 'collapse' }} className={containerClassName}> 
+    <table className='weekViewTable'> 
       <thead>
         <tr>
           {daysCount.map((number) => (
@@ -41,8 +40,7 @@ function WeekEdit({ numberOfDays, blockInteractions }: { numberOfDays: number , 
           ))}
         </tr>
       </tbody>
-    </table>
-    {blockInteractions && <div className="overlay"></div>}                                       
+    </table>                                   
     </>
   )
 }

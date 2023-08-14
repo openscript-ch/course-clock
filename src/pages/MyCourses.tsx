@@ -34,13 +34,6 @@ function MyCourses() {
             </ThemeIcon>
             </Link>
             <br />
-          <Link to='/course-pdf'>
-            <ThemeIcon className='main-Option' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
-              <IconPdf/>
-            </ThemeIcon>
-          </Link>
-            <br />
-
             <ThemeIcon className='setting-Icon' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
               <IconSettings2/>
             </ThemeIcon>

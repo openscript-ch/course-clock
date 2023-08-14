@@ -110,7 +110,6 @@ const safeCourse = () => {
 <div style={{marginBottom: '1rem'} }>
   <div className='title-Section'>
     <h1> <span className='teko'>KURS</span>  editieren</h1>
-    <p className='description'>hier <span className='teko'>KURS</span> Information hinzufügen</p>
   </div>
   <hr />
   <form>
@@ -148,22 +147,11 @@ const safeCourse = () => {
             {...form.getInputProps('author')}
           />
 
-          <NumberInput
-            withAsterisk
-            name='day'   
-            label='Tage'
-            placeholder='Dauer in Tage'
-            onKeyDown={navInputFields}
-            ref={dayRef}
-            {...form.getInputProps('day')}
-            disabled={true}
-          />
-
         </Box>
       </Tabs.Panel>
 
       <Tabs.Panel value='segment' pt='xs'>
-        <WeekEdit blockInteractions={false} numberOfDays={form.values.day}></WeekEdit>
+        <WeekEdit numberOfDays={form.values.day}></WeekEdit>
       </Tabs.Panel>
       <Tabs.Panel value='days'>
         <DaysListEdit numberOfDays={generalInformation.day} ></DaysListEdit>

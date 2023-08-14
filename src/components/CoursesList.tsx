@@ -4,12 +4,14 @@ import { mainForSearchId } from '../modals/main'
 import { useState } from 'react'
 import { IconCirclePlus, IconEdit, IconJson, IconTrash} from '@tabler/icons-react'
 import { Link } from "react-router-dom"
-import { ActionIcon,  } from '@mantine/core'
+import { ActionIcon, Button} from '@mantine/core'
 import { useEffect } from 'react'
 import { Main } from '../modals/main'
 import { Dropzone } from '@mantine/dropzone';
 import { Group } from '@mantine/core';
 import { IconUpload, IconX } from '@tabler/icons-react';
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css'
 
 
 function CoursesList() {
@@ -38,6 +40,12 @@ function selectCourse(array:any) {
   updateCommonMetaData(mainInfoArray.id)
 }
 
+let i  = 1
+
+if(i ===1){
+
+}
+
 
 function delCourse(array:[]){
   selectCourse(array)
@@ -45,7 +53,7 @@ function delCourse(array:[]){
 }
 
   const handleFileChange = async (acceptedFiles:any) => {
-    const file = acceptedFiles[0];
+    let file = acceptedFiles[0];
 
     if (!file) return;
 
@@ -61,11 +69,39 @@ function delCourse(array:[]){
     }
   };
 
+  const submit = (innerArray:[]) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className='confirm-Alert'>
+            <h1 className='teko'>Kurs löschen?</h1>
+            <p style={{color: 'white', fontSize: '.8rem'}}> <i>Alle Daten im Zusammenhang mit diesem Kurs werden gelöscht.</i></p>
+            <div className='confirm-Alert-Options'>
+              <Button
+              compact
+              variant='filled'
+              color='orange'
+              onClick={() => {
+                delCourse(innerArray);
+                onClose();
+              }}
+              >
+                Ja
+              </Button>
+              <Button 
+              variant='filled'
+              color='orange' 
+              compact onClick={onClose}>
+                Nein
+              </Button>
+            </div>
+          </div>
+        )}
+  })}
 return (
   <>
     <div className='title-Section'>
       <h1> <span className='teko'>KURSE</span></h1>
-      <p className='description'>hier sind deine <span className='teko'>KURSE</span></p>
     </div>
     <hr />
     <div className='courseList'>
@@ -119,7 +155,7 @@ return (
               </ActionIcon>
             </Link> 
             <ActionIcon>
-             <IconTrash onClick={() => delCourse(innerArray)}/>             
+             <IconTrash onClick={() => submit(innerArray)}/>             
             </ActionIcon>
           </div>
         </div>

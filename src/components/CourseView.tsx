@@ -4,6 +4,7 @@ import useCourseStore from '../store/courseStore'
 import DayView from './createCourse/DayView'
 import WeekEdit from './editCourse/WeekEdit'
 import { Link } from 'react-router-dom'
+import { Button } from '@mantine/core'
 
 const CoursView = () => {
 
@@ -17,33 +18,51 @@ const generalInfo:Main= selectedCourse.find((obj:Main) =>  typeof obj.id === 'st
 
 const days = Array.from({ length: generalInfo.day }, (_, index) => index + 1)
 
+const exportStateToJson = () => {
+   const jsonData = JSON.stringify(selectedCourse);
+   const blob = new Blob([jsonData], { type: 'application/json' });
+   const url = URL.createObjectURL(blob);
+   const a = document.createElement('a');
+   a.href = url; 
+   a.download = `ourseClock_course-${selectedCourse.map((obj:Main) => obj.title)}`
+   a.click();
+   URL.revokeObjectURL(url);
+ };
+
 return(
   <>
-  <h1 style={{textAlign: 'center', fontSize: '3rem'}}> Kursplanung <br /> <span className='teko'>"{generalInfo.title}"</span></h1>
+  <div  className='viewPageHeader'>
+  <h1 style={{textAlign: 'center', fontSize: '3rem'}} className='courseTitle'> Kursplanung <br /> <span className='teko tit'>"{generalInfo.title}"</span></h1>
+  
+  <div style={{display: 'flex', justifyContent: 'space-between'}}>
+    <div style={{float: 'right'}}>
+      <Button className='printBtn' style={{}} variant="subtle" color='orange' onClick={() => print()}>Tagesansicht</Button>
+      <Button className='printBtn' variant="subtle" color='orange'>Kursübersicht</Button>
+      <Button className='printBtn' variant="subtle" color='orange' onClick={() => exportStateToJson()}>JSON</Button>
+    </div>
+  </div>
   <hr />
-    <div style={{display: 'flex', justifyContent: 'space-between', marginTop: '1rem', padding: '1rem'}}>
-    <p><span className='teko'>Autor:</span> {generalInfo.author}</p>
   </div>
-  <div style={{display:'flex', justifyContent: 'space-between', gap: '1rem'}}>
-  <div style={{width:'50%'}}>
-   <WeekEdit numberOfDays={generalInfo.day} blockInteractions={true}></WeekEdit>)
+  <div className='viewPageContent'>
+  <div className='courseViewWeekContainer'>
+   <WeekEdit numberOfDays={generalInfo.day}></WeekEdit>
   </div>
-  <div style={{width: '50%'}}>
+  <div className='courseViewDaysContainer'>
   {days.map(( index) => (
     <div className='courseViewDays'>
       <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
-        <p><span className='teko'>Tag:</span> {index}</p>
+        <p className='dayNumberDayView'><span className='teko'>Tag:</span> {index}</p>
         <Link to='/edit-course'>
-          <IconPencil></IconPencil>
+          <IconPencil className='editCourseIcon'></IconPencil>
         </Link>
       </div>
-      <DayView numberOfDay={index} blockInteractions={true}></DayView>
+      <DayView numberOfDay={index}></DayView>
     </div>
   ))}
   </div>
   </div>
   </>
- );
+ )
 }
 
-export default CoursView
+export default CoursView;
