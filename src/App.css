@@ -3,7 +3,9 @@
  margin: 0;
  font-family: 'Text Me One', sans-serif;
 }
-
+.links {
+ color: black;
+}
 .teko{
  font-family: 'Teko', sans-serif;
 }
@@ -132,4 +134,46 @@ h2 {
 
 .keyword{
  font-weight: bold;
+}
+
+/* ---------------my Courses-------------- */
+.courseList{
+ margin-top: 3rem;
+ display: flex;
+ gap: 2rem;
+ flex-wrap: wrap;
+
+}
+
+.course{
+ background-color: #a4a4a5;
+ min-width: 15rem;
+ max-width: 15rem;
+ min-height: 10rem;
+ max-height: 10rem;
+ border-bottom-right-radius: 3rem;
+ border-top-left-radius: 1rem;
+ text-align: center;
+ padding: 3rem
+}
+
+.newCourse{
+  background-color: #d5d5d6;
+  color: rgb(139, 139, 139);
+  min-width: 15rem;
+  min-height: 10rem;
+  border-bottom-right-radius: 3rem;
+  border-top-left-radius: 1rem;
+  text-align: right;
+  padding-top: 5rem;
+  padding-right: 1rem;
+}
+
+.course:hover{
+ background-color: #fd7e14;
+ color: white;
+}
+.newCourse:hover{
+ background-color: #fd7d14bd;
+ color: white;
 }

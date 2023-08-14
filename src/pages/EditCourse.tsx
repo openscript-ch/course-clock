@@ -24,18 +24,21 @@ export function EditCourse() {
       <Navbar width={{ base: 100 }} p="xs" className='navbar'>
         {
           <div className='nav-Bar'> 
+            <Link to='/my-courses'>
+            <ThemeIcon className='main-Option'  style={{marginTop: '1rem'}} radius={360} size={'lg'} color={"orange"}>
+              <IconFile/>
+            </ThemeIcon>
+            </Link>
+            <br />
 
             <Link to='/create-course'>
-            <ThemeIcon className='main-Option' variant={'outline'} style={{marginTop: '1rem'}} radius={360} size={'lg'} color={"dark"}>
+            <ThemeIcon className='main-Option' variant={'outline'} radius={360} size={'lg'} color={"dark"}>
               <IconPlus/>
             </ThemeIcon>
             </Link>
             <br />
 
-            <ThemeIcon className='main-Option' radius={360} size={'lg'} color={"orange"}>
-              <IconFile/>
-            </ThemeIcon>
-            <br />
+
 
             <ThemeIcon className='main-Option' variant={"outline"} radius={360} size={'lg'} color={"dark"}>
               <IconPdf/>

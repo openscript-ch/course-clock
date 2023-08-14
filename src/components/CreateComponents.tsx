@@ -4,11 +4,15 @@ import { useForm } from '@mantine/form';
 import { DateInput,TimeInput } from '@mantine/dates';
 import '../App.css'
 import { Segment } from './Segment';
-import { IconPlus} from '@tabler/icons-react';
+import { IconCalendar, IconClock, IconPlus} from '@tabler/icons-react';
 import useCourseStore from "../store/courseStore"
 import { courseValues } from '../store/courseStore';
+import { BrowserRouter as Router, Link} from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 export const idAllgemein:number =  0
+
+export let courseArray:Array<string> = [] 
 
 const CreateComponents = () => {
 
@@ -17,14 +21,21 @@ const [activeTab, setActiveTab] = useState<string | null>('general');
 const addCommonMetaData = useCourseStore((state) => state.
 addCommonMetaData);
 
- const addSegmentMetaData= useCourseStore((state) => state.
+const addSegmentMetaData= useCourseStore((state) => state.
 addSegmentMetaData);
+
+const pushsCourseMetaDataToApp = useCourseStore((state) => state.pushsCourseMetaDataToApp);
+
+const resetCourseMetaData = useCourseStore((state) => state.resetCourseMetaData) 
 
 const {courseMetaData} = useCourseStore(
   (state) => ({
     courseMetaData: state.courseMetaData
   })
 )
+
+const navigate = useNavigate();
+
 const filteredCourseMetaData =  courseMetaData.filter((obj) => !obj.id?.toString().startsWith('0'))
 const [segments, setSegments] = useState<courseValues[]>(filteredCourseMetaData);
  
@@ -38,7 +49,15 @@ const form = useForm({
   },
 
   validate: {
-    title: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    title: (value) => {
+      if(value.length < 1) {
+        return 'Bitte Pflichtfeld ausfüllen'
+      } else if (value.length > 13) {
+        return 'Titel zu lang! Wählen sie einen kürzeren Titel'
+      } else {
+        return null
+      }
+  },
     author: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
     dateStart: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
     dateEnd: (value, values) => {
@@ -89,8 +108,11 @@ const handleAddSegment = () => {
 
 const handleFormsSubmit = (event: any) => {
   form.values.id = idAllgemein;
-  addCommonMetaData(form.values)
-};
+  addCommonMetaData(form.values);
+  pushsCourseMetaDataToApp();
+  resetCourseMetaData();
+  navigate('/my-courses')
+};  
 
 return(
   <>
@@ -131,13 +153,16 @@ return(
             name='dateStart'   
             label="Von-"
             placeholder="Datum"
+            icon={<IconCalendar />}
             {...form.getInputProps('dateStart')}
           />
 
           <DateInput
             withAsterisk
+            name='dateEnd'
             label="-Bis"
             placeholder="Datum"
+            icon={<IconCalendar />}
             {...form.getInputProps('dateEnd')}
           />
         </Box>
@@ -151,20 +176,24 @@ return(
             name='titleSegment'
             label='Titel'
             placeholder="Segment Name"
-            {...formSegment.getInputProps('titleSegment')}
+            {...formSegment.getInputProps('titleSegment')}  
           />
 
           <TimeInput
             withAsterisk
+            name='startTime'
             label='Startzeizpunkt'
             placeholder='Zeit'
+            icon={<IconClock />}
             {...formSegment.getInputProps('startTime')}
             />
             
           <TimeInput
             withAsterisk
+            name='endTime'
             label='Endzeitpunkt'
             placeholder='Zeit'
+            icon={<IconClock />}
             {...formSegment.getInputProps('endTime')}
           />
 
