@@ -1,128 +1,172 @@
-import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon} from '@mantine/core';
+import { Tabs, Button, Box, TextInput, Textarea} from '@mantine/core';
 import { useState }  from 'react';
-import { useForm }   from '@mantine/form';;
+import { useForm }   from '@mantine/form';
 import { DateInput } from '@mantine/dates';
 import '../App.css'
-import { updateCourseInformation } from '../data/CourseInformation';
 import { TimeInput } from '@mantine/dates';
-import { IconEdit } from '@tabler/icons-react';
-import { newListInfo } from './CreateComponents';
-import { Segment, SegmentProps } from './Segment';
+import { IconCircleX, IconEdit } from '@tabler/icons-react';
+import { Segment} from './Segment';
+import useCourseStore, { courseValues } from '../store/courseStore';
+import { idAllgemein } from './CreateComponents';
 
+export function EditComponents(){
 
-export function EditComponents(props: SegmentProps){
+const [activeTab, setActiveTab] = useState<string | null>('general');
 
-const [activeTab, setActiveTab] = useState<string | null>('allgemein');
-const allgemeinInfo = newListInfo[newListInfo.length - 1];
+const updatedCommonMetaData = useCourseStore((state) => state.updatedCommonMetaData)
 
-const onSubmit = () => {
-  allgemeinInfo.Titel = form.values.Titel
-  allgemeinInfo.Autor = form.values.Autor
-  allgemeinInfo.dateStart = form.values.dateStart
-  allgemeinInfo.dateEnd = form.values.dateEnd
-  console.log(newListInfo)
-};
+const updatedSegmentMetaData = useCourseStore((state) => state.
+updatedSegmentMetaData);
 
-const handleFormsSubmit = (event:any) => {
-  event.preventDefault()
-  form.onSubmit(onSubmit)();
-}
-const [selectedSegmentId, setSelectedSegmentId] = useState<number | null>(null)
+const saveSegmentId = useCourseStore((state) => state.saveSegmentId)
 
-const onSegmentClick = (id: number) => {
-  const foundSegment = newListInfo.find(obj => {
-    return obj.id === id;
-  });
-  formSegment.setValues({
-    TitelSegment: foundSegment.TitelSegment,
-    startTime: foundSegment.startTime,
-    endTime: foundSegment.endTime,
-    target: foundSegment.target,
-    procedure: foundSegment.procedure,
-    materials: foundSegment.materials,
+const deleteSegmentMetaData = useCourseStore((state) => state.deleteSegmentMetaData)
+
+const {courseMetaData} = useCourseStore(
+  (state) => ({
+    courseMetaData: state.courseMetaData
   })
-  setSelectedSegmentId(id)
-};
+)
 
-const onSegmentSave = () => {
-  let findSegment = newListInfo.find(obj => {
-    return obj.id === selectedSegmentId
+let {segmentIdMetaData} = useCourseStore(
+  (state) => ({
+    segmentIdMetaData: state.segmentIdMetaData
   })
-  findSegment.TitelSegment = formSegment.values.TitelSegment
-  findSegment.startTime = formSegment.values.startTime
-  findSegment.endTime = formSegment.values.endTime
-  findSegment.target = formSegment.values.target
-  findSegment.procedure = formSegment.values.procedure
-  findSegment.materials = formSegment.values.materials
-  formSegment.reset();
-  console.log(findSegment)
-  console.log(newListInfo)
-}
+)
 
-const form = useForm({
+const lastItem = courseMetaData[courseMetaData.length -1];
+
+const form  = useForm({
   initialValues: {
-    Titel:     allgemeinInfo.Titel,
-    Autor:     allgemeinInfo.Autor,
-    dateStart: allgemeinInfo.dateStart,
-    dateEnd:   allgemeinInfo.dateEnd, 
+    title:     lastItem.title,
+    author:     lastItem.author,
+    dateStart: lastItem.dateStart,
+    dateEnd:   lastItem.dateEnd,
   },
-
   validate: {
-    Titel: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    Autor: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    dateStart: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    dateEnd: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    title: (value?:string) => {
+      if(value !== undefined){
+        if(value.length < 1){
+          return 'Bitte Pflichtfeld ausfüllen'
+        } else null
+      }
+    },
+    author: (value?:string) => {
+      if(value !== undefined){
+        if(value.length < 1){
+          return 'Bitte Pflichtfeld ausfüllen'
+        } else null
+      }
+    },
+    dateStart: (value?:string) => {
+      if(value !== undefined){
+        if(value.length < 1){
+          return 'Bitte Pflichtfeld ausfüllen'
+        } else null
+      }
+    },
+    dateEnd: (value, values) => {
+      if(value !== undefined){
+        if(value.length < 1 ) {
+          return 'Bitte Pflichtfeld ausfüllen'
+        } else if(values.dateStart !== undefined) {
+            if(value < values.dateStart){
+              return 'Ups! Der Endzeitpunkt muss nach dem Startzeitpunkt liegen.'
+            } else null
+       } else {
+          return null
+        }
+    }},
   }
 });
-
+  
 const formSegment = useForm({
   initialValues: {
-    TitelSegment: '',
-    startTime: '', 
+    titleSegment: '',
+    startTime: '',
     endTime: '',
     target: '',
     procedure: '',
     materials: '',
   },
   validate: {
-    TitelSegment: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    startTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    endTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    procedure: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    titleSegment: (value:string) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    startTime: (value:string) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    endTime: (value, values) => {
+      if(value.length < 0) {
+        return 'Bitte Pflichtfeld ausfüllen'
+      } else if(value < values.startTime) {
+        return 'Ups! Der Endzeitpunkt muss nach dem Startzeitpunkt liegen.'
+      } else {
+        return null
+      }
+    },
+    procedure: (value:string) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
   }
 });
 
+const handleClick = (id?: number) => {
+  const foundSegment = courseMetaData.find(obj => {
+    return obj.id === id;
+  });
+  if(id){
+  saveSegmentId(id)
+  }
+  if (foundSegment) {
+    formSegment.setValues({
+      titleSegment: foundSegment.titleSegment,
+      startTime: foundSegment.startTime,
+      endTime: foundSegment.endTime,
+      target: foundSegment.target,
+      procedure: foundSegment.procedure,
+      materials: foundSegment.materials,
+    });
+  }};
+
+const editSegment = () => {
+  updatedSegmentMetaData(segmentIdMetaData, formSegment.values)
+  formSegment.reset()
+ }
+const saveCourse = () => {
+  updatedCommonMetaData(idAllgemein, form.values)
+}
+
+const deleteSeg = (id: number) => {
+  deleteSegmentMetaData(id)
+  formSegment.reset()
+}
+
 return(
   <>
-    <div className='titel-Section'>
-      <h1 className='titel-Erstellen'> <span className='teko'>KURS</span> editieren </h1>
+  <div style={{marginBottom: '1rem'}}>
+    <div className='title-Section'>
+      <h1> <span className='teko'>KURS</span> editieren </h1>
       <p className='description'>hier <span className='teko'>KURS</span> Information bearbeiten</p>
     </div>
     <hr />
-    <form onSubmit={handleFormsSubmit}>
+    <form>
       <Tabs variant="outline" defaultValue="gallery" className='tabs' value={activeTab} onTabChange={setActiveTab} >
         <Tabs.List>
-         <Tabs.Tab value="allgemein">Allgemein</Tabs.Tab>
-          <Tabs.Tab value="segmente">Segmente</Tabs.Tab>
-          <Button type='submit' color={'green'} ml="auto">speichern</Button>
+         <Tabs.Tab value="general">Allgemein</Tabs.Tab>
+          <Tabs.Tab value="segment">Segmente</Tabs.Tab>
+          <Button  color={'green'} ml="auto" onClick={form.onSubmit(saveCourse)}>speichern</Button>
         </Tabs.List>
-      <br />
-      <Tabs.Panel value="allgemein" pt="xs" >
+      <Tabs.Panel value="general" pt="xs" >
         <Box maw={250}>
           <TextInput
            withAsterisk
-           name='Titel'
+           name='title'
            label="Titel"
            placeholder="Kurs Name"
-           {...form.getInputProps('Titel')}
+           {...form.getInputProps('title')}
           />
 
           <TextInput
            withAsterisk
-           name='Autor'
+           name='author'
            label="Autor"
            placeholder="Autor Name"
-           {...form.getInputProps('Autor')}
+           {...form.getInputProps('author')}
           />
 
           <DateInput
@@ -139,40 +183,39 @@ return(
            placeholder="Datum"
            {...form.getInputProps('dateEnd')}
           />
-
-          <br />
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="segmente" pt="xs">
+      <Tabs.Panel value="segment" pt="xs">
       <div style={{display: 'flex'}} className={'segment'}>
+        <div>
         <Box maw={250} className={'box'}>
           <TextInput
             withAsterisk
-            name='TitelSegment'
+            name='titleSegment'
             label="Titel"
             placeholder="Segment Name"
-            {...formSegment.getInputProps('TitelSegment')}
+            {...formSegment.getInputProps('titleSegment')}
             icon={<IconEdit/>}
           />
 
-            <TimeInput
-              withAsterisk
-              label="Startzeizpunkt"
-              name='startTime'
-              placeholder="Zeit"
-              {...formSegment.getInputProps('startTime')}
-              icon={<IconEdit/>}
-            />
+          <TimeInput
+            withAsterisk
+            label="Startzeizpunkt"
+            name='startTime'
+            placeholder="Zeit"
+            {...formSegment.getInputProps('startTime')}
+            icon={<IconEdit/>}
+          />
 
-            <TimeInput
-              withAsterisk
-              label="Endzeitpunkt"
-              name='endTime'
-              placeholder="Zeit"
-              {...formSegment.getInputProps('endTime')}
-              icon={<IconEdit/>}
-            />
+          <TimeInput
+            withAsterisk
+            label="Endzeitpunkt"
+            name='endTime'
+            placeholder="Zeit"
+            {...formSegment.getInputProps('endTime')}
+            icon={<IconEdit/>}
+          />
 
           <Textarea
             name='target'
@@ -190,7 +233,6 @@ return(
             {...formSegment.getInputProps('procedure')}
             icon={<IconEdit/>}
           />
-
           <Textarea
             name='materials'
             label="Materialen/Unterlagen"
@@ -199,17 +241,30 @@ return(
             icon={<IconEdit/>}
           />
         </Box>
-        <div style={{display: 'flex', gap: '3rem', flexWrap: 'wrap'}}>
-          {newListInfo.slice(0,-1).map((info, index) => (
-           <Segment key={index} segmentData={info} onClick={() => onSegmentClick(info.id)} />))}
+        <Button color={'orange'} onClick={formSegment.onSubmit(editSegment)} style={{marginTop: '1rem'}}>Segment speichern</Button>
         </div>
+        {courseMetaData.slice(0,-1).map((segmentInformation:courseValues) => (
+          <div style={{display: 'flex'}}>
+          <div onClick={()=>handleClick(segmentInformation.id)}>
+          <Segment
+            titleSegment={segmentInformation.titleSegment}
+            startTime={segmentInformation.startTime}
+            endTime={segmentInformation.endTime}
+            target={segmentInformation.target}
+            procedure={segmentInformation.procedure}
+            materials={segmentInformation.materials}
+            />
+            </div>
+            <div>
+            <IconCircleX size={'1rem'} onClick={() =>deleteSeg(segmentInformation.id)}/>
+            </div>
+            </div>
+          ))}
        </div>
-       <br />
-       <Button  onClick={onSegmentSave} color={'orange'}>Segment speichern</Button>
-      <br />
       </Tabs.Panel>
       </Tabs>
     </form>
+    </div>
   </>
  );
 }

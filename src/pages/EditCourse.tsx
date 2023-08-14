@@ -6,13 +6,7 @@ import { BrowserRouter as Router, Link } from "react-router-dom";
 import '../App.css'
 import { EditComponents } from '../components/EditComponents';
 
-interface EditCourseProps {
-  setShowHomepageContent: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export function EditCourse({ setShowHomepageContent }: EditCourseProps) {
-  const navigate = useNavigate();
-
+export function EditCourse() {
   return (
   <AppShell
       padding="md"

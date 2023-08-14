@@ -1,111 +1,129 @@
-import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon, FileInputProps, Center} from '@mantine/core';
+import { Tabs, Button,Group, Box, TextInput,Textarea, ThemeIcon} from '@mantine/core';
 import { useState } from 'react';
-import { useForm } from '@mantine/form';;
-import { DateInput } from '@mantine/dates';
+import { useForm } from '@mantine/form';
+import { DateInput,TimeInput } from '@mantine/dates';
 import '../App.css'
-import { CourseInformation, updateCourseInformation } from '../data/CourseInformation';
 import { Segment } from './Segment';
-import { TimeInput } from '@mantine/dates';
 import { IconPlus} from '@tabler/icons-react';
+import useCourseStore from "../store/courseStore"
+import { courseValues } from '../store/courseStore';
 
-export var newListInfo:any[] = []
+export const idAllgemein:number =  0
+
+const CreateComponents = () => {
+
+const [activeTab, setActiveTab] = useState<string | null>('general');
+
+const addCommonMetaData = useCourseStore((state) => state.
+addCommonMetaData);
+
+ const addSegmentMetaData= useCourseStore((state) => state.
+addSegmentMetaData);
+
+const {courseMetaData} = useCourseStore(
+  (state) => ({
+    courseMetaData: state.courseMetaData
+  })
+)
+const filteredCourseMetaData =  courseMetaData.filter((obj) => !obj.id?.toString().startsWith('0'))
+const [segments, setSegments] = useState<courseValues[]>(filteredCourseMetaData);
  
-
-export function CreateComponents(props: CourseInformation){
-const [segment, setSegment] = useState(newListInfo);
-
-
-const handleAddSegment = () => {  
-  if (formSegment.isValid()) {
-    const newComponent = <Segment segmentData={formSegment.values} />;
-    setSegment([...segment, newComponent]);
-    newListInfo.push({...formSegment.values, id:newListInfo.length});
-    formSegment.reset();
-    console.log(newListInfo);
-  }
-};
-
 const form = useForm({
-  initialValues: {
-    Titel: '',
-    Autor: '',
+  initialValues: { 
+    title: '',
+    author: '',
     dateStart: '',
-    dateEnd: '', 
+    dateEnd: '',
+    id: 0,
   },
 
   validate: {
-    Titel: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    Autor: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    title: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    author: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
     dateStart: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    dateEnd: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    dateEnd: (value, values) => {
+      if(value.length < 1 ) {
+        return 'Bitte Pflichtfeld ausfüllen'
+      } else if(value < values.dateStart) {
+        return 'Ups! Der Endzeitpunkt muss nach dem Startzeitpunkt liegen.'
+      } else {
+        return null
+      }
+    },
   }
 });
 
 const formSegment = useForm({
   initialValues: {
-    TitelSegment: '',
-    startTime: '', 
+    titleSegment: '',
+    startTime: '',
     endTime: '',
     target: '',
     procedure: '',
     materials: '',
+    id: 0
   },
   validate: {
-    TitelSegment: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    titleSegment: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
     startTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
-    endTime: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
+    endTime: (value, values) => {
+      if(value.length < 1) {
+        return 'Bitte Pflichtfeld ausfüllen'
+      } else if(value < values.startTime) {
+        return 'Ups! Der Endzeitpunkt muss nach dem Startzeitpunkt liegen.'
+      } else {
+        return null
+      }
+    },
     procedure: (value) => (value.length < 1 ? 'Bitte Pflichtfeld ausfüllen' : null),
   }
 });
 
-
-const onSubmit = (values: object) => {
-  if(newListInfo.length > 0){
-    newListInfo.push({...form.values, id:newListInfo.length})
-    updateCourseInformation(values)
-    console.log(newListInfo)
-  }
+const handleAddSegment = () => { 
+  formSegment.reset();
+  formSegment.values.id = Math.floor(Math.random()*10000)
+  setSegments([...segments, formSegment.values]);
+  addSegmentMetaData(formSegment.values)
 };
 
-const handleFormsSubmit = (event:any) => {
-  event.preventDefault()
-  form.onSubmit(onSubmit)();
-  formSegment.onSubmit(onSubmit)()
-}
 
-const [activeTab, setActiveTab] = useState<string | null>('allgemein');
+const handleFormsSubmit = (event: any) => {
+  form.values.id = idAllgemein;
+  addCommonMetaData(form.values)
+};
 
 return(
   <>
-    <div className='titel-Section'>
-      <h1 className='titel-Erstellen'> <span className='teko'>KURS</span> erstellen</h1>
+  <div style={{marginBottom: '1rem'}}>
+    <div className='title-Section'>
+      <h1> <span className='teko'>KURS</span> erstellen</h1>
       <p className='description'>hier <span className='teko'>KURS</span> Information hinzufügen</p>
     </div>
     <hr />
-    <form onSubmit={handleFormsSubmit}>
-      <Tabs variant="outline" defaultValue="gallery" className='tabs' value={activeTab} onTabChange={setActiveTab} >  
+    <form>
+      <Tabs variant="outline" defaultValue="gallery" className='tabs' value={activeTab} onTabChange={setActiveTab}>  
         <Tabs.List>
-         <Tabs.Tab value="allgemein">Allgemein</Tabs.Tab>
-          <Tabs.Tab value="segmente">Segmente</Tabs.Tab>
-          <Button type='submit' color={'green'} ml="auto">erstellen</Button>
-        </Tabs.List>
+         <Tabs.Tab value="general">Allgemein</Tabs.Tab>
+          <Tabs.Tab value="segment">Segmente</Tabs.Tab>
+          <Button onClick={form.onSubmit(handleFormsSubmit)} color={'green'} ml="auto">erstellen</Button>
+        </Tabs.List> 
       <br />
-      <Tabs.Panel value="allgemein" pt="xs" >
+      <Tabs.Panel value="general" pt="xs" >
         <Box maw={250}>
           <TextInput
             withAsterisk
-            name='Titel'
+            name='title'
             label="Titel"
             placeholder="Kurs Name"
-            {...form.getInputProps('Titel')}
+            {...form.getInputProps('title')}
           />
 
           <TextInput
             withAsterisk
-            name='Autor'
+            name='author'
             label="Autor"
             placeholder="Autor Name"
-            {...form.getInputProps('Autor')}
+            {...form.getInputProps('author')}
           />
 
           <DateInput
@@ -122,71 +140,78 @@ return(
             placeholder="Datum"
             {...form.getInputProps('dateEnd')}
           />
-
-          <br />
         </Box>
       </Tabs.Panel>
 
-      <Tabs.Panel value="segmente" pt="xs">
+      <Tabs.Panel value='segment' pt='xs'>
       <div style={{display: 'flex'}} className={'segment'}>
         <Box maw={250} className={'box'}>
           <TextInput
             withAsterisk
-            name='TitelSegment'
-            label="Titel"
+            name='titleSegment'
+            label='Titel'
             placeholder="Segment Name"
-            {...formSegment.getInputProps('TitelSegment')}
+            {...formSegment.getInputProps('titleSegment')}
           />
 
           <TimeInput
             withAsterisk
-            label="Startzeizpunkt"
-            placeholder="Zeit"
+            label='Startzeizpunkt'
+            placeholder='Zeit'
             {...formSegment.getInputProps('startTime')}
-          />
-
+            />
+            
           <TimeInput
             withAsterisk
-            label="Endzeitpunkt"
-            placeholder="Zeit"
+            label='Endzeitpunkt'
+            placeholder='Zeit'
             {...formSegment.getInputProps('endTime')}
           />
 
           <Textarea
             name='target'
-            label="Ziele"
-            placeholder="Segment Ziele"
+            label='Ziele'
+            placeholder='Segment Ziele'
             {...formSegment.getInputProps('target')}
           />
 
           <Textarea
             withAsterisk
             name='procedure'
-            label="Ablauf"
-            placeholder="Segment Ablauf"
+            label='Ablauf'
+            placeholder='Segment Ablauf'
             {...formSegment.getInputProps('procedure')}
           />
 
           <Textarea
             name='materials'
-            label="Materialen/Unterlagen"
-            placeholder="Materialen"
+            label='Materials'
+            placeholder='Materialen'
             {...formSegment.getInputProps('materials')}
           />
+
           <Group position="right" mt="md">
-              <ThemeIcon color={'orange'} size={'xl'} radius={'xl'} onClick={handleAddSegment}>
+              <ThemeIcon color={'orange'} size={'xl'} radius={'xl'} onClick={formSegment.onSubmit(handleAddSegment)}>
                 <IconPlus />
               </ThemeIcon>
           </Group>
         </Box>
-            {segment.map((segment, index) => (
-            <div key={index}>{segment}</div>
-            ))}
+          {segments.map((segmentData, index) => (
+            <Segment
+              key={index}
+              titleSegment={segmentData.titleSegment}
+              startTime={segmentData.startTime}
+              endTime={segmentData.endTime}
+              target={segmentData.target}
+              procedure={segmentData.procedure}
+              materials={segmentData.materials}/>
+          ))}
         </div>
-      <br />
       </Tabs.Panel>
       </Tabs>
     </form>
+    </div>
   </>
  );
 }
+export default CreateComponents

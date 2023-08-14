@@ -66,7 +66,7 @@ h2 {
  margin-top: 24rem;
 }
 
-.titel-Section {
+.title-Section {
  margin: 1.5rem 2rem 0;
  display: flex;
  justify-content: space-between;
@@ -117,7 +117,7 @@ h2 {
  flex-wrap: wrap;
 }
 
-.newSegmente {
+.newSegment{
  margin-top: 1.5rem;
  background-color: #b1b2b5;
  height: 430px;
@@ -128,4 +128,8 @@ h2 {
 
 .newSegmente:hover{
  background-color: #d5d5d6;
+}
+
+.keyword{
+ font-weight: bold;
 }
