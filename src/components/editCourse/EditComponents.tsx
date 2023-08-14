@@ -112,13 +112,13 @@ const safeCourse = () => {
     <h1> <span className='teko'>KURS</span>  editieren</h1>
   </div>
   <hr />
-  <form>
-    <Tabs variant="outline" defaultValue={'general'} style={{marginTop: '2rem', marginLeft: '2%'}} active={activeTab} onTabChange={() => handleTabChange}>  
+  <form onSubmit={form.onSubmit(safeCourse)}>
+    <Tabs variant="outline" defaultValue={'general'} style={{marginTop: '2rem', marginLeft: '2%'}} onTabChange={() => handleTabChange}>  
       <Tabs.List>
         <Tabs.Tab value="general" color='orange'>Allgemein</Tabs.Tab>
         <Tabs.Tab value="segment" color='orange'>Segmente</Tabs.Tab>
         <Tabs.Tab value="days"    color='orange'>Tage</Tabs.Tab>
-        <Button color={'green'} ml="auto"  onClick={form.onSubmit(safeCourse)}> speichern</Button>
+        <Button color={'green'} ml="auto"> speichern</Button>
       </Tabs.List>
       <br />
       <Tabs.Panel value="general" pt="xs">

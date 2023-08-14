@@ -196,6 +196,7 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
       <Modal size="s" opened={opened} onClose={close} title="Segment erstellen" centered padding={'xl'} radius={'md'}>
         {
           <div>
+            <form onSubmit={formSegment.onSubmit(handleAddSegment)}>
             <Box maw={250} className={'box'}>
               <TextInput
                 className='formular'
@@ -268,12 +269,12 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
               <Button
                 color={'orange'} 
                 size={'sm'}
-                onClick={formSegment.onSubmit(handleAddSegment)}
                 variant='filled'
               >
                 <p>hinzufügen</p>
               </Button>
             </Box>
+            </form>
           </div>
         }
       </Modal>

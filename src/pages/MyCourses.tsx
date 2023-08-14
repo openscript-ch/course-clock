@@ -1,7 +1,7 @@
 import '../App.css'
 import CoursesList from '../components/CoursesList'
 import { AppShell, Navbar, Header, ThemeIcon  } from '@mantine/core'
-import { IconPlus, IconFile, IconPdf, IconSettings2, IconClock } from '@tabler/icons-react'
+import { IconPlus, IconFile, IconSettings2, IconClock } from '@tabler/icons-react'
 import { Link } from "react-router-dom"
 
 function MyCourses() {

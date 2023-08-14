@@ -179,6 +179,7 @@ return (
 
   <Modal size="s" opened={opened} onClose={close} title="Segment erstellen" centered padding={'xl'} radius={'md'}>
     {<div>
+      <form onSubmit={formSegment.onSubmit(()=>handleAddSegment(formSegment.values.id, formSegment.values))}>
       <Box maw={250} className={'box'}>
         <TextInput
           data-autoFocus
@@ -244,12 +245,12 @@ return (
         
         <Button 
           color={'orange'} size={'sm'}
-          onClick={formSegment.onSubmit(()=>handleAddSegment(formSegment.values.id, formSegment.values))}
           variant='filled'
         >
             <p>{createSave}</p>
         </Button>
       </Box>
+      </form>
     </div>}
   </Modal>
 </>)}

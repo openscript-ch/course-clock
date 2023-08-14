@@ -132,8 +132,8 @@ const TableColumn = ({dayNumber}: { dayNumber:number } ) => {
     </td>
     <Modal size="s" opened={opened} onClose={close} title="Segment erstellen" centered padding={'xl'} radius={'md'}>
      {<div>
+      <form onSubmit={formSegment.onSubmit(handleAddSegment)}>
        <Box maw={250} className={'box'}>
-        <form onSubmit={handleAddSegment}>
          <TextInput
           data-autofocus
           withAsterisk
@@ -198,13 +198,13 @@ const TableColumn = ({dayNumber}: { dayNumber:number } ) => {
 
         <Button
           color={'orange'} size={'sm'}
-          onClick={formSegment.onSubmit(handleAddSegment)}
+          type='submit'
           variant='filled'
         >
           <p>hinzufügen</p>
         </Button>
-        </form>
-      </Box>
+        </Box>
+      </form>
     </div>}
    </Modal>
   </>

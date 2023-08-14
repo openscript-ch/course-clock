@@ -11,29 +11,6 @@ import DaysList from './DaysList'
 
 const CreateComponents = () => {
 
-//------------------- set ActiveTab --------------------------------------
-
-  const [activeTab, setActiveTab] = useState(1)
-
-  const handleTabChange = (index:number) => {
-    setActiveTab(index)
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (event:any) => {
-      if (event.key === 'ArrowLeft') {
-        setActiveTab((prevTab) => (prevTab > 0 ? prevTab - 1 : 0))
-      } else if (event.key === 'ArrowRight') {
-        setActiveTab((prevTab) => (prevTab < 2 ? prevTab + 1 : 2)) 
-    };
-
-    document.addEventListener('ArrowLefts', handleKeyDown)
-
-    return () => {
-      document.removeEventListener('ArrowLeft', handleKeyDown)
-    }
-  }})
-
 //--------------------- set AvtiveInputField -----------------------------
 
 
@@ -136,17 +113,18 @@ return(
     <div className='title-Section'>
       <h1> <span className='teko'> KURS </span> erstellen</h1>
   </div>
-  <hr />  
-  <Tabs defaultValue={'general'} style={{marginTop: '2rem', marginLeft: '2%'}} active={activeTab} onTabChange={() => handleTabChange}>
+  <hr />
+  <form onSubmit={form.onSubmit(handleFormsSubmit)}>
+  <Tabs defaultValue={'general'} style={{marginTop: '2rem', marginLeft: '2%'}}>
     <Tabs.List>
       <Tabs.Tab value='general' color='orange'>Allgemein</Tabs.Tab> 
       <Tabs.Tab value='segment' color='orange' onClick={triggerFunction}>Woche</Tabs.Tab>
       <Tabs.Tab value='day' color='orange' onClick={triggerFunction}>Tag</Tabs.Tab>
-      <Button color='green' ml='auto' onClick={form.onSubmit(handleFormsSubmit)}> erstellen </Button>
+      <Button color='green' ml='auto' type='submit'> erstellen </Button>
     </Tabs.List>
     <Tabs.Panel value='general' pt="xs">
       <div className='form'>
-        <form>
+        
           <Box maw={250}>
             <TextInput
             autoFocus
@@ -178,7 +156,7 @@ return(
             onChange={(value:number) => setNumberOfDays(value)}
             />
           </Box>
-        </form>
+        
       </div>
     </Tabs.Panel>
     <Tabs.Panel value='segment' pt='xs'>
@@ -188,6 +166,7 @@ return(
       <DaysList numberOfDays={numberOfDays}/>
     </Tabs.Panel>
   </Tabs>
+  </form>
 </div>
 </> 
 )}
