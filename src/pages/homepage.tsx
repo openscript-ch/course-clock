@@ -1,28 +1,9 @@
-
-import { CreateCourse } from './CreateCourse'
 import '../App.css'
-import { EditCourse } from './EditCourse'
-import { CourseViewLayout } from './CourseViewLayout'
-import MyCourses from './MyCourses'
+import { Link } from "react-router-dom"
 import { ThemeIcon } from '@mantine/core'
 import { IconPlus, IconFile, IconClock } from '@tabler/icons-react'
-import { BrowserRouter as Router,Route,Routes,Link } from 'react-router-dom'
 
-function CourseClockRouter(){
-  return(
-  <Router>
-    <Routes>
-      <Route path='/' element={<Homepage/>} />
-      <Route path='/create-course' element={<CreateCourse/>} />
-      <Route path='/my-courses' element={<MyCourses/>}/>
-      <Route path='/edit-course' element={<EditCourse/>}/>
-      <Route path='/course-view' element={<CourseViewLayout/>}/>
-    </Routes>
-  </Router>
-  );
-}
-
-function Homepage() {
+export function Homepage() {
     return (
         <div className='home-Page'>
           <h1 className='project-Name'>
@@ -52,4 +33,3 @@ function Homepage() {
         </div> 
       )}
 
-export default CourseClockRouter;
