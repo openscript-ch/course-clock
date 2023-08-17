@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "yarn run vite --port 3000 --host 0.0.0.0",
-    "build": "yarn run tsc && vite build",
+    "build": "yarn run tsc && vite build --base=/course-clock/",
     "preview": "yarn run vite preview"
   },
   "dependencies": {
