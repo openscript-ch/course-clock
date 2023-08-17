@@ -9,14 +9,12 @@ export function Homepage() {
           <h1 className='project-Name'>
             course<br />
             <span className='teko'>
-              <ThemeIcon style={{ marginTop: '1rem' }} radius={360} size={'6vw'} color={'orange'}>
-                <IconClock size={'6rem'} />
-              </ThemeIcon> CLOCK
+                <IconClock style={{ marginTop: '1rem', marginRight: '2rem'}} radius={360} size={'8rem'}  color={'orange'}/>CLOCK
             </span>
           </h1>
 
           <div className='options'>
-            <Link to='/create-course' className='options-Settings' style={{ backgroundColor:'#fd7e14', width: '30vw', marginBottom: '2rem',  height: '5.5rem' }}>
+            <Link to='/create-course' className='options-Settings' style={{ backgroundColor:'#fd7e14', width: '25rem', marginBottom: '2rem',  height: '5.5rem' }}>
               <ThemeIcon className='find-Icon' style={{ alignContent: 'center' }} radius={360} size={'lg'} color={'none'}>
                 <IconPlus />
               </ThemeIcon>

@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://openscript-ch.github.io/course-clock/",
   "scripts": {
     "dev": "yarn run vite --port 3000 --host 0.0.0.0",
     "build": "yarn run tsc && vite build --base=/course-clock/",

@@ -108,7 +108,7 @@ return (
       <div>
         <Link to='/create-Course' >
           <div className='createOption' style={{marginBottom: '1rem', textAlign: 'center', paddingTop: '1rem'}}>
-            <IconCirclePlus color='white' size={'2.5rem'}></IconCirclePlus>
+            <IconCirclePlus color='white' size={'3.5rem'}></IconCirclePlus>
           </div>
         </Link>
         <Dropzone

@@ -17,16 +17,19 @@
 }
 
 .project-Name {
-  font-size: 11vw;
+  font-size: 11rem;
   line-height: 10rem;
 }
 
 .home-Page {
+  position: absolute;
   flex-wrap: wrap;
-  margin: 10vw;
+  margin: 11vw;
   display: flex;
-  gap: 5vw;
-  margin-inline: 15rem;
+  gap: 6rem;
+  margin-inline: 1rem;
+  text-align: center;
+  margin-left: 15%;
 }
 
 .options-Settings {
@@ -34,7 +37,7 @@
   border-radius: 2rem;
   display: flex;
   align-items: center;
-  width: 25vw;
+  width: 20rem;
   margin-bottom: 2rem;
   height: 5rem;
   font-size: 1.5rem;
@@ -193,10 +196,8 @@ h2 {
 .course {
   box-shadow: inset 0 0 5px #000000;
   background-color: #a4a4a5;
-  min-width: 15rem;
-  max-width: 15rem;
-  min-height: 10rem;
-  max-height: 10rem;
+  width: 10rem;
+  height: 5rem;
   border-bottom-right-radius: 3rem;
   border-top-left-radius: 1rem;
   text-align: center;
