@@ -114,17 +114,17 @@ return(
       <h1> <span className='teko'> KURS </span> erstellen</h1>
   </div>
   <hr />
-  <form onSubmit={form.onSubmit(handleFormsSubmit)}>
+  
   <Tabs defaultValue={'general'} style={{marginTop: '2rem', marginLeft: '2%'}}>
     <Tabs.List>
       <Tabs.Tab value='general' color='orange'>Allgemein</Tabs.Tab> 
       <Tabs.Tab value='segment' color='orange' onClick={triggerFunction}>Woche</Tabs.Tab>
       <Tabs.Tab value='day' color='orange' onClick={triggerFunction}>Tag</Tabs.Tab>
-      <Button color='green' ml='auto' type='submit'> erstellen </Button>
     </Tabs.List>
+    <form onSubmit={form.onSubmit(handleFormsSubmit)}>
+    <Button  className='submit-Btn' color='green' ml='auto' type='submit'> erstellen </Button>
     <Tabs.Panel value='general' pt="xs">
       <div className='form'>
-        
           <Box maw={250}>
             <TextInput
             autoFocus
@@ -159,6 +159,7 @@ return(
         
       </div>
     </Tabs.Panel>
+    </form>
     <Tabs.Panel value='segment' pt='xs'>
       <Week numberOfDays={numberOfDays}/>
     </Tabs.Panel>
@@ -166,7 +167,7 @@ return(
       <DaysList numberOfDays={numberOfDays}/>
     </Tabs.Panel>
   </Tabs>
-  </form>
+ 
 </div>
 </> 
 )}

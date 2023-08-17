@@ -269,6 +269,7 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
               <br />
 
               <Button
+              type='submit'
                 color={'orange'} 
                 size={'sm'}
                 variant='filled'

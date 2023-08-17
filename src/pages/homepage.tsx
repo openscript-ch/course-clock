@@ -5,11 +5,12 @@ import { IconPlus, IconFile, IconClock } from '@tabler/icons-react'
 
 export function Homepage() {
     return (
+      <div className='homepage-Container'>
         <div className='home-Page'>
           <h1 className='project-Name'>
             course<br />
             <span className='teko'>
-                <IconClock style={{ marginTop: '1rem', marginRight: '2rem'}} radius={360} size={'8rem'}  color={'orange'}/>CLOCK
+                <IconClock style={{ marginTop: '1rem', marginRight: '2rem', backgroundColor: '#fd7e14', borderRadius: '360rem'}} radius={360} size={'8rem'}  color={'white'}/>CLOCK
             </span>
           </h1>
 
@@ -28,6 +29,7 @@ export function Homepage() {
               <h3><span className='teko'>KURSE</span></h3>
             </Link>
           </div>
-        </div> 
+        </div>
+      </div> 
       )}
 

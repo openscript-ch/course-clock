@@ -22,14 +22,12 @@
 }
 
 .home-Page {
-  position: absolute;
+  justify-content: center;
   flex-wrap: wrap;
-  margin: 11vw;
   display: flex;
-  gap: 6rem;
-  margin-inline: 1rem;
-  text-align: center;
-  margin-left: 15%;
+  gap: 5rem;
+  padding: 5rem;
+  margin-top: 5rem;
 }
 
 .options-Settings {
@@ -246,6 +244,11 @@ h2 {
   margin-left: 65%;
   gap: .5rem;
   display: flex;
+}
+
+.submit-Btn{
+  float: right;
+  margin-bottom: 1rem;
 }
 /* ---------------days-------------- */
 
@@ -477,5 +480,12 @@ h2 {
   .courseViewWeekContainer {
     width: 100%;
     display: none;
+  }
+}
+
+@media only screen and (max-width: 1210px){
+  .home-Page{
+    margin-top: 0;
+    gap: 3rem;
   }
 }

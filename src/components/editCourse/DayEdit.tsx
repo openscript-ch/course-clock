@@ -245,8 +245,9 @@ return (
         <br/> 
         
         <Button 
-          color={'orange'} size={'sm'}
-          variant='filled'
+        type='submit'
+        color={'orange'} size={'sm'}
+        variant='filled'
         >
             <p>{createSave}</p>
         </Button>

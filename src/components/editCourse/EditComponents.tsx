@@ -112,18 +112,18 @@ const safeCourse = () => {
     <h1> <span className='teko'>KURS</span>  editieren</h1>
   </div>
   <hr />
-  <form onSubmit={form.onSubmit(safeCourse)}>
+  
     <Tabs variant="outline" defaultValue={'general'} style={{marginTop: '2rem', marginLeft: '2%'}} onTabChange={() => handleTabChange}>  
       <Tabs.List>
         <Tabs.Tab value="general" color='orange'>Allgemein</Tabs.Tab>
         <Tabs.Tab value="segment" color='orange'>Segmente</Tabs.Tab>
         <Tabs.Tab value="days"    color='orange'>Tage</Tabs.Tab>
-        <Button color={'green'} ml="auto"> speichern</Button>
+        
       </Tabs.List>
-      <br />
+      <form onSubmit={form.onSubmit(safeCourse)}>
+      <Button className='submit-Btn' color={'green'} ml="auto" type='submit'> speichern</Button>
       <Tabs.Panel value="general" pt="xs">
         <Box maw={250}>
-
           <TextInput
             autoFocus
             withAsterisk
@@ -149,7 +149,7 @@ const safeCourse = () => {
 
         </Box>
       </Tabs.Panel>
-
+      </form>
       <Tabs.Panel value='segment' pt='xs'>
         <WeekEdit numberOfDays={form.values.day}></WeekEdit>
       </Tabs.Panel>
@@ -157,7 +157,6 @@ const safeCourse = () => {
         <DaysListEdit numberOfDays={generalInformation.day} ></DaysListEdit>
       </Tabs.Panel>
     </Tabs>
-  </form>
   </div>
 </>
 )}
