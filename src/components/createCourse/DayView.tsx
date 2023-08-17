@@ -26,8 +26,8 @@ return (
        {selectedCourse.slice(0, -1).filter((arr: Array<segmentDayId>) => arr.length > 0 && arr[0]?.id === numberOfDay ).map((arr: []) => arr.slice(1).sort((obj1: Segment, obj2:Segment) => {const startTime1 = parseFloat(obj1.startTime.replace(':', '.'))
            const startTime2 = parseFloat(obj2.startTime.replace(':', '.'))
            return startTime1 - startTime2
-      }).map((obj: Segment) =>
-                  <tr className='tr'>  
+      }).map((obj: Segment, index:number) =>
+                  <tr className='tr' key={index}>  
                     <td className='tdDay'>{obj.startTime}-{obj.endTime}</td>
                     <td className='tdDay'>{obj.title}</td>
                     <td className='tdDay'>{obj.procedure}</td>

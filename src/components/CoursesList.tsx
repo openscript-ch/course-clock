@@ -136,10 +136,10 @@ return (
           </Group>
         </Dropzone>
       </div>
-      {course.map((innerArray:[]) => (
-        <div>
+      {course.map((innerArray:[], index:number) => (
+        <div key={index}>
           {innerArray.filter((obj:mainForSearchId) => typeof obj.id === 'string').map((obj:Main) => (
-            <Link className='link' to='/course-view' onClick={() => selectCourse(innerArray)}>
+            <Link className='link' to='/course-view' onClick={() => selectCourse(innerArray)} key={obj.id}>
             <div>
               <Courses
                 title={obj.title} 

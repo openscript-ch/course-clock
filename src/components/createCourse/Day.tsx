@@ -107,11 +107,11 @@ const handleAddSegment = () => {
             <td className='tdDay'>{obj.material}</td>
            </tr>
           )))}
-          <Button style={{marginTop: '1rem'}} color='orange' onClick={() => open()}>
-            Segment hinzufügen
-          </Button>
      </tbody>
     </table>
+    <Button style={{marginTop: '1rem'}} color='orange' onClick={() => open()}>
+      Segment hinzufügen
+    </Button>
   </div>
   <Modal size="s" opened={opened} onClose={close} title="Segment erstellen" centered padding={'xl'} radius={'md'}>
     {

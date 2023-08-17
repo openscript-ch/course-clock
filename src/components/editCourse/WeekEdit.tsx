@@ -21,8 +21,9 @@ function WeekEdit({ numberOfDays}: { numberOfDays: number}) {
     <table className='weekViewTable'> 
       <thead>
         <tr>
-          {daysCount.map((number) => (
+          {daysCount.map((number, index) => (
             <th
+            key={index}
               style={{
                 border: '1px solid black',
                 padding: '10px'

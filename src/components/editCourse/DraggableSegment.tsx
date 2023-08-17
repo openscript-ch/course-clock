@@ -75,7 +75,7 @@ const DraggableSegment = ({segment}: { segment: Segment }) => {
   return (
     <Rnd
       draggable = {dragEnabled}
-      resizable = {true}
+      resizable = 'true'
       onResizeStart = {() => {
         toggleDrag()
         setDragEnabled(false)

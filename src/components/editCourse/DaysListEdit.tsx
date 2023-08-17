@@ -19,7 +19,7 @@ return (
           return day[0] && day[0].id === index
         })
         return (
-          <Accordion.Item value={JSON.stringify(index)}>
+          <Accordion.Item value={JSON.stringify(index)} key={index}>
             <Accordion.Control onClick={() => displayDayContent(index)}>
               <div style={{ display: 'flex', gap: '1.5rem' }}>
                 <h3>Tag{index}</h3>

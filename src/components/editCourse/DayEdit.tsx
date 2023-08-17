@@ -154,7 +154,9 @@ return (
      </thead>
      <tbody>
        {events.map((obj:Segment, index:number) => (
-           <tr className='tr' key={index}          
+           <tr 
+           className='tr' 
+           key={index}          
            onDoubleClick={() => trye(obj)}
            onDragOver={(e) => e.preventDefault}
            >
@@ -163,26 +165,25 @@ return (
             <td className='tdDay'> {obj.procedure}</td>
             <td className='tdDay'> {obj.target}</td>
             <td className='tdDay'> {obj.material} </td>
-            <div style={{maxWidth: '3rem'}}>
+            <td style={{maxWidth: '3rem'}} key={obj.id}>
               <ActionIcon onClick={() => deleteSegment(obj.id)}> 
                 <IconX></IconX>
               </ActionIcon>
-            </div>
+            </td>
            </tr>
           ))}
-        <Button style={{marginTop: '1rem'}} color='orange' onClick={() => addSegmentLabel()}>
-          Segment hinzufügen
-        </Button>
      </tbody>
   </table> 
-
+  <Button style={{marginTop: '1rem'}} color='orange' onClick={() => addSegmentLabel()}>
+    Segment hinzufügen
+  </Button>
 
   <Modal size="s" opened={opened} onClose={close} title="Segment erstellen" centered padding={'xl'} radius={'md'}>
     {<div>
       <form onSubmit={formSegment.onSubmit(()=>handleAddSegment(formSegment.values.id, formSegment.values))}>
       <Box maw={250} className={'box'}>
         <TextInput
-          data-autoFocus
+          data-autofocus
           withAsterisk
           name='title' 
           label='Thema' 

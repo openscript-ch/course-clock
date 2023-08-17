@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { useForm } from '@mantine/form'
 import { Rnd } from 'react-rnd'
 import { useEffect, useRef } from 'react'
+import { subscribe } from 'diagnostics_channel'
 
 function Week({ numberOfDays }: { numberOfDays: number }) {
 
@@ -130,8 +131,9 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
-              {daysCount.map((number: number) => (
+              {daysCount.map((number: number, index:number) => (
                 <th
+                key={index}
                   style={{
                     border: '1px solid black',
                     padding: '10px',
@@ -145,24 +147,24 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
           <tbody>
             <tr>
               {daysCount.map((number: number, index: number) => (
-                <td className='td' key={index + 1} onDoubleClick={() => dayNumber(number + 1)}>
-                  <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}>
-                    <div style={{ position: 'absolute', width: '100%', height: '100%' }}>
+                <td className='td' key={index} onDoubleClick={() => dayNumber(number + 1)}>
+                  <div key={number} style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                    <div key={index+10} style={{ position: 'absolute', width: '100%', height: '100%' }}>
                       {Array.from({ length: 60 }, (_, subIndex) => {
                         const hour = Math.floor(subIndex / 4) + 5
                         const minute = subIndex % 4 * 15
                         if (minute === 0) {
                           const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
                           return (
-                            <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: 'calc(100% / 60)', border: '1px solid #E6E6E6', flexGrow: '1' }}>
-                              <div style={{ marginLeft: '5px', fontSize: '8px' }}>
+                            <div key={subIndex} style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: 'calc(100% / 60)', border: '1px solid #E6E6E6', flexGrow: '1' }}>
+                              <div key={subIndex+2} style={{ marginLeft: '5px', fontSize: '8px' }}>
                                 {time}
                               </div>
                             </div>
                           )
                         } else {
                           return (
-                            <div style={{ height: 'calc(100% / 60)', border: '1px dotted #E6E6E6', flexGrow: '1' }}> 
+                            <div key={subIndex} style={{ height: 'calc(100% / 60)', border: '1px dotted #E6E6E6', flexGrow: '1' }}> 
                             </div>
                           )
                         }
@@ -200,7 +202,7 @@ function Week({ numberOfDays }: { numberOfDays: number }) {
             <Box maw={250} className={'box'}>
               <TextInput
                 className='formular'
-                data-autoFocus
+                data-autofocus
                 withAsterisk
                 name='title'
                 label='Thema'

@@ -108,7 +108,7 @@ const TableColumn = ({dayNumber}: { dayNumber:number } ) => {
                if (minute === 0) {
                 const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`
                  return (
-                  <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: 'calc(100% / 60)', border: '1px solid #E6E6E6', flexGrow: '1' }}>
+                  <div key={subIndex} style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', height: 'calc(100% / 60)', border: '1px solid #E6E6E6', flexGrow: '1' }}>
                     <div style={{ marginLeft: '5px', fontSize: '8px' }}> 
                      {time}
                     </div>
@@ -117,7 +117,7 @@ const TableColumn = ({dayNumber}: { dayNumber:number } ) => {
 
                 } else {
               return (
-                <div style={{ height: 'calc(100% / 60)', border: '1px dotted #E6E6E6', flexGrow: '1' }}> 
+                <div key={subIndex} style={{ height: 'calc(100% / 60)', border: '1px dotted #E6E6E6', flexGrow: '1' }}> 
                 </div>
               )}
              })}
@@ -125,7 +125,7 @@ const TableColumn = ({dayNumber}: { dayNumber:number } ) => {
             {selectedCourse.slice(0, -1).filter((arr: Array<segmentDayId>) => arr.length > 0 && arr[0]?.id === dayNumber + 1).map((arr: []) => arr.slice(1).sort((obj1: Segment, obj2: Segment) => { const startTime1 = parseFloat(obj1.startTime.replace(':', '.'))
                                 const startTime2 = parseFloat(obj2.startTime.replace(':', '.'))
                                 return startTime1 - startTime2
-                               }).map((obj: Segment) => <DraggableSegment segment={obj} />)
+                               }).map((obj: Segment) => <DraggableSegment segment={obj} key={obj.id} />)
             )}
            </div>
       </div>

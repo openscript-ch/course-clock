@@ -49,7 +49,7 @@ return(
   </div>
   <div className='courseViewDaysContainer'>
   {days.map(( index) => (
-    <div className='courseViewDays'>
+    <div className='courseViewDays'key={index}>
       <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
         <p className='dayNumberDayView'><span className='teko'>Tag:</span> {index}</p>
         <Link to='/edit-course'>

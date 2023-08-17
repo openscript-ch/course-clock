@@ -1,10 +1,9 @@
-import create from 'zustand'
+import { create } from 'zustand'
 import {devtools, persist} from 'zustand/middleware'
 import { courseClockStore } from './store'
 import { Main, mainWithoutDate } from '../modals/main'
 import { Segment, segmentDayId } from '../modals/segment'
 import _ from 'lodash';
-import { stat } from 'fs'
 
 const courseStore = (set:any) => ({ 
 
