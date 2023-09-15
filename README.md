@@ -1,6 +1,6 @@
-<p align="center">
+<div align="center">
 ![Screenshot_2023-09-15_084645-removebg-preview](https://github.com/openscript-ch/course-clock/assets/111817341/a78a5505-9e28-462c-ba9d-a13ba7a7df82)
-</p>
+</div>
 
 # CourseClock
 
