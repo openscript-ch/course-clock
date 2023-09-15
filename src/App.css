@@ -302,7 +302,7 @@ h2 {
 .thTHeadTime {
   border: 1px solid black;
   padding: 10px;
-  width: 5%;
+  width: 15%;
 }
 
 .td {
@@ -452,7 +452,25 @@ h2 {
     width: 100%;
     background-color: #fd7d142e;
   }
-  
+
+  table{
+    page-break-after: auto
+  }
+  tr{
+    page-break-inside: avoid;
+    page-break-after: auto
+  }
+  td{
+    page-break-inside: avoid;
+    page-break-after: auto
+  }
+  thead {
+    display: table-header-group
+  }
+  tfoot {
+    display: table-footer-group
+  }
+
   .thTHead {
     border: 2px solid black;
     text-align: left;
@@ -478,8 +496,7 @@ h2 {
     text-align: left;
   }
   .courseViewWeekContainer {
-    width: 100%;
-    display: none;
+    display: none; 
   }
 }
 

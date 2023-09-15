@@ -40,7 +40,7 @@ const DraggableSegment = ({segment}: { segment: Segment }) => {
   const toggleDrag = () => {
     setDragEnabled(!dragEnabled)
   }
-
+  
   const changeEventPlace = () => {
     droppedEvent(segment, dayDragged)
   } 

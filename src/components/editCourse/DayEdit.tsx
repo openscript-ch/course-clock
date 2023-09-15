@@ -156,7 +156,7 @@ return (
        {events.map((obj:Segment, index:number) => (
            <tr 
            className='tr' 
-           key={index}          
+           key={index+1}          
            onDoubleClick={() => trye(obj)}
            onDragOver={(e) => e.preventDefault}
            >

@@ -151,7 +151,9 @@ const safeCourse = () => {
       </Tabs.Panel>
       </form>
       <Tabs.Panel value='segment' pt='xs'>
+      <div >
         <WeekEdit numberOfDays={form.values.day}></WeekEdit>
+      </div>
       </Tabs.Panel>
       <Tabs.Panel value='days'>
         <DaysListEdit numberOfDays={generalInformation.day} ></DaysListEdit>

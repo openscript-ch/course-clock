@@ -69,13 +69,13 @@ addNewSegmentEdit: (id:number, obj:Segment) => {
 
 
 addNewDay: () => {
-  set((state: any) => ({
-    selectedCourse: [
-      ...state.selectedCourse.slice(0, -1),
-      [{ id: state.selectedCourse.length },  { title:"GENIAL", startTime:"14:00", endTime:"16:34", target:"gwertbgdfbdf", procedure:"gfdbdfgbdfbdfgbdf", material:"bdfgbfdbdfgbf", id:"9f6b8816-7a72-4acd-a244-13afdgb1fa1e1" }],
-      state.selectedCourse[state.selectedCourse.length - 1],
-    ],
-  }));
+  set((state:any) => {
+    const id = state.selectedCourse.length;
+    const newObj = [{ id }, {title:"/",startTime:"00:00",endTime:"00:00",target:"/", procedure:"/", material:"/" }];
+    const newSelectedCourse = [...state.selectedCourse];
+    newSelectedCourse.splice(-1, 0, newObj);
+    return { selectedCourse: newSelectedCourse };
+  });
 },
 
 

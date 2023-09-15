@@ -8,7 +8,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { useForm } from '@mantine/form'
 import { Rnd } from 'react-rnd'
 import { useEffect, useRef } from 'react'
-import { subscribe } from 'diagnostics_channel'
 
 function Week({ numberOfDays }: { numberOfDays: number }) {
 

@@ -48,15 +48,15 @@ return(
    <WeekEdit numberOfDays={generalInfo.day}></WeekEdit>
   </div>
   <div className='courseViewDaysContainer'>
-  {days.map(( index) => (
-    <div className='courseViewDays'key={index}>
+  {selectedCourse.slice(0, -1).map((courseArray:any, index:number) => (
+    <div className='courseViewDays' key={index}>
       <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
-        <p className='dayNumberDayView'><span className='teko'>Tag:</span> {index}</p>
+        <p className='dayNumberDayView'><span className='teko'>Tag:</span> {index+1}</p>
         <Link to='/edit-course'>
           <IconPencil className='editCourseIcon'></IconPencil>
         </Link>
       </div>
-      <DayView numberOfDay={index}></DayView>
+      <DayView numberOfDay={index+1}></DayView>
     </div>
   ))}
   </div>

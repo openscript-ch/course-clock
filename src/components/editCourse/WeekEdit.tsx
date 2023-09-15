@@ -12,7 +12,6 @@ function WeekEdit({ numberOfDays}: { numberOfDays: number}) {
 
   while (dayStart < numberOfDays) {daysCount.push(dayStart++)}
 
-
   useEffect(() => {
   }, [selectedCourse, daysCount])
 
@@ -21,22 +20,22 @@ function WeekEdit({ numberOfDays}: { numberOfDays: number}) {
     <table className='weekViewTable'> 
       <thead>
         <tr>
-          {daysCount.map((number, index) => (
+          {selectedCourse.slice(0, -1).map((courseArray:any, index:number) => (
             <th
-            key={index}
+              key={index}
               style={{
                 border: '1px solid black',
-                padding: '10px'
+                padding: '10px',
               }}
             >
-              Tag {number + 1}
+              Tag {index+1}
             </th>
           ))}
         </tr>
       </thead>
       <tbody>
         <tr>
-          {daysCount.map((index) => (
+          {selectedCourse.slice(0, -1).map((courseArray:any, index:number) => (
             <TableColumn key={index} dayNumber={index}/>
           ))}
         </tr>

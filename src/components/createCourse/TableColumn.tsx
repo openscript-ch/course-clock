@@ -100,7 +100,7 @@ const TableColumn = ({dayNumber}: { dayNumber:number } ) => {
    <> 
     <td className='td' onDoubleClick={dayNum} onDragExit={safeDraggesValue}>
       <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}>
-        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', height: '105rem' }}>
           <div style={{ position: 'absolute', width: '100%', height: '100%' }}>
             {Array.from({ length: 60 }, (_, subIndex) => {
               const hour = Math.floor(subIndex / 4) + 5
@@ -123,9 +123,8 @@ const TableColumn = ({dayNumber}: { dayNumber:number } ) => {
              })}
             </div>
             {selectedCourse.slice(0, -1).filter((arr: Array<segmentDayId>) => arr.length > 0 && arr[0]?.id === dayNumber + 1).map((arr: []) => arr.slice(1).sort((obj1: Segment, obj2: Segment) => { const startTime1 = parseFloat(obj1.startTime.replace(':', '.'))
-                                const startTime2 = parseFloat(obj2.startTime.replace(':', '.'))
-                                return startTime1 - startTime2
-                               }).map((obj: Segment) => <DraggableSegment segment={obj} key={obj.id} />)
+              const startTime2 = parseFloat(obj2.startTime.replace(':', '.'))
+                return startTime1 - startTime2}).map((obj: Segment) => <DraggableSegment segment={obj} key={obj.id} />)
             )}
            </div>
       </div>
