@@ -6,13 +6,17 @@
 
 ## Create course
 
-It Is As Easy As, In The "Allgemein" Tab
+It is as easy as, in The "Allgemein" Tab
 
 1. define the name of the course
 2. define the author's name
 3. determine the number of days the course will have.
 
+![GeneralForm](https://github.com/openscript-ch/course-clock/assets/111817341/51fd8d58-8ffe-4fcb-8880-f35044a54bc3)
+
 On the "Woche", "Tag" tabs you can create events using a form which will require a name, start and end time as well as an event procedure.
+
+![EventForm](https://github.com/openscript-ch/course-clock/assets/111817341/feaaede7-feda-4345-9ae3-27cf8ec72489)
 
 With two clicks on the day or a simple click on 'Segment hinzufügen' you will access the form.
 
